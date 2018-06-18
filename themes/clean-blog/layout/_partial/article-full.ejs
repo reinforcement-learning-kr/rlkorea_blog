@@ -1,0 +1,104 @@
+<!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+<%
+	var cover = item.cover || theme.index_cover;
+%>
+<header class="intro-header post">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+				<div class="post-heading">
+					<h1><%- item.title || theme.default_post_title || "Untitled" %></h1>
+					<% if (item.subtitle && item.subtitle.length) { %>
+					<h2 class="post-subheading">
+						<%- item.subtitle %>
+					</h2>
+					<% } %>
+					<span class="meta">
+						<!-- Date and Author -->
+						<% if(item.author) { %>
+							Posted by <%- item.author %> on
+						<% } %>
+						<% if(item.date) { %>
+							<%= item.date.format(config.date_format) %>
+						<% } %>
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</header>
+
+<!-- Post Content -->
+<article>
+	<div class="container">
+		<div class="row">
+
+			<!-- Tags and categories -->
+		   <% if (item.categories && item.categories.length || item.tags && item.tags.length) { %>
+				<div class="col-lg-5 col-lg-offset-2 col-md-6 col-md-offset-1 post-tags">
+					<% if (item.tags && item.tags.length){ %>
+						<%- partial('article-tags', {item: item}) %>
+					<% } else { %>
+						<%- partial('article-categories', {item: item}) %>
+					<% } %>
+				</div>
+				<div class="col-lg-3 col-md-4 post-categories">
+					<% if (item.tags && item.tags.length && item.categories && item.categories.length){ %>
+						<%- partial('article-categories', {item: item}) %>
+					<% } %>
+				</div>
+			<% } %>
+
+			<!-- Gallery -->
+			<% if (item.photos && item.photos.length){ %>
+				<%- partial('gallery') %>
+			<% } %>
+
+			<!-- Post Main Content -->
+			<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+				<%- item.content %>
+
+				<% if(theme.addthis) { %>
+					<!-- Go to www.addthis.com/dashboard to customize your tools -->
+					<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=<%- theme.addthis %>"></script>
+
+					<!-- Go to www.addthis.com/dashboard to customize your tools -->
+					<div class="addthis_sharing_toolbox"></div>
+				<% } %>
+			</div>
+
+			<!-- Comments -->
+			<% if (item.comment != false) { %>
+				<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+					<%- partial("_partial/comments.ejs") %>
+				</div>
+			<% } %>
+		</div>
+	</div>
+</article>
+
+<!-- S 디스쿼스 주석처리 웅원이가 꺼달라그럼 2018.05.10 보미 -->
+<div id="disqus_thread"></div>
+<script>
+	
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+// (function() { // DON'T EDIT BELOW THIS LINE
+// var d = document, s = d.createElement('script');
+// s.src = 'https://bomee88.disqus.com/embed.js';
+// s.setAttribute('data-timestamp', +new Date());
+// (d.head || d.body).appendChild(s);
+// })();
+</script>
+<!-- <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript> -->
+
+<!-- E 디스쿼스 추가함 2018.04.09 보미-->

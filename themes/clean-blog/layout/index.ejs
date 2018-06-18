@@ -1,0 +1,48 @@
+<!-- Page Header -->
+<!-- Set your background image for this header in the theme's configuration: index_cover -->
+<div style="padding-top:56px;"></div>
+<header class="intro-header">
+<!-- 	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+				<div class="site-heading">
+				</div>
+			</div>
+		</div>
+	</div> -->
+</header>
+
+<!-- Main Content -->
+<div class="container intro-content">
+	<div class="row">
+		<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+			<img src="/img/main.png" style="width:100%">
+			<!--<h1>Reinforcement Learning KR</h1>-->
+			<div class="text-area">
+			    <br>
+				<STRONG>RLKorea</STRONG>는 강화학습을 공부하고 연구하시는 분들을 위한 페이스북 그룹입니다.
+				강화학습에 대한 소식과 논문 정보를 공유하고 함께 재밌는 프로젝트를 진행합니다.
+				프로젝트는 3개월 단위로 진행합니다. 각 프로젝트 관련 코드는 RLKorea 깃헙에 업로드됩니다.
+				<br><br>
+
+				<center>깃헙 링크: <a href="https://github.com/reinforcement-learning-kr/" target="_blank" style="color:#b86824">https://github.com/reinforcement-learning-kr/</a></center>
+
+				<br> 현재 5~7월 동안 진행중인 프로젝트는 다음과 같습니다.
+				<br><br>
+				<center>
+					<img src="https://www.dropbox.com/s/kxgj2g470tzwnva/Screenshot%202018-06-15%2022.50.05.png?dl=1" style="width:500px">
+				</center>
+			</div>
+		</div>
+		
+		<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+		<hr>	
+		<% page.posts.each(function(item){ %>
+				<%- partial('_partial/article-index', {item: item}) %>
+			<% }); %>
+
+			<%- partial('_partial/pagination') %>			
+		</div>
+	</div>
+</div>
+
