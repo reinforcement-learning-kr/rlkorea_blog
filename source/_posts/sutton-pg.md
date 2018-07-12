@@ -350,7 +350,8 @@ compatibility condition을 만족하는 policy와 value function에 대해 $\max
 
 (comment) $\pi(s,a)$라는 function은 이계미분값이 존재하고, 임의의 상수인 (Bound) B에 유계하기 때문에 function의 그래프는 smooth하다고 볼 수 있습니다. (아래의 그림 중 빨간색 그래프 참고)
 
-<img src="https://www.dropbox.com/s/03w8nuar9v0atls/Screen%20Shot%202018-07-10%20at%203.41.06%20PM.png?dl=0" width=400px>
+<!-- ![test](../img/figure.png) -->
+<img src="../img/figure.png" width="300">
 
 ${\alpha_k}$는 $\lim_{k\rightarrow\infty}\alpha_k=0$ 이며 $\sum_k\alpha_k=\infty$를 만족하는 step-size sequence라고 합시다.
 
