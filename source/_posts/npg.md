@@ -55,7 +55,7 @@ natural gradient + policy gradient를 처음 제시했다는 것은 좋지만 np
 - natural gradient와 policy iteration의 연관성을 설명하겠음: natural policy gradient is moving toward choosing a greedy optimal action (이런 연결점은 아마도 step-size를 덜 신경쓰고 싶어서 그런게 아닌가 싶다)
 
 논문의 Introduction 부분에 다음 멘트가 있다. 이 글만 봐서는 이해가 안갔는데 Mackay 논문에 좀 더 자세히 나와있다.
- 
+
 <img src="https://www.dropbox.com/s/41xhhr7lgfk24a1/Screenshot%202018-06-10%2011.45.18.png?dl=1">
 
 [Mackay](http://www.inference.org.uk/mackay/ica.pdf)논문에서는 다음과 같이 언급하고 있다. Back-propagation을 사용할 경우에 learning rate를 dimension에 1/n로 사용하면 수렴한다는 것이 증명됐다. 하지만 너무 느리다. 
@@ -351,3 +351,5 @@ tetris는 linear function approximator와 greedy policy iteration을 사용할 �
 - conjugate gradient method가 좀 더 maximum에 빠르게 수렴하지만, performance는 maximum에서 거의 안변하므로 좋다고 말하기 어려움(?). 이 부분에 대해서 추가적인 연구 필요.
 
 amet, consectetur adipisicing elit. Vitae ipsum, voluptatem quis officiis inventore dolor totam deserunt, possimus similique eum, accusantium adipisci doloremque omnis excepturi quasi, suscipit repellendus quibusdam? Veritatis.
+
+ddd
