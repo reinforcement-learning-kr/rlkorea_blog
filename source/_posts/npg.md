@@ -351,5 +351,3 @@ tetris는 linear function approximator와 greedy policy iteration을 사용할 �
 - conjugate gradient method가 좀 더 maximum에 빠르게 수렴하지만, performance는 maximum에서 거의 안변하므로 좋다고 말하기 어려움(?). 이 부분에 대해서 추가적인 연구 필요.
 
 amet, consectetur adipisicing elit. Vitae ipsum, voluptatem quis officiis inventore dolor totam deserunt, possimus similique eum, accusantium adipisci doloremque omnis excepturi quasi, suscipit repellendus quibusdam? Veritatis.
-
-ddd
