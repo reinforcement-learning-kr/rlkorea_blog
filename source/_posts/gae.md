@@ -3,7 +3,7 @@ title: High-Dimensional Continuous Control using Generalized Advantage Estimatio
 date: 2018-07-11 19:18:45
 tags: ["프로젝트", "피지여행"]
 categories: 프로젝트
-author: 이동민
+author: 이동민, 양혁렬
 subtitle: 피지여행 7번째 논문
 ---
 
@@ -104,16 +104,16 @@ $$\hat{A}_{s_{0:\infty}, a_{0:\infty}} = Q_t (s_{0:\infty}, a_{0:\infty}) - b_t 
 - $Q^{\pi, \gamma} (s_t, a_t)$
 - $r_t + \gamma V^{\pi, \gamma} (s_{t+1}) - V^{\pi, \gamma} (s_t)$
 
-증명을 보기 전에 먼저 Advantage function에 대해서 먼저 살펴봅시다. 아래의 내용은 Sutton이 쓴 논문인 Policy Gradient Methods for Reinforcement Learning with Function Approximation(2000)에서 나온 내용을 리뷰한 것입니다. (피지여행 블로그에 추가되어 있습니다. 블로그는 곧 오픈할 예정입니다.)
+증명을 보기 전에 먼저 Advantage function에 대해서 먼저 살펴봅시다. 아래의 내용은 Sutton이 쓴 논문인 Policy Gradient Methods for Reinforcement Learning with Function Approximation(2000)에서 나온 내용을 리뷰한 것입니다. 
 
-<img src="../img/figure1.jpg" width="300">
+<center> <img src="https://www.dropbox.com/s/x737yq97ut6gp1a/Screen%20Shot%202018-07-15%20at%201.16.09%20PM.png?dl=1" width="600"> </center>
 
 여기서는 "이 수식은 $\sum_a \frac{\partial \pi (s,a)}{\partial \theta} = 0$이기 때문에 가능해진다.", "즉, 이 수식은 $\pi(s,a)$의 gradient에만 dependent하기 때문에 advantage 역할을 하는 함수들을 넣어도 아무런 상관이 없다"라는 두 문장을 기억해둡시다.
 
 이제 증명을 보면 됩니다.
 
-<img src="../img/figure2.jpg" width="300">
-<img src="../img/figure3.jpg" width="300"> 
+<center> <img src="https://www.dropbox.com/s/e7sj2fwcm1f7hof/figure2.jpg?dl=1" width="600"> </center>
+<center> <img src="https://www.dropbox.com/s/kyk4jes1202az4m/figure3.jpg?dl=1" width="600"> </center>
 
 위의 증명 수식에서 Q와 b의 각각 세번째 수식과 마지막 수식을 자세히 봅시다.
 
@@ -144,7 +144,7 @@ $$= \mathbb{E}_{s_{t+1}} [Q^{\pi, \gamma} (s_t, a_t) - V^{\pi, \gamma} (s_t)] = 
 
 그래서 $\delta$에 대해 $k$의 sum으로 생각해봅시다. 이것을 $\hat{A}_t^{(k)}$라고 하자. 그러면 아래와 같이 표현할 수 있습니다.
 
-<img src="../img/figure4.jpg" width="300">
+<center> <img src="https://www.dropbox.com/s/ra7hxksveg2hz45/figure4.jpg?dl=1" width="600"> </center>
 
 $\hat{A}_t^{(k)}$은 returns의 $k$-step estimate와 연관지을 수 있고, $\delta_t^V = \hat{A}_t^{(1)}$의 case와 유사하게도 $\hat{A}_t^{(k)}$를 advantage function의 estimator로 생각할 수 있습니다.
 
@@ -155,7 +155,7 @@ $$\hat{A}_t^{(\infty)} = \sum_{l=0}^\infty \gamma^l \delta_{t+l}^V = -V(s_t) + \
 
 Generalized Advantage Estimator GAE($\gamma, \lambda$)는 $k$-step estimators의 exponentially-weighted average로 나타낼 수 있습니다.
 
-<img src="../img/figure5.jpg" width="300"> 
+<center> <img src="https://www.dropbox.com/s/yg1ybmfkep3towu/figure5.jpg?dl=1" width="600"> </center>
 
 (TD($\lambda$)를 떠올려주세요..!)
 
@@ -163,7 +163,7 @@ Generalized Advantage Estimator GAE($\gamma, \lambda$)는 $k$-step estimators의
 
 위의 수식에서 $\lambda = 0$ and $\lambda = 1$에 대해서는 특별한 case가 존재한다. 수식으로 표현하면 다음과 같습니다.
 
-<img src="../img/figure6.jpg" width="300"> 
+<center> <img src="https://www.dropbox.com/s/ufglxzanhcnbi36/figure6.jpg?dl=1" width="600"> </center>
 
 - $GAE(\gamma, 1)$은 $V$의 정확도와 관계없이 $\gamma$-just입니다. 그러나 returns의 sum때문에 high variance합니다.
 - $GAE(\gamma, 0)$은 $V = V^{\pi, \gamma}$에 대해 $\gamma$-just입니다. 그리고 bias하지만 일반적으로 훨씬 lower variance를 가집니다. 
@@ -184,11 +184,12 @@ $$g^\gamma \approx \mathbb{E} [\sum_{t=0}^\infty] \nabla_\theta \log \pi_\theta 
 
 Reward Shaping이란 개념 자체는 일반적인 알고리즘 분야(최단경로 문제 등)에도 있습니다. 하지만 이 개념이 머신러닝에 적용된 건 Andrew Y. Ng이 쓴 Policy Invariance under Reward Transformations Theory and Application to Reward Shaping(1999) 논문입니다. 논문에서 Reward Shaping을 설명하는 부분은 간략하게 다음과 같습니다.
 
-<img src="../img/figure7.jpg" width="300"> <img src="../img/figure8.jpg" width="300">
+<center> <img src="https://www.dropbox.com/s/0w9cuxjkhz2mbcy/figure7.jpg?dl=1" width="400"> </center>
+<center> <img src="https://www.dropbox.com/s/xcp9eqvcbv3268g/figure8.jpg?dl=1" width="400"> </center>
 
 위의 글만 보고 이해가 잘 안됩니다. 그래서 다른 자료들을 찾던 중에 다음의 그림을 찾게 되었습니다. (아래의 그림은 Youtube에 있는 [Udacity 영상](https://www.youtube.com/watch?v=xManAGjbx2k&t=95s)에서 있는 그림입니다.)
 
-<img src="../img/figure9.jpg" width="300"> 
+<center> <img src="https://www.dropbox.com/s/87kacngez9cl2e6/figure9.jpg?dl=1" width="400"> </center>
 
 이 그림을 통해서 Reward Shaping을 이해해봅시다.
 
@@ -203,7 +204,7 @@ $$\tilde{r} (s, a, s') = r(s, a, s') + \gamma \Phi (s') - \Phi (s)$$
 - 여기서 $\Phi : S \rightarrow \mathbb{R}$를 state space에서의 arbitrary scalar-valued function을 나타냅니다. 그리고 $\Phi$자리에는 대표적으로 state value function이 들어간다고 생각합시다.
 - 형태가 TD residual term의 결과와 비슷하지만 의미와 의도가 다릅니다. reward shaping은 sparse reward 때문이고, 이전 section에서 봤던 gae는 variance reduction때문에 나온 것입니다.
 
-<img src="../img/figure10.jpg" width="300"> 
+<center> <img src="https://www.dropbox.com/s/tkfpqniaazwfbld/figure10.jpg?dl=1" width="600"> </center>
 
 이 transformation은 discounted advantage function $A^{\pi, \gamma}$으로도 둘 수 있습니다. state $s_t$를 시작하여 하나의 trajectory의 rewards의 discounted sum을 표현하면 다음과 같습니다.
 $$\sum_{l=0}^\infty \gamma^l \tilde{r} (s_{t+l}, a_t, s_{t+l+1}) = \sum_{l=0}^\infty \gamma^l r(s_{t+l}, a_{t+l}, s_{t+l+1}) - \Phi(s_t)$$
@@ -356,9 +357,11 @@ GAE의 실험적인 입증으로는 robotic locomotion을 simulation하는 domai
 
 ### 8.2 Future work
 
-- Value function estimation error 와 Policy gradient estimation error 사이의 관계를 알아낸다면, 우리는 Value function fitting 에 더 잘 맞는 error metric 을 사용할 수 있습니다. (policy gradient estimation 의 정확성과 더 잘 맞는 value function)
-- Policy와 Value function의 파라미터를 공유하는 모델을 만드는 것은 아주 흥미롭고 이점이 많습니다. 하지만 수렴을 보장하도록 적절한 numerical optimization을 제시하여야 합니다.
-- DDPG는 별로입니다. TD(0) 는 bias 가 너무 크고, poor performance 로 이끕니다. 특히나 이 paper 에서는 low-dimention 의 쉬운 문제들만 해결했습니다.
+Value function estimation error 와 Policy gradient estimation error 사이의 관계를 알아낸다면, 우리는 Value function fitting 에 더 잘 맞는 error metric 을 사용할 수 있습니다. (policy gradient estimation 의 정확성과 더 잘 맞는 value function)
+
+Policy와 Value function의 파라미터를 공유하는 모델을 만드는 것은 아주 흥미롭고 이점이 많습니다. 하지만 수렴을 보장하도록 적절한 numerical optimization을 제시하여야 합니다.
+
+DDPG는 별로입니다. TD(0) 는 bias 가 너무 크고, poor performance 로 이끕니다. 특히나 이 paper 에서는 low-dimention 의 쉬운 문제들만 해결했습니다.
 
 <center> <img width = "500px" src="https://www.dropbox.com/s/nhc7t9psul5lr3x/Screenshot%202018-07-08%2011.45.15.png?dl=1"> </center>
 

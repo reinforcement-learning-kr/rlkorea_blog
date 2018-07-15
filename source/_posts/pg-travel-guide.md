@@ -62,6 +62,19 @@ PG기법이 각광을 받게 된 계기는 아마도 TRPO 때문이 아닌가 �
 [GAE 여행하기](blog link)
 [GAE Code](https://github.com/reinforcement-learning-kr/pg_travel)
 
+TRPO가 나오고 난 뒤로도 복잡하고 어려운 control problem에서 Reinforcement Learning(RL)은 high sample complexity 때문에 제한이 되어왔습니다. 따라서 이 논문에서 그 제한을 풀고자 advantage function의 good estimate를 얻는 "variance reduction"에 대해 연구하였습니다.
+
+"Generalized Advantage Estimator(GAE)"라는 것을 제안했고, 이것은 bias-variance tradeoff를 조절하는 두 개의 parameter $\gamma,\lambda$를 가집니다.
+또한 어떻게 Trust Region Policy Optimization과 value function을 optimize하는 Trust Region Algorithm의 idea를 합치는 지를 보였습니다.
+
+이렇게 함으로써 보다 더 복잡하고 어려운 control task들을 해결할 수 있었습니다.
+
+GAE의 실험적인 입증으로는 robotic locomotion을 simulation하는 domain입니다. 실험에서도 보여준 것처럼 [0.9, 0.99]의 범위에서 $\lambda$의 적절한 중간의 값을 통해 best performance를 얻습니다. 좀 더 나아가 연구되어야할 점은 adaptive or automatic하도록 estimator parameter $\gamma,\lambda$를 조절하는 방법입니다.
+
+추가적으로 앞으로 연구되어야할 부분은 만약 Value function estimation error 와 Policy gradient estimation error 사이의 관계를 알아낸다면, Value function fitting에 더 잘 맞는 error metric을 사용할 수 있을 것입니다. (policy gradient estimation 의 정확성과 더 잘 맞는 value function)
+
+Policy와 Value function의 파라미터를 공유하는 모델을 만드는 것은 아주 흥미롭고 이점이 많습니다. 하지만 수렴을 보장하도록 적절한 numerical optimization을 제시하여야 할 것입니다.
+
 [GAE 여행하기](blog link)
 [GAE Code](https://github.com/reinforcement-learning-kr/pg_travel)
 
