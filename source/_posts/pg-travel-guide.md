@@ -43,6 +43,12 @@ subtitle: 피지여행에 관한 개략적 기록
 [NPG 여행하기](../../../06/14/2018-06-15-npg/)
 [NPG Code](https://github.com/reinforcement-learning-kr/pg_travel)
 
+일반적으로 Policy Gradient 기법들은 앞에서 확일할 수 있듯이 Objective funtction, $\eta(\pi_\theta)$을 최대화하는 쪽으로 파라미터를 업데이트하면서 복잡한 비선형 함수을 최적화 합니다. 일반적으로 파라미터를 업데이트하는 방법은 Objective function를 각 파라미터들로 편미분(Gradient를 구하여)하여 그 변수들의 변화에 따른 Objective function의 변화를 따라 파라미터를 업데이트 합니다. 하지만 컴퓨터는 해석학적으로 목적함수를 최적화하는 방법을 따를 수 없어 수치학적으로 접근을 합니다. 수치학적으로 Objective function을 최대화하려면 대부분의 경우 반복적인 방법, $\theta_{k+1} = \theta_k + \bigtriangledown_\theta \eta(\theta)$,을 사용합니다. 
+
+해석학적으로는 $\bigtriangledown_\theta\eta(\theta)$를 편미분하여 직접 Objective function의 Gradient를 구할 수 있겠지만 수치학적으로는 매우 작은 크기를 가지는 $d\theta$에 대해 $\eta(\theta+d\theta)-\eta(\theta)$를 구함으로써 Gradient를 간접적으로 얻을 수 있습니다. 그리고 이것은 간단하게 파라미터들의 집합인 $\theta$의 Positive-Definite Matrix인 $G(\theta)$에 의해 $G^{-1}\eta(\theta)$로 구해질 수 있습니다.
+
+하지만 여기서 Objective function은 매우 많은 파라미터로 구성되어 있으며 파라미터들은 매 스텝마다 업데이트되기 때문에 $G(\theta)$를 통해 얻은 Gradient는 매번 달라지며 파라미터들의 성능을 추정하는 정확한 Metric이 될 수 없습니다. 본 논문에서는 Fisher Information Matrix라는 것을 도입하여 파라미터의 업데이트 등에 따라 영향을 받지 않는 Metric을 구해내며 이를 통해 파라미터를 업데이트하는 것을 소개하고 있습니다.
+
 [NPG 여행하기](../../../06/14/2018-06-15-npg/)
 [NPG Code](https://github.com/reinforcement-learning-kr/pg_travel)
 
