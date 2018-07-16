@@ -1,19 +1,18 @@
 ---
-title: trpo
+title: Trust Region Policy Optimization
 date: 2018-07-12 16:53:12
 tags: ["프로젝트", "피지여행"]
 categories: 프로젝트
 author: 공민서, 김동민
-subtitle: TRPO 여행하기
+subtitle: 피지여행 5번째 논문
 ---
-Trust Region Policy Optimization
-========================
+논문링크: [arXiv](https://arxiv.org/pdf/1502.05477), [icml](http://www.jmlr.org/proceedings/papers/v37/schulman15.pdf)
+(참고로 2015년 ICML에 발표된 논문에 많은 수정을 가한 버전이 2017년 arXiv에 업로드되었기 때문에 arXiv 버전을 읽으시기를 권장합니다.)    
 Authors: John Schulman, Sergey Levine, Philipp Moritz, Michael Jordan, Pieter Abbeel    
 Proceeding: International Conference on Machine Learning (ICML) 2015
+정리: 공민서, 김동민
 
-정리 by 공민서, 김동민
-
-
+---
 # 1. 들어가며...
 
 Trust region policy optimization (TRPO)는 상당히 우수한 성능을 보여주는 policy gradient 기법으로 알려져 있습니다. 높은 차원의 action space를 가진 robot locomotion부터 action은 적지만 화면을 그대로 처리하여 플레이하기 때문에 control parameter가 매우 많은 Atari game까지 각 application에 세부적으로 hyperparameter들을 특화시키지 않아도 두루두루 좋은 성능을 나타내기 때문에 일반화성능이 매우 좋은 기법입니다. 이 TRPO에 대해서 알아보겠습니다.
@@ -159,11 +158,11 @@ $$
 
 다음 그림을 봅시다. Starting Point에서 여러가지 경로를 거쳐서 Destination으로 갈 수 있습니다. 다른 policy를 이용하는 것은 다른 경로를 이용한 것입니다.
 
-![policy_change](../img/policy_change.png)
+![policy_change](../../../../img/policy_change.png)
 
 이 때 다른 policy를 이용함에 따라 state visitation frequency도 변하게 됩니다.
 
-![state_visitation_change](../img/state_visitation_change.png)
+![state_visitation_change](../../../../img/state_visitation_change.png)
 
 이로 인해서 policy를 최적화하는 것은 어려워집니다. 그래서 이러한 변화를 무시하는 다음과 같은 approximation을 취합니다.
 
@@ -203,7 +202,7 @@ $$
 
 그림으로 표현하면 다음과 같습니다.
 
-![mixure_policy](../img/mixure_policy.png)
+![mixure_policy](../../../../img/mixure_policy.png)
 
 * 다음과 같은 lower bound를 정의
 $$
@@ -233,7 +232,7 @@ $$
 
 그림으로 표현하면 다음과 같습니다.
 
-![tvd](../img/tvd.png)
+![tvd](../../../../img/tvd.png)
 
 이것을 이용하여 다음과 같은 관계식을 얻을 수 있습니다.
 
@@ -249,7 +248,7 @@ $$
 또다른 distance metric으로 아래 그림과 같은 KL divergence가 있습니다.
 (그런데 왜 하필 KL divergence로 바꿀까요? 논문의 뒤쪽에서 계산효율을 위해서 conjugate gradient method를 이용하는데 이를 위해서 바꾼게 아닐까 싶습니다. Wasserstein distance 같은 다른 방향으로 발전시킬 수도 있을 것 같습니다. Schulmann이 아마 해봤겠죠?^^)
 
-![kld](../img/kld.png)
+![kld](../../../../img/kld.png)
 
 total variation divergence와 KL divergence 사이에는 다음과 같은 관계가 있습니다.
 $$
@@ -292,7 +291,7 @@ $$\begin{align}
 
 **Algorithm 1**은 아래 그림과 같이 동작합니다.
 
-![surrogate](../img/surrogate.png)
+![surrogate](../../../../img/surrogate.png)
 
 
 $M\_i$는 $\pi\_i$일 때 equality가 되는 $\eta$에 대한  surrogate function입니다. TRPO는 이 surrogate function을 최대화하고 KL divergence를 penalty가 아닌 constraint로 두는 알고리듬입니다.
@@ -347,7 +346,7 @@ $$
 
 아래 그림처럼 step size에 대해서 고려할 수 있습니다.
 
-![heuristic_approx](../img/heuristic_approx.png)
+![heuristic_approx](../../../../img/heuristic_approx.png)
 
 <br><br>
 # 5. Sample-Based Estimation of the Objective and Constraint
@@ -360,11 +359,11 @@ $$
 
 이러한 변화를 그림처럼 도식화할 수 있습니다.
 
-![sample-based](../img/sample-based.png)
+![sample-based](../../../../img/sample-based.png)
 
 한 가지 짚고 넘어가야 할 점은 action sampling을 할 때 importance sampling을 사용한다는 것입니다.
 
-![importance_sampling](../img/importance_sampling.png)
+![importance_sampling](../../../../img/importance_sampling.png)
 
 바뀐 최적화문제는 아래와 같습니다.
 
@@ -381,16 +380,16 @@ $$
 
 *single path*는 개별 trajectory들을 이용하는 방법입니다.
 
-![single](../img/single.png)
+![single](../../../../img/single.png)
 
 <br>
 ## 5.2. Vine
 
 *vine*은 한 state에서 rollout을 이용하여 여러 action을 수행하는 방법입니다.
 
-![vine1](../img/vine1.png)
+![vine1](../../../../img/vine1.png)
 
-![vine2](../img/vine2.png)
+![vine2](../../../../img/vine2.png)
 
 estimation의 variance를 낮출 수 있지만 계산량이 많고 한 state에서 여러 action을 수행할 수 있어야 하기 때문에 현실적인 문제에 적용하기에는 어려움이 있습니다.
 
