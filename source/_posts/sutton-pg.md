@@ -341,7 +341,7 @@ $$\frac{\partial\rho}{\partial\theta}=\sum_sd^\pi(s)\sum_a\frac{\partial\pi(s,a)
 - 위의 수식에 대한 추가설명
     - $v$ ($v$는 $S\rightarrow\Re$) 는 arbitrary function입니다.
     - 이 수식은 $\sum_a\frac{\partial\pi(s,a)}{\partial\theta}=0$이기 때문에 가능해집니다.
-        - 즉, 이 수식은 $\pi(s,a)$의 gradient에만 dependent하기 때문에 advantage 역할을 하는 함수들을 넣어도 아무런 상관이 없습니다.
+    - 즉, 이 수식은 $\pi(s,a)$의 gradient에만 dependent하기 때문에 advantage 역할을 하는 함수들을 넣어도 아무런 상관이 없습니다.
     - $v$의 선택은 Theorem들에 영향을 미치지 못하지만, 실질적으로 gradient estimator의 variance에 영향을 미칩니다.
     - 이러한 문제는 전체적으로 이전의 연구에 reinforcement baseline의 사용에 있어서 유사합니다.
     - (comment) 위의 수식에서 $f_w(s,a)+v(s)$와 Application to Deriving Algorithms의 $f_w(s,a)$와는 다른 것입니다. Application to Deriving Algorithms의 $f_w(s,a)$은 softmax에 의해 스스로 advantage function의 역할을 할 수 있습니다. 하지만 보통의 경우에는 그러지 못할 수도 있기 때문에 위의 수식처럼 $f_w(s,a)+v(s)$을 추가하여 zero mean만들어서 variance를 줄일 수 있습니다.
