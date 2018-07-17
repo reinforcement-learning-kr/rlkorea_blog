@@ -6,11 +6,13 @@ categories: 프로젝트
 author: 공민서, 김동민
 subtitle: 피지여행 5번째 논문
 ---
-논문링크: [arXiv](https://arxiv.org/pdf/1502.05477), [icml](http://www.jmlr.org/proceedings/papers/v37/schulman15.pdf)
-(참고로 2015년 ICML에 발표된 논문에 많은 수정을 가한 버전이 2017년 arXiv에 업로드되었기 때문에 arXiv 버전을 읽으시기를 권장합니다.)    
-Authors: John Schulman, Sergey Levine, Philipp Moritz, Michael Jordan, Pieter Abbeel    
-Proceeding: International Conference on Machine Learning (ICML) 2015
-정리: 공민서, 김동민
+
+<center> <img src="https://www.dropbox.com/s/o7cjcn0e17mpizr/Screen%20Shot%202018-07-18%20at%201.14.22%20AM.png?dl=1" width="700"> </center>
+
+논문 저자 : John Schulman, Sergey Levine, Philipp Moritz, Michael Jordan, Pieter Abbeel
+논문 링크 : https://arxiv.org/pdf/1502.05477.pdf
+Proceeding : International Conference on Machine Learning (ICML) 2015
+정리 : 공민서, 김동민
 
 ---
 # 1. 들어가며...

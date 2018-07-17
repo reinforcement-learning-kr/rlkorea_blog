@@ -6,10 +6,13 @@ categories: 프로젝트
 author: 김동민, 이동민
 subtitle: 피지여행 1번째 논문
 ---
-논문링크: [nips](http://papers.nips.cc/paper/1713-policy-gradient-methods-for-reinforcement-learning-with-function-approximation.pdf)
-Authors: Richard S. Sutton, David McAllester, Satinder Singh, Yishay Mansour    
-Proceeding: Advances in Neural Information Processing Systems (NIPS) 2000        
-정리: 김동민, 이동민
+
+<center> <img src="https://www.dropbox.com/s/83i4atz733ali0w/Screen%20Shot%202018-07-18%20at%2012.10.52%20AM.png?dl=1" width="600"> </center>
+
+논문 저자 : Richard S. Sutton, David McAllester, Satinder Singh, Yishay Mansour    
+논문 링크 : [NIPS](http://papers.nips.cc/paper/1713-policy-gradient-methods-for-reinforcement-learning-with-function-approximation.pdf)
+Proceeding : Advances in Neural Information Processing Systems (NIPS) 2000        
+정리 : 김동민, 이동민
 
 ---
 # 1. Intro to Policy Gradient
@@ -200,9 +203,9 @@ $$
 \end{align}
 $$
 
-다음으로 start-state formulation에 대한 증명입니다.
+* 다음으로 start-state formulation에 대한 증명입니다.
 
-* start-state formulation은 이 논문에서도 나오고 서튼책에서도 나오는데, 서튼책의 증명이 더 설명이 자세합니다. 그래서 논문에 있는 증명이 아닌 서튼책에 있는 증명으로 설명드리겠습니다. 다만, notation이 약간 다른데, 큰 문제 없이 이해하실 수 있으므로 별도의 설명은 하지 않겠습니다. (서튼책 [Link](https://drive.google.com/file/d/1xeUDVGWGUUv1-ccUMAZHJLej2C7aAFWY/view))
+start-state formulation은 이 논문에서도 나오고 서튼책에서도 나오는데, 서튼책의 증명이 더 설명이 자세합니다. 그래서 논문에 있는 증명이 아닌 서튼책에 있는 증명으로 설명드리겠습니다. 다만, notation이 약간 다른데, 큰 문제 없이 이해하실 수 있으므로 별도의 설명은 하지 않겠습니다. (서튼책 [Link](https://drive.google.com/file/d/1xeUDVGWGUUv1-ccUMAZHJLej2C7aAFWY/view))
 
 $$\nabla{v_\pi}(s)=\nabla\big[\sum_a\pi(a|s)q_\pi(s,a)\big]$$ 
 
@@ -223,8 +226,11 @@ $\nabla v_\pi(s'')$에 대해서 unrolling을 하고 또 나오는 다른 항에
 $$=\sum_{x\in S}\sum_{k=0}^{\infty}\Pr(s\rightarrow x,k,\pi)\sum_a \nabla \pi(a|s)q_\pi(s,a)$$
 
 여기에서 $\Pr(s\rightarrow x,k,\pi)$ 는 policy $\pi$ 에 대해 state $s$에서 state $x$까지 $k$ step만큼 움직일 때의 변환 확률입니다. 따라서 위의 수식을 아래처럼 다시 나타낼 수 있습니다.
-$$ \begin{align} \nabla J(\theta)= &\nabla v_\pi (s_0) \\ =&\sum_s(\sum_{k=0}^{\infty}\Pr(s_0\rightarrow s,k,\pi))\sum_a \nabla \pi(a|s)q_\pi(s,a) \\ =&\sum_s \eta(s) \sum_a \nabla \pi(a|s)q_\pi(s,a) \end{align}$$
-
+ <!-- \begin{align}  -->
+$$\nabla J(\theta)=\nabla v_\pi (s_0)$$ 
+$$=\sum_s(\sum_{k=0}^{\infty}\Pr(s_0\rightarrow s,k,\pi))\sum_a \nabla \pi(a|s)q_\pi(s,a)$$
+$$=\sum_s \eta(s) \sum_a \nabla \pi(a|s)q_\pi(s,a)$$ 
+<!-- \end{align} -->
 - 서튼책에서 $\eta(s)$는 다음과 같이 표현할 수 있습니다.
     - $\eta(s)$ = 평균적으로 하나의 episode마다 state에서 머무른 time step의 수 (page 199)
 - 논문에서는 $\eta(s)$를 다음과 같이 표현합니다.
@@ -354,23 +360,25 @@ $$\frac{\partial\rho}{\partial\theta}=\sum_sd^\pi(s)\sum_a\frac{\partial\pi(s,a)
 
 policy iteration with function approximation은 locally optimal policy에 수렴합니다. $\pi$와 $f_w$를 
 
-compatibility condition을 만족하는 policy와 value function에 대해 $\max_{\theta, s, a, i, j}\big| \frac{\partial^2\pi(s,a)}{\partial\theta_i\partial\theta_j}\big|<B<\infty$ 을
-만족하는 어떠한 미분가능한 function approximator라고 합시다.
+1. compatibility condition을 만족하는 policy와 value function에 대한
+2. 그리고 $\max_{\theta, s, a, i, j}\big| \frac{\partial^2\pi(s,a)}{\partial\theta_i\partial\theta_j}\big|<B<\infty$에 대한
 
-(comment) $\pi(s,a)$라는 function은 이계미분값이 존재하고, 임의의 상수인 (Bound) B에 bound되어 있기 때문에 function의 그래프는 smooth하다고 볼 수 있습니다. (아래의 그림 중 빨간색 그래프 참고)
+어떠한 미분가능한 function approximator라고 합시다.
 
-<img src="../../../../img/figure.png" width="300">
+- (comment) $\max_{\theta, s, a, i, j}\big| \frac{\partial^2\pi(s,a)}{\partial\theta_i\partial\theta_j}\big|<B<\infty$에서 $\pi(s,a)$라는 function은 이계미분값이 존재하고, 임의의 상수인 (Bound) B에 bound되어 있기 때문에 function의 그래프는 smooth하다고 볼 수 있습니다. (아래의 그림 중 빨간색 그래프 참고)
 
-${\alpha_k}$는 $\lim_{k\rightarrow\infty}\alpha_k=0$ 이며 $\sum_k\alpha_k=\infty$를 만족하는 step-size sequence라고 합시다.
+<center> <img src="https://www.dropbox.com/s/xx02ejfg5ao19ps/Screen%20Shot%202018-07-10%20at%203.41.06%20PM.png?dl=1" width="200"> </center>
+
+이어서 ${\alpha_k}$는 $\lim_{k\rightarrow\infty}\alpha_k=0$이며 $\sum_k\alpha_k=\infty$를 만족하는 step-size sequence라고 합시다.
 
 그 때, bounded reward를 가진 MDP에 대해
-1. 어떠한 $\theta_0, \pi_k=\pi(\cdot,\cdot,\theta_k)$ 
-2. $\sum_sd^{\pi_{k} }(s)\sum_a\pi_k(s,a)\big[ Q^{\pi_{k} }(s,a)-f_w(s,a)\big]\frac{\partial f_w(s,a)}{\partial w}=0$로 인하여 $w_k=w$, $\theta_{k+1}=\theta_k+\alpha_k\sum_sd^{\pi_{k} }(s)\sum_a\frac{\partial\pi_k(s,a)}{\partial\theta}f_{w_{k} }(s,a)$
+1. 어떠한 $\theta_0, \pi_k=\pi(\cdot,\cdot,\theta_k)$
+2. 그리고 $\sum_sd^{\pi_{k} }(s)\sum_a\pi_k(s,a)\big[ Q^{\pi_{k} }(s,a)-f_w(s,a)\big]\frac{\partial f_w(s,a)}{\partial w}=0$로 인하여 $w_k=w$, $\theta_{k+1}=\theta_k+\alpha_k\sum_sd^{\pi_{k} }(s)\sum_a\frac{\partial\pi_k(s,a)}{\partial\theta}f_{w_{k} }(s,a)$
 
 으로 정의된 sequence $\rho(\pi_k)$는 $\lim_{k\rightarrow\infty}\frac{\partial\rho(\pi_k)}{\partial\theta}=0$이기 때문에 수렴합니다.
 - sequence $\rho(\pi_k)_{k=0}^\infty$에 대한 추가 설명
     - $\theta_{k+1}=\theta_k+\alpha_k\sum_sd^{\pi_{k} }(s)\sum_a\frac{\partial\pi_k(s,a)}{\partial\theta}f_{w_{k} }(s,a)$ 에 따라 $\theta$가 1, 2, ..., $\infty$로 갈텐데, 거기에 따른 objective function or performance의 sequence입니다.
-    - (comment) 굳이 sequence라는 표현이 없어도 될 것 같다. 어짜피 k가 $\infty$로 가면 $\rho(\pi_k)$가 수렴한다는 의미이기 때문에 불필요해보입니다.
+    - (comment) 굳이 sequence라는 표현이 없어도 될 것 같습니다. 어짜피 k가 $\infty$로 가면 $\rho(\pi_k)$가 수렴한다는 의미이기 때문에 불필요해보입니다.
 
 ## 5.2 Proof of Theorem 3
 - Theorem 2는 $\theta_k$ update가 gradient의 error를 최소화한다는 것을 증명했습니다.

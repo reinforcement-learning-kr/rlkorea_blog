@@ -1,12 +1,28 @@
-Natural Policy Gradient
+---
+title: Natural Policy Gradient
+date: 2018-07-16 11:36:45
+tags: ["프로젝트", "피지여행"]
+categories: 프로젝트
+author: 이웅원, 차금강
+subtitle: 피지여행 4번째 논문
+---
 
-1\. 왜 Natural Policy Gradient 인가?
+<center> <img src="https://www.dropbox.com/s/yd0x14ljrhpnj1b/Screen%20Shot%202018-07-18%20at%201.08.05%20AM.png?dl=1" width="600"> </center>
+
+논문 저자 : Sham Kakade
+논문 링크 : https://papers.nips.cc/paper/2073-a-natural-policy-gradient.pdf
+Proceeding : ??
+정리 : 이웅원, 차금강
+
+---
+# 1. 왜 Natural Policy Gradient 인가?
 
 많은 연구들이 좋은 Policy $\pi$를 Objective function의 Gradient 값을 따라서 찾는데 노력을 하고 있습니다. 하지만 기존의 Gradient descent rule을 따르는 업데이트 방식은 non-covariant 방식입니다. 즉, Gradient descent rule은 $\bigtriangleup \theta_i = \dfrac{\partial f}{\partial \theta_i}$을 이용해서 파라미터를 업데이트 하는데 $\bigtriangleup \theta_i$가 $f$를 구성하고 있는 파라미터들에 종속되어 있다는 것입니다. 본 논문에서는 $f$를 구성하고 있는 파라미터들과 독립적인 metric을 정의함으로써 covariant한 gradient을 제시하고 이를 이용하여 파라미터를 업데이트합니다.
 
-2\. Notation & Natural Gradient
+---
+# 2. Notation & Natural Gradient
 
-2.1\. Notation
+## 2.1 Notation
 
 Finite한 MDP tuple을 먼저 정의합니다. $(S, s_0, A, R, P)$로 정의됩니다. Finite한 상태의 set$(S)$, 에피소드 시작지점의 state$(s_0)$, finite한 행동의 set$(A)$, 보상 함수 $R: S \times A \to [0, R_{max}]$, 그리고 transition 모델$(P)$로 이루어져 있습니다. 그리고 모든 정책 $\pi$는 ergodic하다고 가정합니다. 여기서 어떠한 통계적인 모델(모집단)과 모집단으로부터 추출된 모델(표본집단)이 같은 특성을 가질 때 ergodic하다고 합니다. 고등학교 수학에서 배우는 표본집단의 표준편차, 평균은 모집단의 그것과 같다는 것과 비슷한 개념입니다. 그리고 정책은 파라미터들 $\theta$에 의해 지배될 때 상태 $s$에서 행동 $a$를 선택할 확률로 정의되며 $\pi(a;s,\theta)$와 같이 표현됩니다. 여타 다른 강화학습들과 같이 $Q^\pi(s,a) = E_\pi (\Sigma^\infty_{t=0}R(s_t, a_t)-\eta(\pi)|s_0 = s, a_0 = a)$를 정의합니다.
 
@@ -18,41 +34,42 @@ $$
 
 여기서 $\eta(\pi_\theta)$는 $\pi_\theta$에 종속되어 있으며, $\pi_\theta$는 $\theta$에 종속되어 있습니다. 결국 $\eta(\pi_\theta)$는 $\theta$에 종속되어 있다고 할 수 있으며 $\eta(\pi_{\theta})$는 $\eta(\theta)$로 표현할 수 있습니다. 
 
-2.2\. Natural Gradient
+## 2.2 Natural Gradient
 
-2.1\.에 정의된 Objective function을 최대화 하는 방향으로 파라미터들을 업데이트 하는 것이 목적입니다. Euclidean space에서는 Objective function의 일반적인 gradient는 다음과 같이 구할 수 있습니다.
-$$
-\bigtriangledown\eta(\pi_\theta) = \Sigma_{s,a}\rho^\pi(s)\bigtriangledown\pi(a;s,\theta)Q^\pi(s,a)
-$$
+2.1에 정의된 Objective function을 최대화 하는 방향으로 파라미터들을 업데이트 하는 것이 목적입니다. Euclidean space에서는 Objective function의 일반적인 gradient는 다음과 같이 구할 수 있습니다.
+
+$$\bigtriangledown\eta(\pi_\theta) = \Sigma_{s,a}\rho^\pi(s)\bigtriangledown\pi(a;s,\theta)Q^\pi(s,a)$$
+
 하지만 뉴럴 네트워크에서 사용하는 parameter들은 매우 복잡하게 얽혀 있으며 이는 보통 생각하는 직선으로 이루어져 있는 Euclidean space가 아닙니다. 일반적으로 이는 구와 같이 휘어져 있는 평면(곡면)으로 이루어져 있으며 이를 리만 공간(Riemannian space)라고 합니다. 리만 공간에서는 Natural gradient가 steepest direction(업데이트 방향)이며 이를 구하는 방법은 [Amari, Natural gradient works in efficiently in learning](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.452.7280&rep=rep1&type=pdf)에서 자세히 설명을 하고 있습니다. 이를 간단히 설명하면 다음과 같습니다. 파라미터로 구성된 Matrix의 Positive-Definite Matrix인 $G(\theta)$를 이용하여 구할 수 있습니다. 정확한 리만 공간에서의 steepest gradient(natural gradient)를 $\widetilde \bigtriangledown \eta(\theta)$라고 한다면 다음과 같이 표현될 수 있습니다.
 
-$\widetilde \bigtriangledown\eta(\theta)=G(\theta)^{-1}\bigtriangledown\eta(\theta)$
+$$\widetilde \bigtriangledown\eta(\theta)=G(\theta)^{-1}\bigtriangledown\eta(\theta)$$
 
 위의 식을 이용하여 리만 공간에서의 파라미터를 업데이트 하면 아래의 식과 같이 표현될 수 있습니다.
 
-$\theta_{k+1}=\theta_k-\alpha_tG(\theta)^{-1}\bigtriangledown\eta(\theta)$
+$$\theta_{k+1}=\theta_k-\alpha_tG(\theta)^{-1}\bigtriangledown\eta(\theta)$$
 
 여기서 끝나는 것이 아니라 여전히 문제가 하나 남아 있습니다. 우리는 이 문제를 뉴럴넷을 이용하여 구성하고 해결하고 있습니다. 뉴럴넷은 여러가지 파라미터셋들로 구성될 수 있습니다. 하지만 우연의 일치로 다른 파라미터셋을 가지지만 같은 policy를 가질 수 있습니다. 이 경우 steepest  direction는 같은 policy이기 때문에 같은 방향을 가리키고 있어야 하는데 non-covariant한 경우 그렇지 못합니다. 이 이유로 느린 학습이 야기됩니다. 이 문제를 해결하기 위해 단순히 Positive-Definite Matrix인 $G(\theta)$를 사용하지 않고 [Fisher Information Matrix](rxiv.org/abs/1707.06347)(이하 FIM)인 $F_s(\theta)$를 사용하면 이를 해결할 수 있다고 서술하고 있습니다. FIM는 어떤 확률 변수의 관측값으로부터 확률 변수의 분포의 매개변수에 대해 유추할 수 있는 정보의 양입니다. 어떠한 확률변수 $X$가 미지의 매개변수 $\theta$에 의해 정의되는 분포를 따른다고 하면 $X=x$일때 FIM은 다음과 같이 정의됩니다.
 
-$F_x(\theta)=E[(\dfrac{\partial}{\partial\theta}logPr(x|\theta))^2]$
+$$F_x(\theta)=E[(\dfrac{\partial}{\partial\theta}logPr(x|\theta))^2]$$
 
 강화학습에서는 정보 $x$는 에피소드에 의해 관측된 상태값 $s$이며 매개변수 $\theta$에 의해 선택될 수 있는 행동에 대한 분포가 나오게 됩니다. 이에 의해 위의 FIM는 다음과 같이 표현될 수 있습니다.
 
-$F_s(\theta) \equiv E_{\pi(a;s,\theta)}[(\dfrac{\partial}{\partial\theta}log\pi(a;s,\theta))^2] =E_{pi(a;s,\theta)}[\dfrac{\partial log\pi(a;s,\theta)}{\partial \theta_i}\dfrac{\partial log\pi(a;s,\theta)}{\partial\theta_j}]$
+$$F_s(\theta) \equiv E_{\pi(a;s,\theta)}[(\dfrac{\partial}{\partial\theta}log\pi(a;s,\theta))^2] =E_{pi(a;s,\theta)}[\dfrac{\partial log\pi(a;s,\theta)}{\partial \theta_i}\dfrac{\partial log\pi(a;s,\theta)}{\partial\theta_j}]$$
 
 그리고 위의 정리된 식들을 이용하여 Objective function을 정리하면 아래의 식과 같이 표현됩니다.
 
-$F(\theta) = E_{\rho^{\pi}(s)}[F_s(\theta)]$
+$$F(\theta) = E_{\rho^{\pi}(s)}[F_s(\theta)]$$
 
 또한 이 Fisher Information Matrix에 정의된 이 metric은 다음과 같은 성질을 가지고 있습니다. 업데이트되는 파라미터에 의해 구성되는 Manifold(곡률을 가지는)에 기반한 metric입니다. 확률분포(본 논문에서는 $\pi(a;s,\theta)$)를 구성하는 파라미터($\theta$)의 변화에 독립적입니다. 어떠한 coordinate를 선택하느냐에 따라 변화하지 않습니다. 마지막으로 positive-definite한 값을 가집니다. 이렇기 때문에 steepest gradient에서 Objective function의 방향을 알기 위해 사용한 방법과 같은 방법으로 Natural gradient direction을 다음과 같이 구할 수 있습니다.
 
-$\widetilde{\bigtriangledown}\eta(\theta) \equiv F(\theta)^{-1}\bigtriangledown\eta(\theta)$
+$$\widetilde{\bigtriangledown}\eta(\theta) \equiv F(\theta)^{-1}\bigtriangledown\eta(\theta)$$
 
-3\. Natural Gradient와 Policy Iteration
+---
+# 3. Natural Gradient와 Policy Iteration
 
 3장에서는 Natural gradient를 통한 policy iteration을 수행하여 실제로 정책의 향상이 있는지를 증명합니다. 본 논문에서 $Q^\pi(s,a)$는 compatible function approximator $f^\pi(s,a;w)$에 의해 정의됩니다.
 
-3.1\. Compatible Function Approximation
+## 3.1 Compatible Function Approximation
 
 3.1절에서는 정책이 업데이트 될 때, value function approximator, $f^\pi(s,a;w)$도 같이 실제 값과 가까워지는지를 증명합니다.
 
@@ -97,7 +114,7 @@ $$
 
 수식을 따라 정리하면 정리가 됩니다.
 
-3.2\. Greedy Policy Improvement
+## 3.2 Greedy Policy Improvement
 
 3.2절에서는 natrual gradient는 다른 policy iteration 방법처럼 단지 현재보다만 좋은 방법을 선택하도록 업데이트하는 것이 아니라 현재보다 좋은 것 중에 가장 좋은 방법을 선택한다고 합니다. 이것을 특수한 정책을 가지는 상황안에서 학습속도($\alpha$)를 무한대로 가져감으로써 어떤 action을 선택하는지를 알아봅니다.
 
@@ -133,7 +150,7 @@ $$
 
 그러므로 $\pi_\infty=0$ 과 $a∉argmax_a\widetilde\bigtriangledownη(θ)Tϕsa′$은 필요충분조건이 됩니다. 이것은 npg가 단지 더 좋은 행동이 아니라 가장 좋은 행동을 취하는 것을 뜻합니다.
 
-3.3\. General Parameterized Policy
+## 3.3 General Parameterized Policy
 
 일반적인 정책에서 또한 npg는 가장 좋은 행동을 선택하는 쪽으로 학습합니다.
 
@@ -156,7 +173,7 @@ $$
 
 정책 자체가 function approximator의 크기대로 업데이트가 되기 때문에 지역적으로 가장 좋은 행동의 확률은 커지고 다른 확률은 작아질 것입니다. 하지만 탐욕적으로 향상을 하더라도 그게 성능자체를 향상시키지는 않을 수도 있습니다. 그렇기 때문에 line search기법과 함께 사용할 경우 성능 향상을 보장할 수 있습니다.
 
-4\. Metrics and Curvatures
+# 4. Metrics and Curvatures
 
 2절에서 설명하고 있는 Positive-Definite Matrix인 FIM이외의 다른 Matrix도 사용할 수 있습니다. 본 논문에서는 다음과 같이 설명하고 있습니다. 다양한 파라미터 추정에서 FIM은 Hessian Matrix에 수렴하지 않을 수 있다고 합니다. 이 말은 2nd order 수렴이 보장되지 않는다는 말입니다.  [Mackay](http://www.inference.org.uk/mackay/ica.pdf) 논문에서 hessian에서 data independant한 term을 metric으로 가져오는 방법을 제안했다. 그래서 performance를 2번 미분해보면 다음과 같다. 하지만 다음 식에서는 모든 항이 data dependent하다(Q가 있으니까). 첫 번째 항이 그나마 FIM과의 관련성이 있을 수 있지만 Q 값이 curvature에 weight를 주는 방식 때문에 다르다고 할 수 있다.
 
@@ -164,7 +181,7 @@ $\nabla^2\eta(\theta)=\sum_{sa}\rho^{\pi}(s)(\nabla^2\pi(a;s)Q^{\pi}(s,a)+\nabla
 
 Hessian Matrix는 무조건 Positive-Definite Matrix인 것이 아니기 때문에, 다라서 국부적 최대점이 될 때 까지 Hessian Matrix를 사용하는 것은 좋은 방법이 아니라고 설명하고 있습니다. 이를 극복하지 위해서 Conjugate methods가 효율적이라고 설명하고 있습니다. 
 
-5\. Experiment
+# 5. Experiment
 
 본 논문에서는 LQR, simple MDP, 그리고 tetris MDP에 대해서 실험을 진행했습니다. Practice에서는 FIM은 다음과 같은 식으로 업데이트합니다.
 
@@ -172,7 +189,7 @@ $f\leftarrow f+\nabla log \pi(a_t; s_t, \theta)\nabla log \pi(a_t; s_t, \theta)^
 
 T길이의 경로에 대해서 f/T를 이용해 F의 기대값($E$)를 구합니다.
 
-5.1\. LQR(Linear Quadratic Regulator)
+## 5.1 LQR(Linear Quadratic Regulator)
 
 Agent를 실험할 환경은 다음과 같은 dynamics를 가지고 있습니다.
 
@@ -196,7 +213,7 @@ $\pi(u;x,\theta)\propto exp(\theta_1s_1x^2+\theta_2s_2x)$
 
 natural gradient가 covariant하지 않은 이유는 Fisher Information Matrix가 예상했던 바와는 달리 invariant metric이 아니기 때문이다. 또한 FIM이 invariant metric이 아닌 이유는 FIM을 계산할 때 $\rho_s$가 곱해지기 때문이다(state distribution에 대한 expectation. $\rho_s$가 곱해지는 것이 invariant에 미치는 영향이 무엇인지는 모르겠다). 하지만 여전히 의의가 있는 것은 기존 gradient 방법들보다 훨씬 빠르게 학습한다는 것이다.
 
-5.2\. Simple 2-state MDP
+## 5.2 Simple 2-state MDP
 
 이제 다른 예제에서 NPG를 테스트한다. 2개의 state만 가지는 MDP를 고려해보자. [그림출처](http://repository.cmu.edu/cgi/viewcontent.cgi?article=1080&context=robotics). 그림으로보면 다음과 같다. x=0 상태와 x=1 상태 두 개가 존재한다. 에이전트는 각 상태에서 다시 자신의 상태로 되돌아오는 행동을 하거나 다른 상태로 가는 행동을 할 수 있다. 상태 x=0에서 다시 자기 자신으로 돌아오면 1의 보상을 받고 상태 x=1에서 자기 자신으로 돌아오면 2의 보상을 받는다. 따라서 결국 optimal policy는 상태 x=1에서 계속 자기 자신으로 돌아오는 행동을 취하는 것이다. 
 
@@ -222,7 +239,7 @@ policy가 $\pi(a;s,\theta)\propto exp(\theta_{sa})$일 때, 다음과 같이 $F_
 
 $$\bar{\nabla}\eta(\theta) = F^{-1}\nabla\eta(\theta)$$
 
-5.3\. Tetris
+## 5.3 Tetris
 
 NPG를 테스트할 tetris 예제는 Neuro Dynamic Programming 책에 소개되어있다. 다음 그림은 tetris 예제를 보여준다. 보통 그림에서와 같이 state의 feature를 정해준다. [그림 출처](http://slideplayer.com/slide/5215520/)
 
@@ -234,7 +251,7 @@ tetris는 linear function approximator와 greedy policy iteration을 사용할 �
 
 <img src="https://www.dropbox.com/s/pr6s2qrqaic0wyj/Screenshot%202018-06-08%2023.40.16.png?dl=1">
 
-6\. Discussion
+# 6. Discussion
 
 Natural Gradient Method는  Policy Iteration에서와 같이 Greedy Action을 선택하도록 학습합니다. Line search 기법과 함께 사용하면 더 Policy Iteration과 비슷해집니다. Greedy Policy Iteration에서와 비교하면 Performance Improvement가 보장됩니다. 하지만 FIM이 asymtotically Hessian으로 수렴하지 않습니다. 그렇기 때문에 Conjugate Gradient Method로 구하는 방법이 더 좋을수 있습니다.
 

@@ -1,6 +1,21 @@
-Proximal Policy Optimization
+---
+title: Proximal Policy Optimization
+date: 2018-07-12 16:53:12
+tags: ["프로젝트", "피지여행"]
+categories: 프로젝트
+author: 장수영, 차금강
+subtitle: 피지여행 6번째 논문
+---
 
-1\. 왜 Proximal Policy Optimization(이하 PPO)인가?
+<center> <img src="https://www.dropbox.com/s/145van5kldfvvd5/Screen%20Shot%202018-07-18%20at%201.19.30%20AM.png?dl=1" width="700"> </center>
+
+논문 저자 : John Schulman, Filip Wolski, Prafulla Dhariwal, Alec Radford, Oleg Klimov
+논문 링크 : https://arxiv.org/pdf/1707.06347.pdf
+Proceeding : ??
+정리 : 장수영, 차금강
+
+---
+# 1. 왜 Proximal Policy Optimization(이하 PPO)인가?
 
 이전의 Trust Region Policy Optimization(이하 TRPO)의 핵심적인 부분을 살펴보자면 다음과 같습니다.
 $$

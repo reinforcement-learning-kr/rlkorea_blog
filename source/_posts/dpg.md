@@ -3,37 +3,19 @@ title: Deterministic Policy Gradient Algorithms
 date: 2018-06-16 17:21:48
 tags: ["프로젝트", "피지여행"]
 categories: 프로젝트
-author: 이웅원
+author: 장수영, 공민서
 subtitle: 피지여행 2번째 논문
 ---
 
-Authors: David Silver<sup>1)</sup>, Guy Lever<sup>2)</sup>, Nicloas Heess<sup>1)</sup>, Thomas Degris<sup>1)</sup>, Daan Wierstra<sup>1)</sup>, Martin Riedmiller<sup>1)</sup>
-Affiliation: 1) Google Deepmind, 2) University College London (UCL)
-Proceeding: International Conference on Machine Learning (ICML) 2014
+<center> <img src="https://www.dropbox.com/s/etwa3hn5c0pegdv/Screen%20Shot%202018-07-18%20at%2012.51.35%20AM.png?dl=1" width="800"> </center>
 
-* [Deterministic Policy Gradient Algorithms](#deterministic-policy-gradient-algorithms)
-	* [Summary](#summary)
-	* [Background](#background)
-		* [Performance objective function](#performance-objective-function)
-		* [SPG Theorem](#spg-theorem)
-		* [Stochastic Actor-Critic Algorithms](#stochastic-actor-critic-algorithms)
-		* [Off-policy Actor-Critic](#off-policy-actor-critic)
-	* [Gradient of Deterministic Policies](#gradient-of-deterministic-policies)
-		* [Regulariy Conditions](#regulariy-conditions)
-		* [Deterministic Policy Gradient Theorem](#deterministic-policy-gradient-theorem)
-		* [DPG 형태에 대한 informal intuition](#dpg-형태에-대한-informal-intuition)
-		* [DPG 는 SPG 의 limiting case 임](#dpg-는-spg-의-limiting-case-임)
-	* [Deterministic Actor-Critic Algorithms](#deterministic-actor-critic-algorithms)
-	* [Experiments](#experiments)
-		* [Continuous Bandit](#continuous-bandit)
-		* [Continuous Reinforcement Learning](#continuous-reinforcement-learning)
-		* [Octopus Arm](#octopus-arm)
-
-<!-- /code_chunk_output -->
-
-<br>
+논문 저자 : David Silver, Guy Lever, Nicloas Heess, Thomas Degris, Daan Wierstra, Martin Riedmiller
+논문 링크 : http://proceedings.mlr.press/v32/silver14.pdf
+Proceeding : International Conference on Machine Learning (ICML) 2014
+정리 : 장수영, 공민서
 
 ---
+
 ## 1. Summary
 - Deterministic Policy Gradient (DPG) Theorem 제안함 [[Theorem 1](#deterministic-policy-gradient-theorem)]
     1) DPG는 존재하며,
