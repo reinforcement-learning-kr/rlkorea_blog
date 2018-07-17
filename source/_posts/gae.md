@@ -3,13 +3,19 @@ title: High-Dimensional Continuous Control using Generalized Advantage Estimatio
 date: 2018-07-11 19:18:45
 tags: ["프로젝트", "피지여행"]
 categories: 프로젝트
-author: 이동민, 양혁렬
+author: 양혁렬, 이동민
 subtitle: 피지여행 7번째 논문
 ---
 
-# High-Dimensional Continuous Control using Generalized Advantage Estimation
+<center> <img src="https://www.dropbox.com/s/p8gfpyo6xf9wm5w/Screen%20Shot%202018-07-18%20at%201.25.53%20AM.png?dl=1" width="700"> </center>
 
-## 1. Abstract
+논문 저자 : John Schulman, Philipp Moritz, Sergey Levine, Michael I. Jordan and Pieter Abbeel
+논문 링크 : https://arxiv.org/pdf/1506.02438.pdf
+Proceeding : ??
+정리 : 양혁렬, 이동민
+
+---
+# 1. Abstract
 현존하는 Policy Gradient Method들의 목적은 누적되는 reward들을 optimization하는 것입니다. 하지만 학습할 때에 많은 양의 sample이 필요로 하고, 들어오는 data가 nonstationarity임에도 불구하고 stable and steady improvement가 어렵습니다.
 
 그래서 이 논문에서는 다음과 같은 방법을 제시합니다.
@@ -20,7 +26,8 @@ subtitle: 피지여행 7번째 논문
 - bipedal and quadrupedal simulated robots의 달리는 자세를 학습
 - bipedal 사람이 땅에 누워있다가 일어서는 것을 학습
 
-## 2. Introduction
+---
+# 2. Introduction
 기본적으로 "parameterized stochastic policy"를 가정합니다. 이 때 expected total returns의 gradient에 대한 unbiased estimate를 얻을 수 있는데 이것을 REINFORCE라고 부릅니다. 하지만 하나의 action의 결과가 과거와 미래의 action의 결과로 혼동되기 때문에 gradient estimator의 high variance는 시간에 따라 scaling됩니다.
 
 또 다른 방법은 Actor-Critic이 있습니다. 이 방법은 empirical returns보다 하나의 value function을 사용합니다. 또한 bias하고 lower variance를 가진 estimator입니다. 구체적으로 말하자면, high variance하다면 더 sampling을 하면 되는 반면에 bias는 매우 치명적입니다. 다시 말해 bias는 algorithm이 converge하는 데에 실패하거나 또는 local optimum이 아닌 poor solution에 converge하도록 만듭니다.
@@ -32,7 +39,8 @@ subtitle: 피지여행 7번째 논문
 - value function에 대해 trust region optimization method를 사용합니다. 이렇게 함으로서 더 robust하고 efficient한 방법이 됩니다.
 - A와 B를 합쳐서, 실험적으로 control task에 neural network policies를 learning하는 데에 있어서 효과적인 algorithm을 얻습니다. 이러한 결과는 high-demensional continuous control에 RL을 사용함으로서 state of the art로 확장되었습니다.
 
-## 3. Preliminaries
+---
+# 3. Preliminaries
 먼저 policy optimization의 "undiscounted formulation"을 가정합니다. (undiscounted formulation에 주목합시다.)
 
 - initial state $s_0$는 distribution $\rho_0$으로부터 sampling된 것입니다.
@@ -128,7 +136,8 @@ $$\hat{A}_{s_{0:\infty}, a_{0:\infty}} = Q_t (s_{0:\infty}, a_{0:\infty}) - b_t 
     - 빨간색 부분
         - $\mathbb{E}_{s_{t+1:\infty}, a_{t+1:\infty}} [\nabla_\theta \log \pi_\theta (a_t | s_t)]$가 0으로 바뀌는 것은 위에서 설명했듯이 $\nabla_\theta$자체가 $\log \pi_\theta$만 gradient하기 때문에 이것을 expectation을 취하면 0이 됩니다.
 
-## 4. Advantage Function Estimation
+---
+# 4. Advantage Function Estimation
 이번 section에는 discounted advantage function $A^{\pi, \gamma} (s_t, a_t)$의 accurate estimate $\hat{A}_t$에 대해서 살펴봅시다. 이에 따른 수식은 다음과 같습니다.
 
 $$\hat{g} = \frac{1}{N} \sum_{n=1}^N \sum_{t=0}^\infty \hat{A}_t^n \nabla_{\theta} \log \pi_{\theta}(a_t^n | s_t^n)$$
@@ -177,7 +186,8 @@ GAE를 사용할 때, $g^\gamma$의 biased estimator를 구성할 수 있습니�
 $$g^\gamma \approx \mathbb{E} [\sum_{t=0}^\infty] \nabla_\theta \log \pi_\theta (a_t | s_t) \hat{A}_t^{GAE(\gamma, \lambda)}] = \mathbb{E} [\sum_{t=0}^{\infty} \nabla_\theta \log \pi_\theta (a_t | s_t) \sum_{l=0}^\infty (\gamma \lambda)^l \delta_{t+1}^V]$$
 여기서 $\lambda = 1$일 때 동일해집니다.
 
-## 5. Interpretation as Reward Shaping
+---
+# 5. Interpretation as Reward Shaping
 이번 section에서는 앞서 다뤘던 수식 $\sum_{l=0}^\infty (\gamma \lambda)^l \delta_{t+l}^V$를 modified reward function의 MDP의 관점으로 생각해봅시다. 조금 더 구체적으로 말하자면, MDP에서 reward shaping transformation을 실행한 후에 적용된 extra discounted factor로서 $\lambda$를 어떻게 볼 것인지에 대해서 다룹니다. 
 
 (개인적인 comment) 한 가지 먼저 언급하자면, 본래의 목적은 reward shaping이 아니라 variance reduction입니다. 이번 section은 그저 이전에 이러한 개념이 있었고, gae를 다른 관점에서 생각해보자라는 뜻에서 나온 section인 것 같습니다. '아~ 이러한 개념이 있구나~!' 정도로만 알면 될 것 같습니다. 'gae가 reward shaping의 효과까지 있어서 이러한 section을 넣은 것일까?' 라는 생각도 해봤지만 아직 잘 모르겠습니다. 실험부분에도 딱히 하지 않은 걸로 봐서는.. 아닌 것 같기도 하고.. 아직까지는 그저 'reward shaping의 관점에서 봤을 때에도 gae로 만들어줄 수 있다.' 정도만 생각하려고 합니다.
@@ -227,16 +237,17 @@ $$\chi (l; s_t, a_t) = \mathbb{E} [r_{t+l} | s_t, a_t] - \mathbb{E} [r_{t+l} | s
 그래서 discounted policy gradient estimator는 다음과 같이 쓸 수 있다.
 $$\nabla_\theta \log \pi_\theta (a_t | s_t) A^{\pi, \gamma} (s_t, a_t) = \nabla_\theta \log \pi_\theta (a_t | s_t) \sum_{l=0}^\infty \gamma^l \chi (l; s, a)$$
 
-## 6. Value Fuction Estimation
+---
+# 6. Value Fuction Estimation
 이번 section에서는 Trust Region Optimization Scheme에 따라 Value function을 Estimation합니다.
 - 
-### 6.1 Simplest approach
+## 6.1 Simplest approach
 $ minimize_{\phi} \sum_{n=1}^{N} \vert\vert V_{\phi}(s_n) - \hat{V_n} \vert\vert^{2} $$
 
 - 위는 가장 간단하게 non-linear approximation 으로 푸는 방법입니다. 
 - $\hat{V_t} = \sum_{l=0}^{\infty}\gamma^l r_{t+l}$ 은 reward 에 대한 discounted sum 을 의미합니다. 
 
-### 6.2 Trust region method to optimize the value function
+## 6.2 Trust region method to optimize the value function
 
 - Value function 을 최적화 하기 위해 trust region method 를 사용합니다. 
 - Trust region 은 최근 데이터에 대해 overfitting 되는 것을 막아줍니다. 
@@ -260,14 +271,15 @@ $$subject \, \, to \, \frac{1}{N} \sum_{n=1}^N (\phi - \phi_{old})^T H(\phi - \p
 - $j_n = \nabla_{\phi} V_{\phi}(s_n)$ 일때, $H = \frac{1}{N} \sum_{n} j_n j^T_n$ 이며, $H$는 objective의 hessian에 대해서 gaussian newton method 로 근사한 값입니다. 따라서, value function 을 conditional probability로 해석한다면 Fisher information matrix가 됩니다. 
 - 구현할때의 방법은 TRPO 에서 사용한 방법과 모두 같습니다. 
 
-## 7.Experiments
+---
+# 7.Experiments
 
 실험은 다음 두 가지 물음에 대해서 디자인 되었습니다.
 
 - GAE 에 따라서 episodic total reward 를 최적화 할때, $\lambda$와 $\gamma$ 가 변함에 따라서 어떤 경험적인 효과를 볼 수 있는지 ?
 - GAE 와 trust region alogorithm 을 policy 와 value function 모두에 함께 사용했을 때 어려운 문제에 적용되는 큰 뉴럴넷을 최적화 할 수 있을까 ?
 
-### 6.1 Policy Optimization Algorithm
+## 7.1 Policy Optimization Algorithm
 
 Policy update는 TRPO 를 사용합니다. TRPO 에 대한 설명은 여기서는 생략하겠습니다. TRPO 포스트를 보고 돌아와주세요 !
 
@@ -284,9 +296,9 @@ Policy update는 TRPO 를 사용합니다. TRPO 에 대한 설명은 여기서�
 - 극단적으로 생각해보아서, 우리가 Value function을 완벽하게 overfit 해낸다면 Bellman residual ($r_t + \gamma V(s_{t+1}) - V(S_t)$)은 0이 됩니다. 그럼 Policy gradient의 estimation도 거의 0이 될 것입니다. 
 
     
-### 7.2 Expermint details
+## 7.2 Expermint details
 
-#### 7.2.1 Environment 
+### 7.2.1 Environment 
 실험에서 사용된 환경은 다음 네 가지 입니다. 
 
 1. classic cart-pole (x 3D)
@@ -294,14 +306,14 @@ Policy update는 TRPO 를 사용합니다. TRPO 에 대한 설명은 여기서�
 3. quadrupedal locomotion 
 4. dynamically standing up for the biped
 
-#### 7.2.2 Architecture
+### 7.2.2 Architecture
 
 - 3D robot task에 대해서는 같은 모델을 사용하였습니다. 
     - layers  = [100, 50, 25] 각각 tanh 사용.(Policy와 Value 네트워크 모두)
     - Final output layer은 linear
 - Cartpole 에 대해서는 1개의 layer 안에 20개의 hidden unit 만 있는 linear policy를 사용했다고 합니다. 
 
-#### 7.2.3 Task
+### 7.2.3 Task
 
 - Cartpole
     - 한 배치당 20 개의 trajectory 를 모았고, maximum length 는 1000 입니다. 
@@ -316,17 +328,17 @@ Policy update는 TRPO 를 사용합니다. TRPO 에 대한 설명은 여기서�
     - 200000 time step per batch 
 
 
-#### 7.2.3 results
+### 7.2.3 results
 cost 의 관점에서 결과를 나타내었다고 합니다. Cost 는 negative reward와 이것이 최소화 되었는가로 정의되었다고 하는데, 정확히는 안나와있습니다. 
 
-##### 7.2.3.1 Cartpole
+#### 7.2.3.1 Cartpole
 
 <center> <img width = "500px" src="https://www.dropbox.com/s/x9pbms1wvg38lda/Screenshot%202018-07-08%2011.08.22.png?dl=1"> </center>
 
 - 왼쪽 그림은 $\gamma$ 를 0.99로 고정시켜놓은 상태에서 $\lambda$ 를 변화시킴에 따라서 cost 를 측정한 것입니다. 
 - 오른쪽은 $\gamma$ 와 $\lambda$ 를 둘 다 변화 시키면서 performance 를 그림으로 나타낸 표입니다. 흰색에 가까울 수록 좋은 퍼포먼스입니다. 
 
-##### 7.2.3.2 3D BIPEDAL LOCOMOTINO
+#### 7.2.3.2 3D BIPEDAL LOCOMOTINO
 <center> <img width = "500px" src="https://www.dropbox.com/s/i9wj4p6ijojsy82/Screenshot%202018-07-08%2011.25.08.png?dl=1"> </center>
 
 
@@ -335,17 +347,17 @@ cost 의 관점에서 결과를 나타내었다고 합니다. Cost 는 negative 
 - 1000 iteration 후에 빠르고 부드럽고 안정적인 걸음거이가 나옵니다.
 - 실제로 걸린 시간은 0.01(타입스텝당 시간) * 50000(배치당 타임스텝) * 1000(배치) * 3600(초->시간) * 24 = 5.8일 정도가 걸렸습니다.
 
-##### 7.2.3.3 다른 ROBOT TASKS
+#### 7.2.3.3 다른 ROBOT TASKS
 <center> <img width = "500px" src="https://www.dropbox.com/s/fuuat65we52quht/Screenshot%202018-07-08%2011.33.11.png?dl=1"> </center>
 
 - 다른 로봇 TASK에 대해서는 아주 제한적인 실험만 진행합니다.(시간이 부족했던듯)
 - Quadruped 에 대해서는 $\gamma$ =0.995  로 fix, $\lambda \in ${0, 0.96}
 - Standingup 에 대해서는 $\gamma$ =0.99  로 fix, $\lambda \in ${0, 0.96}
 
+---
+# 8. Discussion
 
-## 8. Discussion
-
-### 8.1 Main discussion
+## 8.1 Main discussion
 지금까지 복잡하고 어려운 control problem에서 Reinforcement Learning(RL)은 high sample complexity 때문에 제한이 되어왔습니다. 따라서 이 논문에서 그 제한을 풀고자 advantage function의 good estimate를 얻는 "variance reduction"에 대해 연구하였습니다.
 
 "Generalized Advantage Estimator(GAE)"라는 것을 제안했고, 이것은 bias-variance tradeoff를 조절하는 두 개의 parameter $\gamma,\lambda$를 가집니다.
@@ -355,7 +367,7 @@ cost 의 관점에서 결과를 나타내었다고 합니다. Cost 는 negative 
 
 GAE의 실험적인 입증으로는 robotic locomotion을 simulation하는 domain입니다. 실험에서도 보여준 것처럼 [0.9, 0.99]의 범위에서 $\lambda$의 적절한 중간의 값을 통해 best performance를 얻습니다. 좀 더 나아가 연구되어야할 점은 adaptive or automatic하도록 estimator parameter $\gamma,\lambda$를 조절하는 방법입니다.
 
-### 8.2 Future work
+## 8.2 Future work
 
 Value function estimation error 와 Policy gradient estimation error 사이의 관계를 알아낸다면, 우리는 Value function fitting 에 더 잘 맞는 error metric 을 사용할 수 있습니다. (policy gradient estimation 의 정확성과 더 잘 맞는 value function)
 
@@ -365,7 +377,7 @@ DDPG는 별로입니다. TD(0) 는 bias 가 너무 크고, poor performance 로 
 
 <center> <img width = "500px" src="https://www.dropbox.com/s/nhc7t9psul5lr3x/Screenshot%202018-07-08%2011.45.15.png?dl=1"> </center>
 
-### 8.3 FAQ 
+## 8.3 FAQ 
 
 - Compatible features 와는 무슨 관계 ?
      - Compatible features 는 value function을 이용하는 policy gradient 알고리즘들과 함께 자주 언급됩니다.

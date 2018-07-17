@@ -1,5 +1,5 @@
 ---
-title: pg-travel-guide
+title: PG Travel Guide
 date: 2018-07-11 05:34:26
 tags: ["프로젝트", "피지여행"]
 categories: 프로젝트

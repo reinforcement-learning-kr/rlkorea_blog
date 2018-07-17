@@ -6,15 +6,15 @@ categories: 프로젝트
 author: 양혁렬
 subtitle: 피지여행 3번째 논문
 ---
-<br>
-<br>
-# Deep Determinstic Policy Gradient(DDPG)
-<img src="https://www.dropbox.com/s/zv8rk0uf87ipiaj/Screenshot%202018-06-23%2010.01.48.png?dl=1">
 
-- [논문 링크]("https://arxiv.org/abs/1509.02971")
-- Deterministic Policy Gradient(DPG)를 기반으로 Deep Neural Network 를 사용해 continuous control 문제를 풀어낸 논문입니다.
+<center > <img src="https://www.dropbox.com/s/zv8rk0uf87ipiaj/Screenshot%202018-06-23%2010.01.48.png?dl=1" width="600"> </center>
 
-<br>
+논문 저자 : Timothy P. Lillicrap, Jonathan J. Hunt, Alexander Pritzel, Nicolas Heess, Tom Erez, Yuval Tassa, David Silver & Daan Wierstra
+논문 링크 : https://arxiv.org/pdf/1509.02971.pdf
+Proceeding : ??
+정리 : 양혁렬
+
+---
 ## 1.Introduction
 DDPG 알고리즘에 대한 개요입니다.
 ### 1.1 Success & Limination of DQN  
