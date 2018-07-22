@@ -1,6 +1,6 @@
 ---
 title: Proximal Policy Optimization
-date: 2018-07-12 16:53:12
+date: 2018-06-12 16:53:12
 tags: ["프로젝트", "피지여행"]
 categories: 프로젝트
 author: 장수영, 차금강
@@ -15,12 +15,14 @@ Proceeding : ??
 정리 : 장수영, 차금강
 
 ---
-# 1. 왜 Proximal Policy Optimization(이하 PPO)인가?
+# 1. 왜 Proximal Policy Optimization(PPO)인가?
 
-이전의 Trust Region Policy Optimization(이하 TRPO)의 핵심적인 부분을 살펴보자면 다음과 같습니다.
-$$
-maximize_\theta \hat{E}_t [\dfrac{\pi_\theta(a_t|s_t)}{\pi_{\theta old}(a_t|s_t)}\hat{A}_t]-\hat{E}_t[D_{KL}(\pi_{\theta old}(*|s)||\pi_\theta(*|s))]
-$$
+이전의 Trust Region Policy Optimization(TRPO)의 핵심적인 부분을 살펴보자면 다음과 같습니다.
+
+$$maximize_\theta \hat{E}_t [\frac{\pi_\theta(a_t|s_t)} \hat{A}_t ]-\hat{E}_t [D_{KL}(\pi_{\theta old}(*|s) || \pi_{\theta(*|s)})]$$
+
+$$maximize_\theta \hat{E}_t [\frac{\pi_\theta(a_t|s_t)}{\pi_{\theta old}(a_t|s_t)} \hat{A}_t ]-\hat{E}_t [D_{KL}(\pi_{\theta old}(*|s)||\pi_{\theta(*|s)})]$$
+
 위의 식을 살펴보면 KL-Divergence를 구하는 과정에서 굉장한 연산량이 필요합니다.
 $$
 D_{KL}(\pi_{\theta old}(*|s)||\pi_\theta(*|s)) = -\int{\pi_{\theta old}(*|s)ln\pi_\theta(*|s)}+\int{\pi_\theta(*|s)ln\pi_{\theta old}(*|s)}
@@ -29,7 +31,7 @@ $$
 
 PPO 논문에서는 TRPO에서 제시한 surrogate function을 두 가지로 나누어서 접근하며 이를 서로, 그리고 TRPO와 비교 분석하고 있습니다. 본 논문에서 제시하고 있는 방법 두 가지 중 첫번째는 surrogate function을 매우 작은 값으로 clipping함으로써 gradient 자체를 강제적으로 적게 만들어주는 방법이며 두번째는 TRPO의 KL-Divergence의 크기에 따라 Adaptive한 파라미터를 적용하는 방법입니다.
 
-2\. Clipped Surrogate Objective
+# 2. Clipped Surrogate Objective
 
 2장에서는 TRPO의 surrogate obejctive function을 강제적으로 clipping해버리는 방법을 제시하고 있습니다. 기존의 TRPO의 surrogate function을 다음과 같이 표현합니다. $r_t(\theta)=\dfrac{\pi_\theta(a_t|s_t)}{\pi_{\theta old}(a_t|s_t)}, r_t(\theta old) = 1$
 
@@ -43,7 +45,7 @@ L^{CLIP}(\theta) = \hat{E}_t [min(r_t(\theta)\hat{A}_t, clip(r_t(\theta), 1-\eps
 $$
 이를 논문에서는 두 가지의 그래프($\hat{A}_t$의 부호에 따라)로 설명하고 있습니다.  $\hat{A}_t$가 양수일 때는 Advantage가 현재보다 높다라는 뜻이며 파라미터를 +의 방향으로 업데이트 하여야 합니다. $\hat{A}_t$가 음수일 때는 Advantage가 현재보다 좋지 않다라는 뜻이며 그의 반대 방향으로 업데이트 하여야 합니다. $r_t(\theta)$은 확률을 뜻하는 두개의 함수를 분자 분모로 가지고 있으며 분수로 구성되어 있기 때문에 무조건 양수로 이루어져 있으며 Advantage function인 $\hat{A}_t$와 곱해져 Objective function인 $L^{CLIP}$은 Advantage function과 방향이 같아집니다.
 
-3\. Adaptive KL Penalty Coefficient
+# 3. Adaptive KL Penalty Coefficient
 
 2절에서 설명한 Clipped Surrogate Objective 방법과 달리 기존의 TRPO의 방법에 Adaptive한 파라미터를 적용한 방법 또한 제시하고 설명하고 있습니다.
 
@@ -59,7 +61,7 @@ $ d>d_{targ}, \beta \xleftarrow{}\beta\times2$
 
 $\beta$를 조절하는 방법을 해석하자면 다음과 같습니다. 만약 $\theta old$와 $\theta$간의 파라미터 차이가 크다면 penalty를 강하게 부여해 적은 변화를 야기하며, 파라미터 차이가 적다면 penalty를 완화시켜 주어 더 큰 변화를 야기하는 것을 위의 수식으로 표현할 수 있습니다.
 
-4\. Algorithm
+# 4. Algorithm
 
 2절, 3절의 내용을 보면 policy만을 어떻게 업데이트 하는지에 대해 설명하고 있습니다. 4절에서는 다른 알고리즘과 같이 value, entropy-exploration과 합쳐 어떻게 통합적으로 업데이트 하는지에 대해 설명하고 있습니다.
 
@@ -73,9 +75,9 @@ L^{PPO+VF+S}(\theta) = \hat{E}_t[L^{PPO}(\theta)-c_1L^{VF}(\theta)+c_2S[\pi_\the
 $$
 위의 Objective function을 최대화하면 Reinforcement Learning을 통한 policy 학습, state-value function의 학습, exploration을 할 수 있습니다.
 
-5\. Experimnet
+# 5. Experimnet
 
-5.1\. Surrogate Objectives의 비교
+# 5.1 Surrogate Objectives의 비교
 
 5.1절에서는 3가지 Surrogate Objectives를 비교분석 하고 있습니다.
 
@@ -103,17 +105,17 @@ $$
 
 위의 표는 실험 결과입니다. 세 가지 Surrogate Objective에 대해 각 파라미터들을 테이블에 표기된 방식대로 변화하며 실험하였습니다. 
 
-5.2\. Comparison to other Algorithms in the Continuous Domain
+# 5.2 Comparison to other Algorithms in the Continuous Domain
 
 5.2절에서는 Clipping 버전의 PPO와 다른 알고리즘들 간의 비교를 연속적인 Action을 가지는 환경에서 실험을 한 결과를 보여주고 있습니다. 다른 알고리즘은 TRPO, cross-entropy method, vanilla policy gradient with adaptive stepsize, A2C, A2C with trust region를 사용하였습니다. 환경과 사용한 네트워크의 구성은 5.1절에서 사용한 것과 동일합니다.
 
 여타 다른 알고리즘보다 좋은 성능을 보이는 것을 알 수 있습니다.
 
-5.3\. Showcase in the Continuous Domain: Humanoid Running and Steering
+# 5.3 Showcase in the Continuous Domain: Humanoid Running and Steering
 
 5.3절에서는 Humanoid-v0, HumanoidFlagrun-v0, HumanoidFlagrunHarder-v0의 환경에서 Roboschool엔진을 사용하여 실험하였습니다. Humanoid-v0는 단순히 앞으로 걸어나가는 환경, HumanoidFlagrun-v0은 200스텝마다 혹은 목적지에 도착할 때 마다 위치가 바뀌는 목적지에 걸어서 도달하는 환경입니다. HumanoidFlagrunHarder-v0 환경은 환경이 초기화될 때 마다 특정 경계안에 Humanoid가 위치하게 되며 특정 영역 밖으로 걸어나가는 것을 수행하는 환경입니다.
 
-5.4\. Comparison to Other Algorithms on the Atari Domain
+# 5.4 Comparison to Other Algorithms on the Atari Domain
 
 5.4절에서는 Atari Domain에서 PPO, A2C, ACER(Actor Critic with Experience Replay)의 3가지 알고리즘을 비교합니다.
 
@@ -124,6 +126,6 @@ $$
 
 모든 학습하는 도중에는 PPO가 ACER보다 좋은 성능을 나타내지만 마지막 100 에피소드만을 비교했을 때는 PPO보다 ACER이 더 좋은 성능을 나타냅니다. 이는 PPO가 더 빨리 최종 능력에 도달하지만 ACER이 가진 잠재력이 더 높다는 것을 나타냅니다.
 
-6\. Conclusion
+# 6. Conclusion
 
 본 논문에서는 TRPO를 컴퓨터 친화적?으로 알고리즘을 수정하고 다른 알고리즘들과의 성능비교를 통해 PPO가 좋다라는 것을 보여주고 있습니다.

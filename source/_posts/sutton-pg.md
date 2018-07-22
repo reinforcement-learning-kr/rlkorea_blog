@@ -1,6 +1,6 @@
 ---
 title: Policy Gradient Methods for Reinforcement Learning with Function Approximation
-date: 2018-07-10 14:18:32
+date: 2018-06-28 14:18:32
 tags: ["프로젝트", "피지여행"]
 categories: 프로젝트
 author: 김동민, 이동민

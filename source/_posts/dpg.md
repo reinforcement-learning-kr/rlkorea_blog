@@ -1,6 +1,6 @@
 ---
 title: Deterministic Policy Gradient Algorithms
-date: 2018-06-16 17:21:48
+date: 2018-06-27 17:21:48
 tags: ["프로젝트", "피지여행"]
 categories: 프로젝트
 author: 장수영, 공민서
