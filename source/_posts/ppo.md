@@ -1,6 +1,6 @@
 ---
 title: Proximal Policy Optimization
-date: 2018-06-12 16:53:12
+date: 2018-06-22 16:53:12
 tags: ["프로젝트", "피지여행"]
 categories: 프로젝트
 author: 장수영, 차금강
