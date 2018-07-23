@@ -17,7 +17,7 @@ Proceeding : International Conference on Machine Learning (ICML) 2014
 ---
 
 ## 1. Summary
-- Deterministic Policy Gradient (DPG) Theorem 제안함 [[Theorem 1](#deterministic-policy-gradient-theorem)]
+- Deterministic Policy Gradient (DPG) Theorem 제안g합니다 [[Theorem 1](#deterministic-policy-gradient-theorem)]
     1) DPG는 존재하며,
     2) DPG는 Expected gradient of the action-value function의 형태를 띈다.
 - Policy variance가 0에 수렴할 경우, DPG는 Stochastic Policy Gradient(SPG)와 동일해짐을 보임 [[Theorem 2](#dpg-는-spg-의-limiting-case-임)]
@@ -67,7 +67,7 @@ $$
 - off-policy policy gradient
     - $ \begin{eqnarray}
         \nabla_{\theta}J_{\beta}(\pi_{\theta}) &\approx& \int_{S}\int_{A}\rho^{\beta}(s)\nabla_{\theta}\pi_{\theta}(a|s)Q^{\pi}(s,a)dads \nonumber \end{eqnarray} $
-      $=E_{s \sim \rho^{\beta}, a \sim \beta}[\frac{\pi_{\theta}(a|s)}{\beta_{\theta}(a|s)}\nabla_{\theta}log\pi_{\theta}(a|s)Q^{\pi}(s,a)]$
+        $=E_{s \sim \rho^{\beta}, a \sim \beta}[\frac{\pi_{\theta}(a|s)}{\beta_{\theta}(a|s)}\nabla_{\theta}log\pi_{\theta}(a|s)Q^{\pi}(s,a)]$
     - off-policy policy gradient 식에서의 물결 표시는 [Degris, 2012b] 논문에 근거함
         - [Degris, 2012b] "Linear off-policy actor-critic," ICML 2012
         - Exact off-policy policy gradient 와 이를 approximate 한 policy gradient 는 아래와 같음. (빨간색 상자에 있는 항목을 삭제함으로써 근사함)
@@ -155,7 +155,7 @@ $$
         - 기존 유명한 policy gradients 기법들에 deterministic policy gradients 를 적용할 수 있음
             - 기존 기법들 예: compatible function approximation (Sutton, 1999), natural gradients (Kakade, 2001), actor-critic (Bhatnagar, 2007) or episodic/batch methods (Peters, 2005)
 <br>
- 
+
 ---
 ## 4. Deterministic Actor-Critic Algorithms
 1. 살사 critic 을 이용한 on-policy actor-critic
