@@ -1,6 +1,6 @@
 ---
 title: Natural Policy Gradient
-date: 2018-07-16 11:36:45
+date: 2018-06-24 11:36:45
 tags: ["프로젝트", "피지여행"]
 categories: 프로젝트
 author: 이웅원, 차금강

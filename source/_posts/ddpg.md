@@ -1,6 +1,6 @@
 ---
 title: Deep Determinstic Policy Gradient (DDPG)
-date: 2018-06-23 11:20:45
+date: 2018-06-26 11:20:45
 tags: ["프로젝트", "피지여행"]
 categories: 프로젝트
 author: 양혁렬

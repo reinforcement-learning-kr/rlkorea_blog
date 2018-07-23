@@ -1,6 +1,6 @@
 ---
 title: Trust Region Policy Optimization
-date: 2018-07-12 16:53:12
+date: 2018-06-23 16:53:12
 tags: ["프로젝트", "피지여행"]
 categories: 프로젝트
 author: 공민서, 김동민
@@ -21,7 +21,7 @@ Trust region policy optimization (TRPO)는 상당히 우수한 성능을 보여�
 
 ※TRPO를 매우 재밌게 설명한 Crazymuse AI의 [Youtube video](https://www.youtube.com/watch?v=CKaN5PgkSBc&t=90s)에서 일부 그림을 차용했습니다. 이 비디오를 시청하시는 것을 강력하게 추천합니다!
 
-<br><br>
+<br>
 ## 1.1. TRPO 흐름 잡기
 
 TRPO 논문은 많은 수식이 등장하여 이 수식들을 따라가다보면 큰 그림을 놓칠 수도 있습니다. 세부적인 내용을 살펴보기 전에 기존 연구에서 출발해서 TRPO로 어떻게 발전해나가는지 간략하게 살펴보겠습니다.
@@ -134,7 +134,7 @@ $$
 &\quad\therefore \eta\left(\tilde\pi\right) = \eta(\pi) + E\_{s\_{0},a\_{0},\ldots\sim\tilde\pi}\left[\sum\_{t=0}^\infty\gamma^t A\_\pi\left(s\_t,a\_t\right)\right]
 \end{align}
 $$
-위의 전개의 (a) 부분은 $V\_\pi\left(s\_0\right)=E\_{a\_0,a\_1,s\_1,\ldots}\left[\sum\_{t=0}^\infty\gamma^l r\left(s\_l\right)\right]$이므로 $\tau$ 중 많은 부분들이 이미 expectation이 취해진 값이므로 무시됩니다. 오직 $s\_0$만 expectation이 취해지지 않았기 때문에 남아있습니다. $\square$
+위의 전개의 (a) 부분은 $V\_\pi\left(s\_0\right)=E\_{a\_0,a\_1,s\_1,\ldots}\left[\sum\_{t=0}^\infty\gamma^l r\left(s\_l\right)\right]$이므로 $\tau$ 중 많은 부분들이 이미 expectation이 취해진 값이므로 무시됩니다. 오직 $s\_0$만 expectation이 취해지지 않았기 때문에 남아있습니다.
 
 **Lemma 1**은 새로운 policy와 기존의 policy 사이의 관계를 규정합니다. 다음과 같은 식을 정의하고 이것을 이용해서 **Lemma 1**을 변형시켜 봅시다.
 
