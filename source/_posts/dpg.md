@@ -17,9 +17,9 @@ Proceeding : International Conference on Machine Learning (ICML) 2014
 ---
 
 ## 1. Summary
-- Deterministic Policy Gradient (DPG) Theorem 제안g합니다 [[Theorem 1](#deterministic-policy-gradient-theorem)]
+- Deterministic Policy Gradient (DPG) Theorem 제안합니다 [[Theorem 1](#deterministic-policy-gradient-theorem)]
     1) DPG는 존재하며,
-    2) DPG는 Expected gradient of the action-value function의 형태를 띈다.
+    2) DPG는 Expected gradient of the action-value function의 형태를 띕니다.
 - Policy variance가 0에 수렴할 경우, DPG는 Stochastic Policy Gradient(SPG)와 동일해짐을 보임 [[Theorem 2](#dpg-는-spg-의-limiting-case-임)]
     - Theorem 2 로 인해 기존 Policy Gradient (PG) 와 관련된 기법들을 DPG 에 적용할 수 있게 됨
         - 예. Sutton PG, natural gradients, actor-critic, episodic/batch methods
