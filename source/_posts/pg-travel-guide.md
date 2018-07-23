@@ -12,7 +12,7 @@ subtitle: 피지여행에 관한 개략적 기록
 
 반갑습니다! 저희는 PG여행을 위해 모인 PG탐험대입니다. 강화학습하면 보통 Q-learning을 떠올립니다. 그렇지만 오래전부터 Policy Gradient라는 Q-learning 못지 않은 훌륭한 방법론이 연구되어 왔고, 최근에는 강화학습의 최정점의 기술로 자리매김하고 있습니다. 강화학습의 아버지인 Sutton의 논문을 필두로 하여 기존의 DQN보다 뛰어난 성능을 내는 DPG와 DDPG, 그리고 현재 가장 주목받는 강화학습 연구자인 John Schulmann의 TRPO, GAE, PPO와 이를 이해하기 위해 필요한 Natural Policy Gardient까지 더불어 살펴보고자 합니다.
 
-<center> <img src="https://www.dropbox.com/s/7y3nekggok5dkk9/Policy%20Optimization%20in%20the%20RL%20Algorithm%20Landscape.png?dl=1" width="800"> </center>
+<center> <img src="https://www.dropbox.com/s/ezxjriu1gfyztma/Policy%20Optimization%20in%20the%20RL%20Algorithm%20Landscape.png?dl=1" width="800"> </center>
 
 위의 그림은 강화학습 알고리즘 landscape에서 Policy Optimization의 관점을 중점적으로 하여 나타낸 그림입니다. 위의 그림에서 빨간색 작은 숫자로 나타낸 것이 저희 PG여행에서 다룰 논문들입니다. 순서는 다음과 같습니다.
 
