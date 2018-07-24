@@ -15,6 +15,7 @@ Proceeding : International Conference on Machine Learning (ICML) 2015
 정리 : 공민서, 김동민
 
 ---
+
 # 1. 들어가며...
 
 Trust region policy optimization (TRPO)는 상당히 우수한 성능을 보여주는 policy gradient 기법으로 알려져 있습니다. 높은 차원의 action space를 가진 robot locomotion부터 action은 적지만 화면을 그대로 처리하여 플레이하기 때문에 control parameter가 매우 많은 Atari game까지 각 application에 세부적으로 hyperparameter들을 특화시키지 않아도 두루두루 좋은 성능을 나타내기 때문에 일반화성능이 매우 좋은 기법입니다. 이 TRPO에 대해서 알아보겠습니다.
@@ -22,41 +23,41 @@ Trust region policy optimization (TRPO)는 상당히 우수한 성능을 보여�
 ※TRPO를 매우 재밌게 설명한 Crazymuse AI의 [Youtube video](https://www.youtube.com/watch?v=CKaN5PgkSBc&t=90s)에서 일부 그림을 차용했습니다. 이 비디오를 시청하시는 것을 강력하게 추천합니다!
 
 <br>
-## 1.1. TRPO 흐름 잡기
+## 1.1 TRPO 흐름 잡기
 
 TRPO 논문은 많은 수식이 등장하여 이 수식들을 따라가다보면 큰 그림을 놓칠 수도 있습니다. 세부적인 내용을 살펴보기 전에 기존 연구에서 출발해서 TRPO로 어떻게 발전해나가는지 간략하게 살펴보겠습니다.
 
-### 1.1.1. Original Problem
+### 1.1.1 Original Problem
 
 $$\max\_\pi \eta(\pi)$$
 
 모든 강화학습이 그렇듯이 expected discounted reward를 최대화하는 policy를 찾는 문제로부터 출발합니다.
 
-### 1.1.2. Conservative policy iteration
+### 1.1.2 Conservative policy iteration
 
 $$\max L\_\pi(\tilde\pi) = \eta(\pi) + \sum\_s \rho_\pi(s)\sum\_a\tilde\pi(a\vert s)A\_\pi(s,a)$$
 
 $\eta(\pi)$를 바로 최대화하는 것은 많은 경우 어렵습니다. $\eta(\pi)$의 성능향상을 보장하면서 policy를 update하는 conservative policy iteration 기법이 [Kakade와 Langford](http://www.cs.cmu.edu/~./jcl/papers/aoarl/Final.pdf)에 의하여 제안되었습니다. 이 기법을 이용하면 policy update가 성능을 향상시키는지는 못하더라도 최소한 성능을 악화시키지는 않는다는 것이 이론적으로 보장됩니다.
 
-### 1.1.3. Theorem 1 of TRPO
+### 1.1.3 Theorem 1 of TRPO
 
 $$\max L\_{\pi\_\mathrm{old} }\left(\pi\_\mathrm{new}\right) - \frac{4\epsilon\gamma}{(1-\gamma)^2}\alpha^2,\quad\left(\alpha=D\_\mathrm{TV}^\max\left(\pi\_\mathrm{old},\pi\_\mathrm{new}\right)\right)$$
 
 기존의 conservative policy iteration은 과거 policy와 새로운 policy를 섞어서 사용해서 실용적이지 않다는 단점이 있었는데 이것을 보완하여 온전히 새로운 policy만으로 update할 수 있는 기법을 제안합니다. 
 
-### 1.1.4. KL divergence version of Theorem 1
+### 1.1.4 KL divergence version of Theorem 1
 
 $$\max L\_{\pi}\left(\tilde\pi\right) - C\cdot D_\mathrm{KL}^\max\left(\pi,\tilde\pi\right),\quad\left(C = \frac{4\epsilon\gamma}{(1-\gamma)^2}\right)$$
 
 distance metric을 KL divergence로 바꿀 수 있습니다.
 
-### 1.1.5. Using parameterized policy
+### 1.1.5 Using parameterized policy
 
 $$\max\_\theta L\_{\theta\_\mathrm{old} }(\theta) - C\cdot D\_\mathrm{KL}^\max\left(\theta\_\mathrm{old}, \theta\right)$$
 
 최적화문제를 더욱 편리하게 풀 수 있도록 낮은 dimension을 가지는 parameter들로 parameterized된 policy를 사용할 수 있습니다.
 
-### 1.1.6. Trust region constraint
+### 1.1.6 Trust region constraint
 
 $$
 \begin{align}
@@ -66,7 +67,7 @@ $$
 
 1.1.5까지는 아직 conservative policy iteration을 약간 변형시킨 것입니다. policy를 update할 때 지나치게 많이 변하는 것을 방지하기 위하여 [trust region](https://en.wikipedia.org/wiki/Trust_region)을 constraint로 설정할 수 있습니다. 이 아이디어로 인해서 TRPO라는 명칭을 가지게 됩니다.
 
-### 1.1.7. Heuristic approximation
+### 1.1.7 Heuristic approximation
 
 $$
 \begin{align}
@@ -76,7 +77,7 @@ $$
 
 사실 1.1.6의 constraint는 모든 state에 대해서 성립해야 하기 때문에 문제를 매우 어렵게 만듭니다. 이것을 좀 더 다루기 쉽게 state distribution에 대한 평균을 취한 것으로 변형합니다.
 
-### 1.1.8. Monte Carlo simulation
+### 1.1.8 Monte Carlo simulation
 
 $$
 \begin{align}
@@ -86,7 +87,7 @@ $$
 
 Sampling을 통한 계산이 가능하도록 식을 다시 표현할 수 있습니다. 
 
-### 1.1.9. Efficiently solving TRPO
+### 1.1.9 Efficiently solving TRPO
 
 $$
 \begin{align}
@@ -115,6 +116,7 @@ TRPO는 이렇게 다양한 방법으로 문제를 변형한 것입니다! 이�
 * $V\_\pi\left(s\_t\right)=E\_{ { \color{red}{a\_t} }, s\_{t+1},a\_{t+1},\ldots}\left[\sum\_{l=0}^\infty \gamma^l r\left(s\_{t+l}\right)\right]$: value function (action value function과 expectation의 첨자가 다른 부분을 유의하세요.)
 * $A\_\pi(s,a) = Q\_\pi(s,a) - V\_\pi(s)$: advantage function
 
+<br>
 ## 2.1 Useful identity [Kakade & Langford 2002]
 
 우리의 목표는 $\eta\(\pi\)$가 최대화되도록 만드는 것입니다. 하지만 $\pi$의 변화에 따라 $\eta$가 어떻게 변하는지 알아내는 것도 쉽지 않습니다. $\pi$는 기존의 policy이고 $\tilde\pi$는 새로운 policy를 나타낸다고 할 때 $\eta$와 policy update 사이에 다음과 같은 관계가 있다는 것이 밝혀졌습니다.
@@ -177,7 +179,7 @@ $$
 policy가 바뀌었음에도 이전의 state distribution을 계속 이용하는 것입니다. 이것은 policy의 변화가 크지 않다면 어느 정도 허용될 수 있을 것입니다. 그렇지만 얼마나 많은 변화가 허용될까요? 이것을 정하기 위해서 이용하는 것이 trust region입니다.
 
 <br>
-## 2.1. Conservative Policy Iteration
+## 2.2 Conservative Policy Iteration
 
 policy의 변화를 다루기 용이하게 하기 위해서 policy를 다음과 같이 파라미터를 이용해서 표현합시다.
 
@@ -311,7 +313,7 @@ $M\_i$는 $\pi\_i$일 때 equality가 되는 $\eta$에 대한  surrogate functio
 * $D\_\mathrm{KL}\left(\theta\parallel\tilde\theta\right):=D\_\mathrm{KL}\left(\pi\_\theta\parallel\pi_{\tilde\theta}\right)$
 * $\theta\_\mathrm{old}$: previous policy parameter
 
-## 4.1. Trust Region Policy Optimization
+## 4.1 Trust Region Policy Optimization
 
 이전 장의 중요 결과를 위의 notation으로 다시 표기하면 아래와 같습니다.
 
@@ -384,14 +386,14 @@ $$
 이 때 sampling하는 두 가지 방법이 있습니다.
 
 <br>
-## 5.1. Single Path
+## 5.1 Single Path
 
 *single path*는 개별 trajectory들을 이용하는 방법입니다.
 
 [![single](../../../../img/single.png "https://youtu.be/CKaN5PgkSBc")](https://youtu.be/CKaN5PgkSBc?t=6m15s)
 
 <br>
-## 5.2. Vine
+## 5.2 Vine
 
 *vine*은 한 state에서 rollout을 이용하여 여러 action을 수행하는 방법입니다.
 
@@ -475,7 +477,7 @@ $\chi[\cdot]$ 함수는 []안의 조건이 맞으면 0이고 틀리면 무한으
 
 
 <br><br>
-# 7. Connections with Prior Work - (1)
+# 7. Connections with Prior Work
 
 Natural Policy Gradient는 $L$의 선형 근사와 $\overline D\_\mathrm{KL}$ 제약식을 2차근사 하는 아래의 식의 special case입니다.
 
