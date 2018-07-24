@@ -15,18 +15,21 @@ Proceeding : Advances in Neural Information Processing Systems (NIPS) 2000
 정리 : 김동민, 이동민
 
 ---
+
 # 1. Intro to Policy Gradient
 
 이 논문은 policy gradient (PG) 기법의 효시와도 같으며 향후 많은 파생연구를 낳은 중요한 논문입니다. 7페이지의 짧은 논문이지만 읽기에 만만한 논문은 아닙니다. 이 논문을 이해하기 위해 필요한 배경지식을 먼저 설명하고 논문을 차근차근 살펴보도록 하겠습니다.
-<br>
 
+<br>
 ## 1.1 Value Function Approach
+
 전통적으로 강화학습 기법은 value function을 기반으로 동작하였습니다. 특정 state에서 vaue function 또는 value function을 근사하는 함수(function approximation)를 최대화하는 action을 찾는 greedy action-selection policy가  대표적입니다.
 
 논문에서는 이러한 방법은 deterministic한 policy를 찾는 쪽으로 나아가게 되지만 종종 최적의 policy는 stochastic한 성질을 가지기 때문에 이 방법으로는 최적의 policy를 찾을 수 없다고 언급하고 있습니다. (그러나 이 논문이 나오고 나서 한참 후 David Silver를 필두로한 DeepMind의 연구진들은 high-dimensional action space를 가지는 application에서 보다 빠르게 동작하는 [deterministic policy gradient](../../../06/16/dpg/)을 개발하였습니다.) 아마도 이러한 부분은 $\epsilon$-greedy action-selection policy로 개선될 수 있을 것입니다. 또 하나의 문제는 value function의 작은 변화로 인해서 action이 크게 변할 수도 있다는 것입니다. 이것은 알고리듬의 수렴성에 문제를 야기할 수 있습니다. 이러한 문제점을 해결하기 위하여 policy search라는 새로운 기법이 고안됩니다.
-<br>
 
+<br>
 ## 1.2 Policy Search
+
 policy search는 최적의 policy $\pi^*$를 reward로부터 직접 찾습니다. policy search 방법은 크게 두 가지로 분류할 수 있습니다. 첫 번째는 gradient-based optimization으로 policy gradient method가 이에 속합니다. 두 번째는 gradient-free optimization으로 진화(evolutionary) 연산을 이용하는 것이 이에 속합니다. 이 논문에서는 제목에서 알 수 있듯이 gradient-based optimization을 다룹니다. gradient는 변화량을 의미합니다. 특정 policy x와 또 다른 policy y가 있을 때 policy가 얼마나 많이 변화했는지 어떻게 모델링할 수 있을까요? policy의 변화를 제어하는 어떤 파라미터가 있다면 이 파라미터를 조정하여 policy를 변화시킬 수 있습니다. policy x에 해당하는 파라미터값과 policy y에 해당하는 파라미터값의 차이가 policy의 변화량이라고 할 수 있습니다. 이와 같은 방식으로 policy의 변화를 모델링하기 위하여 파라미터 $\theta$를 이용하여 policy를 $\pi_{\theta}$로 표현할 수 있습니다. 최적의 policy를 찾기 위하여 expected return $E\left[R|\theta\right]$이 최대화되도록 parameter를 조정합니다. 이를 간단한 수식으로 정리하면 다음과 같습니다.
 
 $$
@@ -38,11 +41,10 @@ $$\pi^* = \arg \max\limits_{\theta}  E\left[ {\left. R \right|\theta } \right] \
 $$
 
 <br>
-
 ## 1.3 How to Obtain the Expected Return
 expected return을 최대화하는 방향으로 policy를 update한다고 하였습니다. 그렇다면 expected return은 어떻게 구할 수 있을까요? 여기에도 크게 두 가지 방법이 있습니다. 첫 번째는 deterministic approximation으로 Markov decision process의 dynamics를 모델링한 후 수식을 통해 구하는 것입니다. 두 번째 방법은 monte carlo estimation으로 dynamics에 대한 모델을 하지 않고 많은 sample들을 얻은 후 empirical하게 expected return을 계산하는 방법입니다. 어느 방법이 더 좋을지는 풀고자 하는 문제의 특성에 따라 다를 것입니다. dynamics에 대한 모델이 어렵거나 변화가 큰 경우에는 두 번째 방법이 좀 더 현실적이지만 gradient를 구하는 것은 더 어렵습니다. 결국 gradient를 esimate하는방법을 고안해야 합니다. 가장 유명한 gradient estimation 방법이 1992년 R. J. Williams에 의해서 제안된 [REINFORCE](https://link.springer.com/content/pdf/10.1007/BF00992696.pdf) 기법입니다. REINFORCE는 Monte Carlo estimate 또는 likelihood-ratio estimate라고 부르는 방법을 이용합니다. 이 방법에 대해서 좀 더 알아볼까요?
 
-### Monte Carlo Gradient Estimation
+### 1.3.1 Monte Carlo Gradient Estimation
 다음과 같은 parameter $\theta$를 가지는 random variable $X$가 있습니다: $X:\Omega\mapsto\mathcal{X}$. 그리고 이 $x$에 대한 함수 $f$가 있습니다: $f:\mathcal{X}\mapsto\mathbb{R}$. expected return처럼 $E[f(x)]$를 최대화하고자 합니다. 이를 위해서는 $\nabla_{\theta}E[f(x)]$를 구해야 합니다. 이 때 log derivate trick을 이용하여 다음과 같이 수식을 변형시킬 수 있습니다.
 
 $$
@@ -68,10 +70,11 @@ $${\nabla_{\theta} }{E_{p\left( {x;\theta } \right)} }\left[ {f\left( x \right)}
 
 <br><br>
 
----
 # 2. Policy Gradient Methods
+
 이제 본격적으로 policy gradient 기법에 대해서 알아보겠습니다.
 
+<br>
 ## 2.1 System Model
 
 논문에서 사용하는 수학기호(notation)와 가정들을 설명하는 시스템모델은 다음과 같습니다.
@@ -89,7 +92,6 @@ $${\nabla_{\theta} }{E_{p\left( {x;\theta } \right)} }\left[ {f\left( x \right)}
 * $\alpha$: positive-definite한 step size 
 
 <br>
-
 ## 2.2 Policy Gradent Approach
 policy gradient는 stochastic policy를 자체적인 파리미터를 가진 function approximator를 이용해서 근사화시킵니다.
 
@@ -103,7 +105,6 @@ $\rho$는 $\theta$에 대하여 미분가능해야겠죠? 위와 같이 업데�
 먼저 $\rho$, 즉, reward를 표현하는 두 가지 방법에 대해서 알아보겠습니다.
 
 <br>
-
 ## 2.3 Average Reward Formulation
 Average reward formulation은 시간의 흐름에 따른 reward를 표현한다기보다는 모든 시간의 reward를 평균을 내서 표현하는 방법입니다.
 
@@ -151,8 +152,8 @@ $$E_s\left[\sum_a\frac{\partial\pi(s,a)}{\partial\theta}Q^\pi(s,a)\right] = \fra
 이로인해서 우리는 gradient를 sampling을 통해서 추정할 수 있습니다. 그렇지만 이것은 sample이 아주 많을 때만 성립합니다!
 
 또 한 가지 문제는 우리는 $Q^\pi(s,a)$의 정확한 값을 알 수 없다는 것 입니다. 이것을 estimate하기 위해서 현재의 return값 $R_t$를 이용할 수 있습니다.
-<br>
 
+<br>
 ## 2.6 Proof of Policy Gradient Theorem
 증명을 살펴보겠습니다.
 
@@ -251,7 +252,7 @@ $$\sum_{s'} \eta(s') \cdot\sum_s \mu(s)\sum_a \nabla \pi(a|s)q_\pi(s,a)$$
 $$\propto \sum_s \mu(s)\sum_a \nabla \pi(a|s)q_\pi(s,a)$$
 
 <br><br>
----
+
 # 3. Policy Gradient with Approximation
 이 장에서는 앞서 다뤘던 Theorem 1 중에 $Q^\pi$에 대해서 중점적으로 다룹니다. 어떠한 $Q^\pi$가 학습된 function approximator로 근사된다고 합시다. 
 
@@ -261,12 +262,14 @@ $$\Delta w_t \propto \frac{\partial}{\partial w}\big[ {\hat Q}^\pi(s_t,a_t)-f_w(
 
 그러면 위와 같은 수식이 local optimum에 수렴을 했을 때, 다음과 같이 나타낼 수 있습니다.
 $$\sum_s d^\pi(s)\sum_a \pi(s,a)\big[ {Q}^\pi(s_t,a_t)-f_w(s_t,a_t) \big]\frac{\partial f_w(s,a)}{\partial w}=0$$
+
 - 위의 수식에 대한 추가 설명
     - local optimum으로 수렴을 하기 때문에 당연히 위의 수식은 0이 됩니다.
     - 또한 stochastic policy이기 때문에 local optimum으로 수렴하려면 모든 state, action에 대해 expectation을 해야합니다. 따라서 $\sum_s d^\pi(s)\sum_a \pi(s,a)$이 붙게 됩니다.
-<br>
 
+<br>
 ## 3.1 Theorem 2: Policy Gradient with Function Approximation
+
 만약 $f_w$가 아래의 등식을 만족한다고 합시다.
 $$\sum_s d^\pi(s)\sum_a \pi(s,a)\big[ {Q}^\pi(s_t,a_t)-f_w(s_t,a_t) \big]\frac{\partial f_w(s,a)}{\partial w}=0$$
 
@@ -279,9 +282,10 @@ $$\frac{\partial f_w(s,a)}{\partial w}=\frac{\partial \pi(s,a)}{\partial \theta}
 
 따라서 위의 두 수식을 이용하여 아래와 같이 나타낼 수 있습니다.
 $$\frac{\partial\rho}{\partial\theta}=\sum_s d^\pi(s)\sum_a \frac{\partial\pi(s,a)}{\partial\theta}f_w(s,a)$$
-<br>
 
+<br>
 ## 3.2 Proof of Theorem 2
+
 $$\sum_s d^\pi(s)\sum_a \pi(s,a)\big[ {Q}^\pi(s_t,a_t)-f_w(s_t,a_t) \big]\frac{\partial f_w(s,a)}{\partial w}=0$$
 
 $$\frac{\partial f_w(s,a)}{\partial w}=\frac{\partial \pi(s,a)}{\partial \theta}\frac{1}{\pi(s,a)}$$
@@ -298,11 +302,12 @@ $$\frac{\partial\rho}{\partial\theta}=\sum_s d^\pi(s)\sum_a \frac{\partial\pi(s,
 $$\frac{\partial\rho}{\partial\theta}=\sum_s d^\pi(s)\sum_a \frac{\partial\pi(s,a)}{\partial\theta}\big[ Q^\pi(s_t,a_t)-Q^\pi(s_t,a_t)+f_w(s_t,a_t) \big]$$
 
 $$\therefore\frac{\partial\rho}{\partial\theta}=\sum_s d^\pi(s)\sum_a \frac{\partial\pi(s,a)}{\partial\theta}f_w(s_t,a_t)$$
+
 <br><br>
 
----
 # 4. Application to Deriving Algorithms and Advantages
 
+<br>
 ## 4.1 Application to Deriving Algorithms
 feature의 linear combination에서 Gibbs distribution (softmax)를 하나의 policy로 생각해볼 수 있습니다.
 $$\pi(s,a)=\frac{e^{\theta^{T}\phi_{sa} }}{\sum_b e^{\theta^{T}\phi_{sb} }}$$
@@ -313,12 +318,13 @@ $$\frac{\partial f_w(s,a)}{\partial w}=\frac{\partial\pi(s,a)}{\partial\theta}\f
 
 이어서 $f_w$을 적분한 natural parameterization은 다음과 같습니다.
 $$f_w(s,a)=w^T\big[ \phi_{sa}-\sum_b \pi(s,b)\phi_{sb}\big]$$
+
 - 위의 수식에 대한 추가 설명
     - $f_w$는 policy로서 같은 feature들에 대해 linear합니다.
     - $f_w$는 각각의 state에 대해서 평균이 0입니다. ($\sum_a\pi(s,a)f_w(s,a)=0$)
     - advantage function $A^\pi(s,a)=Q^\pi(s,a)-V^\pi(s)$의 하나의 근사치로서 $f_w$를 생각해도 좋습니다.
-<br>
 
+<br>
 ## 4.2 Proof of application of compatible condition
 증명을 하기 전에 다음을 가정합니다.
 1. $(\frac{f(x)}{g(x)})'=f'(x)\cdot \frac{1}{g(x)}-f(x)\cdot \frac{g'(x)}{g(x)^{2} }=\frac{f'(x)\cdot g(x)-f(x)\cdot g'(x)}{g(x)^{2} }$
@@ -340,7 +346,6 @@ $$
 $$
 
 <br>
-
 ## 4.3 Application to Advantages
 Policy Gradient with Function Approximation Theorem (Theorem 2)는 advantage function으로 확장될 수 있습니다.
 $$\frac{\partial\rho}{\partial\theta}=\sum_sd^\pi(s)\sum_a\frac{\partial\pi(s,a)}{\partial\theta}\big[ f_w(s,a)+v(s) \big]$$
@@ -351,11 +356,12 @@ $$\frac{\partial\rho}{\partial\theta}=\sum_sd^\pi(s)\sum_a\frac{\partial\pi(s,a)
     - $v$의 선택은 Theorem들에 영향을 미치지 못하지만, 실질적으로 gradient estimator의 variance에 영향을 미칩니다.
     - 이러한 문제는 전체적으로 이전의 연구에 reinforcement baseline의 사용에 있어서 유사합니다.
     - (comment) 위의 수식에서 $f_w(s,a)+v(s)$와 Application to Deriving Algorithms의 $f_w(s,a)$와는 다른 것입니다. Application to Deriving Algorithms의 $f_w(s,a)$은 softmax에 의해 스스로 advantage function의 역할을 할 수 있습니다. 하지만 보통의 경우에는 그러지 못할 수도 있기 때문에 위의 수식처럼 $f_w(s,a)+v(s)$을 추가하여 zero mean만들어서 variance를 줄일 수 있습니다.
+
 <br><br>
 
----
 # 5. Convergence of Policy Iteration with Function Approximation
 
+<br>
 ## 5.1 Theorem 3: Convergence of Policy Iteration with Function Approximation
 
 policy iteration with function approximation은 locally optimal policy에 수렴합니다. $\pi$와 $f_w$를 
@@ -380,6 +386,7 @@ policy iteration with function approximation은 locally optimal policy에 수렴
     - $\theta_{k+1}=\theta_k+\alpha_k\sum_sd^{\pi_{k} }(s)\sum_a\frac{\partial\pi_k(s,a)}{\partial\theta}f_{w_{k} }(s,a)$ 에 따라 $\theta$가 1, 2, ..., $\infty$로 갈텐데, 거기에 따른 objective function or performance의 sequence입니다.
     - (comment) 굳이 sequence라는 표현이 없어도 될 것 같습니다. 어짜피 k가 $\infty$로 가면 $\rho(\pi_k)$가 수렴한다는 의미이기 때문에 불필요해보입니다.
 
+<br>
 ## 5.2 Proof of Theorem 3
 - Theorem 2는 $\theta_k$ update가 gradient의 error를 최소화한다는 것을 증명했습니다.
 - $\frac{\partial^{2}\pi(s,a)}{\partial\theta_i\partial\theta_j}$와 MDP의 reward에서의 bound는, $\frac{\partial^{2}\rho}{\partial\theta_i\partial\theta_j}$ 또한 bound된다는 것을 증명합니다.
@@ -393,7 +400,7 @@ $$
 
 
 <br><br>
----
+
 # 6. Summary 
 
 논문에서 설명한 policy gradient 기법을 요약하면 다음과 같습니다.
