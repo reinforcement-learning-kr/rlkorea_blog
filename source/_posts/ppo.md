@@ -15,7 +15,7 @@ Proceeding : ??
 정리 : 장수영, 차금강
 
 ---
-# 1. 왜 Proximal Policy Optimization(PPO)인가?
+# 1. 들어가며...
 
 이전의 Trust Region Policy Optimization(TRPO)의 핵심적인 부분을 살펴보자면 다음과 같습니다.
 
