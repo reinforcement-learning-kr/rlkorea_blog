@@ -1,6 +1,6 @@
 ---
 title: High-Dimensional Continuous Control using Generalized Advantage Estimation
-date: 2018-06-12 19:18:45
+date: 2018-06-23 19:18:45
 tags: ["프로젝트", "피지여행"]
 categories: 프로젝트
 author: 양혁렬, 이동민

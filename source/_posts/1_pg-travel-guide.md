@@ -8,11 +8,12 @@ subtitle: 피지여행에 관한 개략적 기록
 ---
 
 ---
+
 # 1. Policy Gradient의 세계로
 
 반갑습니다! 저희는 PG여행을 위해 모인 PG탐험대입니다. 강화학습하면 보통 Q-learning을 떠올립니다. 그렇지만 오래전부터 Policy Gradient라는 Q-learning 못지 않은 훌륭한 방법론이 연구되어 왔고, 최근에는 강화학습의 최정점의 기술로 자리매김하고 있습니다. 강화학습의 아버지인 Sutton의 논문을 필두로 하여 기존의 DQN보다 뛰어난 성능을 내는 DPG와 DDPG, 그리고 현재 가장 주목받는 강화학습 연구자인 John Schulmann의 TRPO, GAE, PPO와 이를 이해하기 위해 필요한 Natural Policy Gardient까지 더불어 살펴보고자 합니다.
 
-<center> <img src="https://www.dropbox.com/s/ezxjriu1gfyztma/Policy%20Optimization%20in%20the%20RL%20Algorithm%20Landscape.png?dl=1" width="800"> </center>
+<center> <img src="https://www.dropbox.com/s/tbcyhvilaqy4ra0/Policy%20Optimization%20in%20the%20RL%20Algorithm%20Landscape.png?dl=1" width="800"> </center>
 
 위의 그림은 강화학습 알고리즘 landscape에서 Policy Optimization의 관점을 중점적으로 하여 나타낸 그림입니다. 위의 그림에서 빨간색 작은 숫자로 나타낸 것이 저희 PG여행에서 다룰 논문들입니다. 순서는 다음과 같습니다.
 
@@ -21,13 +22,15 @@ subtitle: 피지여행에 관한 개략적 기록
 3. DDPG
 4. NPG
 5. TRPO
-6. PPO
-7. GAE
+6. GAE
+7. PPO
 
 위와 같이 총 7가지 논문들을 리뷰하여 블로그로 정리하였습니다. 이 블로그에는 각각의 기술을 제안한 논문을 PG탐험대분들이 자세하게 리뷰한 포스트들이 있습니다. 우리나라에서 PG에 대해서 이렇게 자세하게 리뷰한 포스트들은 없었다고 감히 말씀드리고 싶습니다. 본 글에서는 이 포스트들을 읽기 전에 전체 내용을 개략적으로 소개하고 각각의 포스트들로 안내하고자 합니다. 자, 저희와 함께 PG여행을 즐겨보시겠습니까?
 
 <br><br>
+
 # 2. \[Sutton PG\] Policy gradient methods for reinforcement learning with function approximation
+
 [Sutton PG 여행하기](../../../06/15/sutton-pg/)
 [Sutton PG Code](https://github.com/reinforcement-learning-kr/pg_travel)
 
@@ -35,7 +38,9 @@ subtitle: 피지여행에 관한 개략적 기록
 [Sutton PG Code](https://github.com/reinforcement-learning-kr/pg_travel)
 
 <br><br>
+
 # 3. \[DPG\] Deterministic policy gradient algorithms
+
 [DPG 여행하기](../../../06/16/dpg/)
 [DPG Code](https://github.com/reinforcement-learning-kr/pg_travel)
 
@@ -43,7 +48,9 @@ subtitle: 피지여행에 관한 개략적 기록
 [DPG Code](https://github.com/reinforcement-learning-kr/pg_travel)
 
 <br><br>
+
 # 4. \[DDPG\] Continuous control with deep reinforcement learning
+
 [DDPG 여행하기](../../../06/23/ddpg/)
 [DDPG Code](https://github.com/reinforcement-learning-kr/pg_travel)
 
@@ -51,7 +58,9 @@ subtitle: 피지여행에 관한 개략적 기록
 [DDPG Code](https://github.com/reinforcement-learning-kr/pg_travel)
 
 <br><br>
+
 # 5. \[NPG\] A natural policy gradient
+
 [NPG 여행하기](../../../06/14/2018-06-15-npg/)
 [NPG Code](https://github.com/reinforcement-learning-kr/pg_travel)
 
@@ -65,7 +74,9 @@ subtitle: 피지여행에 관한 개략적 기록
 [NPG Code](https://github.com/reinforcement-learning-kr/pg_travel)
 
 <br><br>
+
 # 6. \[TRPO\] Trust region policy optimization
+
 [TRPO 여행하기](blog link)
 [TRPO Code](https://github.com/reinforcement-learning-kr/pg_travel)
 
@@ -75,17 +86,9 @@ PG기법이 각광을 받게 된 계기는 아마도 TRPO 때문이 아닌가 �
 [TRPO Code](https://github.com/reinforcement-learning-kr/pg_travel)
 
 <br><br>
-# 7. \[PPO\] Proximal policy optimization algorithms
-[PPO 여행하기](blog link)
-[PPO Code](https://github.com/reinforcement-learning-kr/pg_travel)
 
-PPO는 TRPO의 연장선상에 있는 기술이라고 할 수 있습니다. 사실 Schulmann은 TRPO 논문을 쓸 당시 이미 PPO를 구상하고 있었던 것 같습니다. TRPO 논문에도 PPO와 관련있는 내용이 좀 나옵니다. 아이디어 자체는 간단합니다. 그래서그런지 PPO는 arxiv에만 발표되었고 논문도 비교적 짧습니다. TRPO에서는 문제를 단순하게 만들기 위해서 최적화 문제를 여러 번 변형시켰습니다. PPO는 clip이라는 개념을 사용합니다. TRPO에서 이용했던 surrogate objective function을 reward가 특정값 이상이거나 이하가 될 때 더 이상 변화시키지 않는 것입니다.
+# 7. \[GAE\] High-Dimensional Continuous Control Using Generalized Advantage Estimation
 
-[PPO 여행하기](blog link)
-[PPO Code](https://github.com/reinforcement-learning-kr/pg_travel)
-
-<br><br>
-# 8. \[GAE\] High-Dimensional Continuous Control Using Generalized Advantage Estimation
 [GAE 여행하기](blog link)
 [GAE Code](https://github.com/reinforcement-learning-kr/pg_travel)
 
@@ -102,3 +105,22 @@ GAE의 실험적인 입증으로는 robotic locomotion을 simulation하는 domai
 
 [GAE 여행하기](blog link)
 [GAE Code](https://github.com/reinforcement-learning-kr/pg_travel)
+
+<br><br>
+
+# 8. \[PPO\] Proximal policy optimization algorithms
+
+[PPO 여행하기](blog link)
+[PPO Code](https://github.com/reinforcement-learning-kr/pg_travel)
+
+이 논문에서는 Reinforcement Learning에서 Policy Gradient Method의 새로운 방법인 PPO를 제안합니다. 이 방법은 agent가 환경과의 상호작용을 통해 data를 sampling하는 것과 stochastic gradient ascent를 사용하여 "surrogate" objective function을 optimizing하는 것을 번갈아가면서 하는 방법입니다. data sample마다 one gradient update를 수행하는 기존의 방법과는 달리, minibatch update의 multiple epochs를 가능하게 하는 새로운 objective function을 말합니다.
+
+또한 PPO는 TRPO의 연장선상에 있는 알고리즘이라고 할 수 있습니다. TRPO에서는 문제를 단순하게 만들기 위해서 최적화 문제를 여러 번 변형시켰습지만, PPO는 단순하게 clip이라는 개념을 사용합니다. TRPO에서 이용했던 surrogate objective function을 reward가 특정값 이상이거나 이하가 될 때 더 이상 변화시키지 않는 것입니다.
+
+이 알고리즘의 장점으로는
+
+- Trust Region Policy Optimization(TRPO)의 장점만을 가집니다. 다시 말해 알고리즘으로 학습하기에 훨씬 더 간단하고, 더 일반적이고, 더 좋은 sample complexity (empirically)를 가집니다. 
+- 또한 다른 online policy gradient method들을 능가했고, 전반적으로 sample complexity(특히 computational complexity), simplicity, wall-time가 좋다고 합니다.
+
+[PPO 여행하기](blog link)
+[PPO Code](https://github.com/reinforcement-learning-kr/pg_travel)
