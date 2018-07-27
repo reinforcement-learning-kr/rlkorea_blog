@@ -1,6 +1,6 @@
 ---
 title: Trust Region Policy Optimization
-date: 2018-06-23 16:53:12
+date: 2018-06-24 16:53:12
 tags: ["프로젝트", "피지여행"]
 categories: 프로젝트
 author: 공민서, 김동민
@@ -101,6 +101,7 @@ $$
 TRPO는 이렇게 다양한 방법으로 문제를 변형한 것입니다! 이제 좀 더 자세히 살펴보겠습니다.
 
 <br><br>
+
 # 2. Preliminaries
 
 다음과 같은 파라미터를 가지는 infinite-horizon discounted Markov decision process (MDP)를 고려합니다. 
@@ -217,6 +218,7 @@ $$
 하지만 mixture된 policy라는 것은 실용적이지 않습니다. 
 
 <br><br>
+
 # 3. Monotonic Improvement Guarantee for General Stochastic Policies
 
 이전 장에서 설명한 lower bound는 오직 mixture policy에 대해서만 성립하고 더 많이 사용되는 stochastic policy에는 적용되지 않습니다. 따라서 stochastic policy를 이용할 수 있도록 개선할 필요가 있습니다. 아래와 같이 기존 수식에서 두 가지를 바꿈으로써 이것이 가능합니다.
@@ -304,6 +306,7 @@ $$
 $M\_i$는 $\pi\_i$일 때 equality가 되는 $\eta$에 대한  surrogate function입니다. TRPO는 이 surrogate function을 최대화하고 KL divergence를 penalty가 아닌 constraint로 두는 알고리듬입니다.
 
 <br><br>
+
 # 4. Optimization of Parameterized Policies
 
 표기의 편의를 위해 다음과 같이 notation들을 더 간략하게 정의합니다.
@@ -313,6 +316,7 @@ $M\_i$는 $\pi\_i$일 때 equality가 되는 $\eta$에 대한  surrogate functio
 * $D\_\mathrm{KL}\left(\theta\parallel\tilde\theta\right):=D\_\mathrm{KL}\left(\pi\_\theta\parallel\pi_{\tilde\theta}\right)$
 * $\theta\_\mathrm{old}$: previous policy parameter
 
+<br>
 ## 4.1 Trust Region Policy Optimization
 
 이전 장의 중요 결과를 위의 notation으로 다시 표기하면 아래와 같습니다.
@@ -356,6 +360,7 @@ $$
 [![heuristic_approx](../../../../img/heuristic_approx.png "https://youtu.be/CKaN5PgkSBc")](https://youtu.be/CKaN5PgkSBc?t=4m35s)
 
 <br><br>
+
 # 5. Sample-Based Estimation of the Objective and Constraint
 
 실용적인 알고리듬을 만들려고 하는 노력은 아직 끝나지 않았습니다. 이제 앞의 알고리듬을 sample-based estimation 즉, Monte Carlo estimation을 할 수 있도록 바꿔보겠습니다. sampling을 편하게 할 수 있도록 아래와 같이 바꿔줍니다.
@@ -405,6 +410,7 @@ estimation의 variance를 낮출 수 있지만 계산량이 많고 한 state에�
 
 
 <br><br>
+
 # 6. Practical Algorithm
 
 앞서 single-path, vine 샘플링을 사용하는 두가지 방식의 policy optimization 알고리즘을 살펴봤습니다. 실용적인 알고리듬은 아래의 과정을 반복해서 수행합니다.
@@ -475,8 +481,8 @@ $\chi[\cdot]$ 함수는 []안의 조건이 맞으면 0이고 틀리면 무한으
 
 (여기서 살짝 예고를 하자면, 나중에 이 KL 기반 기법을 개선한 더 단순한 방법이 제안됩니다. PPO라고...)
 
-
 <br><br>
+
 # 7. Connections with Prior Work
 
 Natural Policy Gradient는 $L$의 선형 근사와 $\overline D\_\mathrm{KL}$ 제약식을 2차근사 하는 아래의 식의 special case입니다.
@@ -513,8 +519,8 @@ $\mathrm{s.t.}\quad \frac{1}{2} \vert\vert \theta - \theta\_\mathrm{old} \vert\v
 $L\_{\pi}(\tilde\pi) = \eta(\pi) + \underset{s}{\sum}\rho\_{\pi}(s) \underset{a}{\sum}\tilde\pi(a\vert s)A\_\pi(s,a) $를 이용해서 제약조건없이 $\underset{\pi}{\max}\quad L\_{\pi\_\mathrm{old} }(\pi)$를 풀면
 Policy Iteration update를 하는 것과 같습니다.
 
-
 <br><br>
+
 # 8. Experiments
 
 - 다음과 같은 3 가지 궁금증을 해결하기 위하여 실험을 설계하였습니다.
@@ -615,7 +621,8 @@ TRPO video link: https://www.youtube.com/watch?v=jeid0wIrSn4
 
 - 이전 방법들과 다른 점은, 특정 task에 초점을 맞춰 설계하지않았는데 robotics나 game playing Task에도 적절한 성능을 내는 점에서 **TRPO의 일반화 성능**을 확인하였습니다.
 
-<br>
+<br><br>
+
 # 9. Discussion
 
 - Trust Region Policy Optimization 을 제안하였습니다.
@@ -627,6 +634,3 @@ TRPO video link: https://www.youtube.com/watch?v=jeid0wIrSn4
 - Robotics와 게임 실험을 결합해, 시각정보와 센서데이터를 사용하는 로봇제어 정책을 학습시킬 수 있는 가능성을 보았습니다.
 
 - 샘플의 복잡도를 상당히 줄일 수 있어 실제상황에 적용가능성을 보았습니다.
-
-<br><br>
-# END
