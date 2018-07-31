@@ -4,7 +4,7 @@ date: 2018-06-22 16:53:12
 tags: ["프로젝트", "피지여행"]
 categories: 프로젝트
 author: 이동민, 장수영, 차금강
-subtitle: 피지여행 6번째 논문
+subtitle: 피지여행 7번째 논문
 ---
 
 <center> <img src="https://www.dropbox.com/s/145van5kldfvvd5/Screen%20Shot%202018-07-18%20at%201.19.30%20AM.png?dl=1" width="700"> </center>
@@ -85,8 +85,7 @@ Sutton_PG부터 시작하여 TRPO, GAE를 거쳐 PPO까지 대단히 고생많�
 
 Policy update 크기에 대한 contraint하에 objective function("surrogate" function)을 최대화하는 것이 목표입니다. 수식은 아래와 같습니다.
 
-$$$$
-$$$$
+<center> <img src="https://www.dropbox.com/s/gx6udoz5upswyf9/Screen%20Shot%202018-07-31%20at%2011.11.49%20PM.png?dl=1" width="400"> </center>
 
 위의 수식은 contraint로 인해 excessive large policy update가 방지됩니다.
 
@@ -94,10 +93,10 @@ TRPO에서는 constrained optimization problem을 풀기 위해서는 다음과 
 
 1. Fisher Information Matrix인 second-order derivative of KL divergence를 사용하거나,
     - 여기서 second-order matrixes를 구하기 위해서는 많은 계산량 필요합니다.
-2. Conjugate Gradient를 사용합니다. 
-    - Conjugate Gradient는 현하기가 어렵습니다.
+2. Conjugate Gradient를 사용합니다.
+    - Conjugate Gradient는 구현하기가 어렵습니다.
 
-$$$$
+<center> <img src="https://www.dropbox.com/s/6xpw9igndl3dmb9/Screen%20Shot%202018-07-31%20at%2011.15.13%20PM.png?dl=1" width="500"> </center>
 
 원래 이론적으로 위의 수식과 같이 "contraint"가 아니라 objective에 "penalty"를 부여하는 형태입니다. 하지만 다양한 문제들(혹은 학습 중에 특성이 변하는 문제)에서 모두 잘 동작하는 single value $\beta$를 찾는 것(robustness)이 어렵기 때문에, TRPO에서는 penalty대신 contraint를 취하는 방식을 택한 것입니다.
 

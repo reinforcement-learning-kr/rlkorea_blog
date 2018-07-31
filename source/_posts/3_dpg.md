@@ -3,7 +3,7 @@ title: Deterministic Policy Gradient Algorithms
 date: 2018-06-27 17:21:48
 tags: ["프로젝트", "피지여행"]
 categories: 프로젝트
-author: 장수영, 공민서
+author: 공민서, 장수영, 차금강
 subtitle: 피지여행 2번째 논문
 ---
 
@@ -12,7 +12,7 @@ subtitle: 피지여행 2번째 논문
 논문 저자 : David Silver, Guy Lever, Nicloas Heess, Thomas Degris, Daan Wierstra, Martin Riedmiller
 논문 링크 : http://proceedings.mlr.press/v32/silver14.pdf
 Proceeding : International Conference on Machine Learning (ICML) 2014
-정리 : 장수영, 공민서
+정리 : 공민서, 장수영, 차금강
 
 ---
 

@@ -4,7 +4,7 @@ date: 2018-06-23 19:18:45
 tags: ["프로젝트", "피지여행"]
 categories: 프로젝트
 author: 양혁렬, 이동민
-subtitle: 피지여행 7번째 논문
+subtitle: 피지여행 6번째 논문
 ---
 
 <center> <img src="https://www.dropbox.com/s/p8gfpyo6xf9wm5w/Screen%20Shot%202018-07-18%20at%201.25.53%20AM.png?dl=1" width="700"> </center>
