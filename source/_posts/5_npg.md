@@ -3,7 +3,7 @@ title: Natural Policy Gradient
 date: 2018-06-25 11:36:45
 tags: ["프로젝트", "피지여행"]
 categories: 프로젝트
-author: 이웅원, 차금강, 김동민
+author: 김동민, 이동민, 이웅원, 차금강
 subtitle: 피지여행 4번째 논문
 ---
 
@@ -12,7 +12,7 @@ subtitle: 피지여행 4번째 논문
 논문 저자 : Sham Kakade
 논문 링크 : https://papers.nips.cc/paper/2073-a-natural-policy-gradient.pdf
 Proceeding : Advances in Neural Information Processing Systems (NIPS) 2002
-정리 : 이웅원, 차금강
+정리 : 김동민, 이동민, 이웅원, 차금강
 
 ---
 

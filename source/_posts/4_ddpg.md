@@ -3,7 +3,7 @@ title: Deep Determinstic Policy Gradient (DDPG)
 date: 2018-06-26 11:20:45
 tags: ["프로젝트", "피지여행"]
 categories: 프로젝트
-author: 양혁렬
+author: 양혁렬, 차금강
 subtitle: 피지여행 3번째 논문
 ---
 
@@ -12,9 +12,10 @@ subtitle: 피지여행 3번째 논문
 논문 저자 : Timothy P. Lillicrap, Jonathan J. Hunt, Alexander Pritzel, Nicolas Heess, Tom Erez, Yuval Tassa, David Silver & Daan Wierstra
 논문 링크 : https://arxiv.org/pdf/1509.02971.pdf
 Proceeding : ??
-정리 : 양혁렬
+정리 : 양혁렬, 차금강
 
 ---
+
 ## 1.Introduction
 DDPG 알고리즘에 대한 개요입니다.
 ### 1.1 Success & Limination of DQN  
