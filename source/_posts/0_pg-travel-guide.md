@@ -113,7 +113,7 @@ GAE의 실험적인 입증으로는 robotic locomotion을 simulation하는 domai
 
 이 논문에서는 Reinforcement Learning에서 Policy Gradient Method의 새로운 방법인 PPO를 제안합니다. 이 방법은 agent가 환경과의 상호작용을 통해 data를 sampling하는 것과 stochastic gradient ascent를 사용하여 "surrogate" objective function을 optimizing하는 것을 번갈아가면서 하는 방법입니다. data sample마다 one gradient update를 수행하는 기존의 방법과는 달리, minibatch update의 multiple epochs를 가능하게 하는 새로운 objective function을 말합니다.
 
-또한 PPO는 TRPO의 연장선상에 있는 알고리즘이라고 할 수 있습니다. TRPO에서는 문제를 단순하게 만들기 위해서 최적화 문제를 여러 번 변형시켰습지만, PPO는 단순하게 clip이라는 개념을 사용합니다. TRPO에서 이용했던 surrogate objective function을 reward가 특정값 이상이거나 이하가 될 때 더 이상 변화시키지 않는 것입니다.
+또한 PPO는 TRPO의 연장선상에 있는 알고리즘이라고 할 수 있습니다. TRPO에서는 문제를 단순하게 만들기 위해서 최적화 문제를 여러 번 변형시켰지만, PPO는 단순하게 clip이라는 개념을 사용합니다. TRPO에서 이용했던 surrogate objective function을 reward가 특정값 이상이거나 이하가 될 때 더 이상 변화시키지 않는 것입니다.
 
 이 알고리즘의 장점으로는
 
