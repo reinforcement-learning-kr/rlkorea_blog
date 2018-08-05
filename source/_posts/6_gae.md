@@ -11,7 +11,7 @@ subtitle: 피지여행 6번째 논문
 
 논문 저자 : John Schulman, Philipp Moritz, Sergey Levine, Michael I. Jordan and Pieter Abbeel
 논문 링크 : https://arxiv.org/pdf/1506.02438.pdf
-Proceeding : ??
+Proceeding : International Conference of Learning Representations (ICLR) 2016
 정리 : 양혁렬, 이동민
 
 ---
