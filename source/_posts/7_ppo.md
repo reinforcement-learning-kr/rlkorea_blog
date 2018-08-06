@@ -11,7 +11,7 @@ subtitle: 피지여행 7번째 논문
 
 논문 저자 : John Schulman, Filip Wolski, Prafulla Dhariwal, Alec Radford, Oleg Klimov
 논문 링크 : https://arxiv.org/pdf/1707.06347.pdf
-Proceeding : ??
+Proceeding : unpublished.
 정리 : 이동민, 장수영, 차금강
 
 ---

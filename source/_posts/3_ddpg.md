@@ -11,7 +11,7 @@ subtitle: 피지여행 3번째 논문
 
 논문 저자 : Timothy P. Lillicrap, Jonathan J. Hunt, Alexander Pritzel, Nicolas Heess, Tom Erez, Yuval Tassa, David Silver & Daan Wierstra
 논문 링크 : https://arxiv.org/pdf/1509.02971.pdf
-Proceeding : ??
+Proceeding : International Conference on Learning Representations (ICLR) 2016
 정리 : 양혁렬, 차금강
 
 ---

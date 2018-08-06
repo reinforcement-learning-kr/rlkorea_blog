@@ -45,6 +45,8 @@ policy gradient (PG)는 expected reward를 policy의 파라미터에 대한 함�
 
 [DPG 여행하기](https://reinforcement-learning-kr.github.io/2018/06/27/2_dpg/)
 
+deterministic policy gradeint (DPG)는 어찌보면 상당히 도전적인 아이디어였던 것 같습니다. Sutton PG 논문에서는 DPG 스타일의 기법이 가진 단점에 대해서 언급하면서 stochastic policy gradient (SPG)를 써야 optimal을 찾을 수 있다고 기술하고 있었기 때문입니다. 그런데 이 논문에서 높은 차원의 action space를 가지는 문제들에(예를 들면 문어발 제어) 대해서는 DPG가 상당히 좋은 성능을 내는 것을 저자들이 보였습니다. 그리고 DPG는 SPG와 대척점에 있는 기술이 아니고 SPG의 special case 중 하나임을 증명하면서 SPG를 가정하고 만들어진 기술들을 DPG에서도 그대로 이용할 수 있음을 보였습니다. David Silver의 [동영상 강의](http://techtalks.tv/talks/deterministic-policy-gradient-algorithms/61098/)를 한 번 보시길 추천드립니다. 짧은 강의지만 랩을 하듯이 쉴새없이 설명하는 Silver의 모습에서 천재성이 엿보이는 것을 확인하실 수 있습니다. 
+
 [DPG 여행하기](https://reinforcement-learning-kr.github.io/2018/06/27/2_dpg/)
 
 <br><br>
@@ -52,10 +54,10 @@ policy gradient (PG)는 expected reward를 policy의 파라미터에 대한 함�
 # 4. \[DDPG\] Continuous control with deep reinforcement learning
 
 [DDPG 여행하기](https://reinforcement-learning-kr.github.io/2018/06/26/3_ddpg/)
-<!--[DDPG Code](https://github.com/reinforcement-learning-kr/pg_travel)-->
+
+DPG의 후속 연구로 DPG보다 더 큰 주목을 받은 논문입니다. 소위 말하는 deep deterministic policy gradient (DDPG)로 불리는 기술을 제안한 논문입니다. 이 논문의 저자 중 일부는 그 유명한 DQN 논문의 저자이기도 합니다. Q-learning과 deep neural network를 접목시켰던 DQN처럼 이 논문도 DQN과 deep neural network를 접목시킨 논문입니다. 이 논문은 DQN으로는 좋은 성능을 내지 못했던 continuous action을 가지는 상황들에 대해서 상당히 훌륭한 결과를 보이면서 큰 주목을 받았습니다. 소위 말하는 deep reinforcement learning (DRL)에서 Q-learning 계열의 DQN, PG 계열의 DDPG로 양대산맥을 이루는 논문이라고 할 수 있습니다. 두 논문 모두 Deepmind에서 나왔다는 것은 Deepmind 기술력이 DRL 분야에서 최정점에 있음을 보여주는 상징이 아닌가 싶습니다. 논문 자체는 그리 어렵지 않습니다. 새로운 아이디어를 제시했다기보다는 딥러닝을 활용한 강화학습의 가능성을 보여주는 논문이라는 점에서 큰 의의를 가지는 것 같습니다. 여러분도 한번 코딩에 도전해보시는게 어떨까요?
 
 [DDPG 여행하기](https://reinforcement-learning-kr.github.io/2018/06/26/3_ddpg/)
-<!--[DDPG Code](https://github.com/reinforcement-learning-kr/pg_travel)-->
 
 <br><br>
 
@@ -113,7 +115,7 @@ GAE의 실험적인 입증으로는 robotic locomotion을 simulation하는 domai
 
 이 논문에서는 Reinforcement Learning에서 Policy Gradient Method의 새로운 방법인 PPO를 제안합니다. 이 방법은 agent가 환경과의 상호작용을 통해 data를 sampling하는 것과 stochastic gradient ascent를 사용하여 "surrogate" objective function을 optimizing하는 것을 번갈아가면서 하는 방법입니다. data sample마다 one gradient update를 수행하는 기존의 방법과는 달리, minibatch update의 multiple epochs를 가능하게 하는 새로운 objective function을 말합니다.
 
-또한 PPO는 TRPO의 연장선상에 있는 알고리즘이라고 할 수 있습니다. TRPO에서는 문제를 단순하게 만들기 위해서 최적화 문제를 여러 번 변형시켰습지만, PPO는 단순하게 clip이라는 개념을 사용합니다. TRPO에서 이용했던 surrogate objective function을 reward가 특정값 이상이거나 이하가 될 때 더 이상 변화시키지 않는 것입니다.
+또한 PPO는 TRPO의 연장선상에 있는 알고리즘이라고 할 수 있습니다. TRPO에서는 문제를 단순하게 만들기 위해서 최적화 문제를 여러 번 변형시켰지만, PPO는 단순하게 clip이라는 개념을 사용합니다. TRPO에서 이용했던 surrogate objective function을 reward가 특정값 이상이거나 이하가 될 때 더 이상 변화시키지 않는 것입니다.
 
 이 알고리즘의 장점으로는
 
