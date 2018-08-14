@@ -225,6 +225,4 @@ $$dx_t = \theta (\mu - x_t) dt + \sigma dW_t$$
 
 # 다음으로
 
-# [DDPG Code](https://github.com/jcwleo/Reinforcement_Learning/blob/master/pendulum/pendulum_ddpg.py)
-
 # [NPG 여행하기](https://reinforcement-learning-kr.github.io/2018/06/25/4_npg/)

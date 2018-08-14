@@ -60,14 +60,12 @@ deterministic policy gradeint (DPG)는 어찌보면 상당히 도전적인 아�
 # 3. \[DDPG\] Continuous control with deep reinforcement learning
 
 [DDPG 여행하기](https://reinforcement-learning-kr.github.io/2018/06/26/3_ddpg/)
-[DDPG Code](https://github.com/jcwleo/Reinforcement_Learning/blob/master/pendulum/pendulum_ddpg.py)
 
-DPG의 후속 연구로 DPG보다 더 큰 주목을 받은 논문입니다. 소위 말하는 deep deterministic policy gradient (DDPG)로 불리는 기술을 제안한 논문입니다. 이 논문의 저자 중 일부는 그 유명한 DQN 논문의 저자이기도 합니다. Q-learning과 deep neural network를 접목시켰던 DQN처럼 이 논문도 DQN과 deep neural network를 접목시킨 논문입니다. 
+DPG의 후속 연구로 DPG보다 더 큰 주목을 받은 논문입니다. 소위 말하는 deep deterministic policy gradient (DDPG)로 불리는 기술을 제안한 논문입니다. 이 논문의 저자 중 일부는 그 유명한 DQN 논문의 저자이기도 합니다. Q-learning과 deep neural network를 접목시켰던 DQN처럼 이 논문도 DQN과 deep neural network를 접목시킨 논문입니다.
 
 이 논문은 DQN으로는 좋은 성능을 내지 못했던 continuous action을 가지는 상황들에 대해서 상당히 훌륭한 결과를 보이면서 큰 주목을 받았습니다. 소위 말하는 deep reinforcement learning (DRL)에서 Q-learning 계열의 DQN, PG 계열의 DDPG로 양대산맥을 이루는 논문이라고 할 수 있습니다. 두 논문 모두 Deepmind에서 나왔다는 것은 Deepmind 기술력이 DRL 분야에서 최정점에 있음을 보여주는 상징이 아닌가 싶습니다. 논문 자체는 그리 어렵지 않습니다. 새로운 아이디어를 제시했다기보다는 딥러닝을 활용한 강화학습의 가능성을 보여주는 논문이라는 점에서 큰 의의를 가지는 것 같습니다. 여러분도 한번 코딩에 도전해보시는게 어떨까요?
 
 [DDPG 여행하기](https://reinforcement-learning-kr.github.io/2018/06/26/3_ddpg/)
-[DDPG Code](https://github.com/jcwleo/Reinforcement_Learning/blob/master/pendulum/pendulum_ddpg.py)
 
 <br><br>
 
