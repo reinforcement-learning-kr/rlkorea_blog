@@ -634,3 +634,11 @@ TRPO video link: https://www.youtube.com/watch?v=jeid0wIrSn4
 - Robotics와 게임 실험을 결합해, 시각정보와 센서데이터를 사용하는 로봇제어 정책을 학습시킬 수 있는 가능성을 보았습니다.
 
 - 샘플의 복잡도를 상당히 줄일 수 있어 실제상황에 적용가능성을 보았습니다.
+
+<br><br>
+
+# 다음으로
+
+# [TRPO Code](https://github.com/reinforcement-learning-kr/pg_travel/blob/master/mujoco/agent/trpo_gae.py)
+
+# [GAE 여행하기](https://reinforcement-learning-kr.github.io/2018/06/23/6_gae/)

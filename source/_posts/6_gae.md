@@ -428,3 +428,9 @@ Value function estimation error와 Policy gradient estimation error사이의 관
      - 두 번째로 이 논문에서 제안하는 방법으로는 high bias estimator에서 low bias estimator로 $\lambda$를 통해서 부드럽게 interpolate를 할 수 있습니다.
      - 반면에 Q를 사용하면 단지 high-bias estimator 밖에 사용할 수 없습니다.
      - 특히나 return에 대한 one-step estimation은 엄두를 못낼 정도로 bias가 큽니다.
+
+<br><br>
+
+# 다음으로
+
+# [PPO 여행하기](https://reinforcement-learning-kr.github.io/2018/06/22/7_ppo/)

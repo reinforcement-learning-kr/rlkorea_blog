@@ -3,7 +3,7 @@ title: Deterministic Policy Gradient Algorithms
 date: 2018-06-27 17:21:48
 tags: ["프로젝트", "피지여행"]
 categories: 프로젝트
-author: 공민서, 장수영, 차금강
+author: 김동민, 공민서, 장수영, 차금강
 subtitle: 피지여행 2번째 논문
 ---
 
@@ -12,7 +12,7 @@ subtitle: 피지여행 2번째 논문
 논문 저자 : David Silver, Guy Lever, Nicloas Heess, Thomas Degris, Daan Wierstra, Martin Riedmiller
 논문 링크 : [main text](http://proceedings.mlr.press/v32/silver14.pdf), [supplementary material](http://proceedings.mlr.press/v32/silver14-supp.pdf)
 Proceeding : International Conference on Machine Learning (ICML) 2014
-정리 : 공민서, 장수영, 차금강
+정리 : 김동민, 공민서, 장수영, 차금강
 
 ---
 
@@ -314,3 +314,9 @@ $$
 - [참고] Octopus Arm 이란?
     - [OctopusArm Youtube Link](https://www.youtube.com/watch?v=AxeeHif0euY)
     - <img src="https://www.dropbox.com/s/950ycj06sudakjx/Screenshot%202018-06-16%2017.45.52.png?dl=1">
+
+<br><br>
+
+# 다음으로
+
+# [DDPG 여행하기](https://reinforcement-learning-kr.github.io/2018/06/26/3_ddpg/)
