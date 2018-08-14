@@ -398,7 +398,6 @@ $$
 $$
 즉, 업데이트가 진행되어 나감에 따라서 gradient의 차이가 점점 줄어들게 되므로 언젠가는 0으로 수렴하게 됩니다.
 
-
 <br><br>
 
 # 6. Summary 
@@ -419,3 +418,9 @@ $$
     - 이러한 기법을 제시한 기존의 연구가 REINFORCE입니다.
     - 여러 Trajectory를 이용하므로 variance가 높을 수 밖에 없습니다.
     - Advantage를 활용하거나 하는 방식으로 이후 여러 연구가 진행되었습니다.
+
+<br><br>
+
+# [Sutton PG Code](https://github.com/reinforcement-learning-kr/pg_travel/blob/master/mujoco/agent/vanila_pg.py)
+
+# [DPG 여행하기](https://reinforcement-learning-kr.github.io/2018/06/27/2_dpg/)

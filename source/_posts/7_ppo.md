@@ -52,7 +52,7 @@ Sutton_PG부터 시작하여 TRPO, GAE를 거쳐 PPO까지 대단히 고생많�
     - hyperparameter tuning없이 다양한 문제들에 적용되어 해결
 
 <br>
-## 2.3 제한하는 알고리즘
+## 2.3 제안하는 알고리즘
 
 이 논문에는 Clipped probability ratios를 포함하는 objective function 제안하였습니다.
 
@@ -278,3 +278,9 @@ $$\hat{A}_t = \delta_t + (\gamma\lambda)\delta_{t+1} + \cdots + (\gamma\lambda)^
 이 논문에서는 policy update를 하기 위한 방법으로 stochastic gradient ascent의 multiple epchs를 사용하는 policy optimization method들의 하나의 알고리즘은 Proximal Policy Optimization(PPO)를 소개합니다.
 
 이 알고리즘은 trust region method의 stability와 reliability를 가집니다. 여기에 더하여 학습하기에 훨씬 더 간단하고, 더 일반적인 setting으로 적용하기에 편한 A3C로서 code를 구성하기에도 편하고, 계산량도 훨씬 덜합니다. 그리고 전반적으로 더 좋은 성능을 가집니다.
+
+<br><br>
+
+# 다음으로
+
+# [PPO Code](https://github.com/reinforcement-learning-kr/pg_travel/blob/master/mujoco/agent/ppo_gae.py)
