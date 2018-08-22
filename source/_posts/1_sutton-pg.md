@@ -25,7 +25,7 @@ Proceeding : Advances in Neural Information Processing Systems (NIPS) 2000
 
 전통적으로 강화학습 기법은 value function을 기반으로 동작하였습니다. 특정 state에서 vaue function 또는 value function을 근사하는 함수(function approximation)를 최대화하는 action을 찾는 greedy action-selection policy가  대표적입니다.
 
-논문에서는 이러한 방법은 deterministic한 policy를 찾는 쪽으로 나아가게 되지만 종종 최적의 policy는 stochastic한 성질을 가지기 때문에 이 방법으로는 최적의 policy를 찾을 수 없다고 언급하고 있습니다. (그러나 이 논문이 나오고 나서 한참 후 David Silver를 필두로한 DeepMind의 연구진들은 high-dimensional action space를 가지는 application에서 보다 빠르게 동작하는 [deterministic policy gradient](../../../06/27/2_dpg/)을 개발하였습니다.) 아마도 이러한 부분은 $\epsilon$-greedy action-selection policy로 개선될 수 있을 것입니다. 또 하나의 문제는 value function의 작은 변화로 인해서 action이 크게 변할 수도 있다는 것입니다. 이것은 알고리듬의 수렴성에 문제를 야기할 수 있습니다. 이러한 문제점을 해결하기 위하여 policy search라는 새로운 기법이 고안됩니다.
+논문에서는 이러한 방법은 deterministic한 policy를 찾는 쪽으로 나아가게 되지만 종종 최적의 policy는 stochastic한 성질을 가지기 때문에 이 방법으로는 최적의 policy를 찾을 수 없다고 언급하고 있습니다. (그러나 이 논문이 나오고 나서 한참 후 David Silver를 필두로한 DeepMind의 연구진들은 high-dimensional action space를 가지는 application에서 보다 빠르게 동작하는 [deterministic policy gradient](../../../06/27/2_dpg/)을 개발하였습니다.) 아마도 이러한 부분은 $\epsilon$-greedy action-selection method로 개선될 수 있을 것입니다. 또 하나의 문제는 value function의 작은 변화로 인해서 action이 크게 변할 수도 있다는 것입니다. 이것은 알고리듬의 수렴성에 문제를 야기할 수 있습니다. 이러한 문제점을 해결하기 위하여 policy search라는 새로운 기법이 고안됩니다.
 
 <br>
 ## 1.2 Policy Search
@@ -383,6 +383,7 @@ policy iteration with function approximation은 locally optimal policy에 수렴
 
 으로 정의된 sequence $\rho(\pi_k)$는 $\lim_{k\rightarrow\infty}\frac{\partial\rho(\pi_k)}{\partial\theta}=0$이기 때문에 수렴합니다.
 - sequence $\rho(\pi_k)_{k=0}^\infty$에 대한 추가 설명
+    - 2번의 식을 통해 자연스럽게 actor-critic으로 연결됩니다.
     - $\theta_{k+1}=\theta_k+\alpha_k\sum_sd^{\pi_{k} }(s)\sum_a\frac{\partial\pi_k(s,a)}{\partial\theta}f_{w_{k} }(s,a)$ 에 따라 $\theta$가 1, 2, ..., $\infty$로 갈텐데, 거기에 따른 objective function or performance의 sequence입니다.
     - (comment) 굳이 sequence라는 표현이 없어도 될 것 같습니다. 어짜피 k가 $\infty$로 가면 $\rho(\pi_k)$가 수렴한다는 의미이기 때문에 불필요해보입니다.
 
@@ -421,6 +422,14 @@ $$
 
 <br><br>
 
-# [Sutton PG Code](https://github.com/reinforcement-learning-kr/pg_travel/blob/master/mujoco/agent/vanila_pg.py)
+# 처음으로
 
-# [DPG 여행하기](https://reinforcement-learning-kr.github.io/2018/06/27/2_dpg/)
+## [PG Travel Guide](https://reinforcement-learning-kr.github.io/2018/06/29/0_pg-travel-guide/)
+
+<br>
+
+# 다음으로
+
+## [Sutton PG Code](https://github.com/reinforcement-learning-kr/pg_travel/blob/master/mujoco/agent/vanila_pg.py)
+
+## [DPG 여행하기](https://reinforcement-learning-kr.github.io/2018/06/27/2_dpg/)

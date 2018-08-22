@@ -223,6 +223,18 @@ $$dx_t = \theta (\mu - x_t) dt + \sigma dW_t$$
 
 <br><br>
 
+# 처음으로
+
+## [PG Travel Guide](https://reinforcement-learning-kr.github.io/2018/06/29/0_pg-travel-guide/)
+
+<br>
+
+# 이전으로
+
+## [DPG 여행하기](https://reinforcement-learning-kr.github.io/2018/06/27/2_dpg/)
+
+<br>
+
 # 다음으로
 
-# [NPG 여행하기](https://reinforcement-learning-kr.github.io/2018/06/25/4_npg/)
+## [NPG 여행하기](https://reinforcement-learning-kr.github.io/2018/06/25/4_npg/)

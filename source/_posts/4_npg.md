@@ -31,9 +31,15 @@ Proceeding : Advances in Neural Information Processing Systems (NIPS) 2002
 
 Neural Network(NN)을 사용할 경우 NN의 parameter space가 우리가 보통 생각하는 직선으로 쭉쭉 뻗어있는 유클리디안 공간(Euclidean space)가 아닙니다. 좀 더 일반적으로는 구의 표면과 같이 휘어져있는 공간 즉, 리만 공간(Riemannian space)로 표현할 수 있습니다. 다음 그림들을 보겠습니다.
 
-<center> <img src="https://www.dropbox.com/s/jnlm6he18ar64yc/Screen%20Shot%202018-08-12%20at%208.14.13%20PM.png?dl=1" width="300"> <img src="https://www.dropbox.com/s/tufjqmaeaz29kaz/Screen%20Shot%202018-08-12%20at%208.15.53%20PM.png?dl=1" width="400"> <img src="https://www.dropbox.com/s/mpoop19eyu1vp0a/Screen%20Shot%202018-08-13%20at%2012.52.09%20PM.png?dl=1" width="600"> </center>
+<center> <img src="https://www.dropbox.com/s/jnlm6he18ar64yc/Screen%20Shot%202018-08-12%20at%208.14.13%20PM.png?dl=1" width="400"> </center>
 
-그림들과 같이 곡률의 일차 근사가 유클리디안 공간에서는 일차 근사가 아닌 이차 근사이고, 리만 공간에서는 휘어진 공간이기 때문에 곡률을 일차 근사라고 보는 것입니다. 추가적으로 일차 근사와 이차 근사의 차이는 [다크 프로그래머님의 블로그](http://darkpgmr.tistory.com/149)를 참고해주시기 바랍니다. (꼭 보세요!) 
+<center> <img src="https://www.dropbox.com/s/tufjqmaeaz29kaz/Screen%20Shot%202018-08-12%20at%208.15.53%20PM.png?dl=1" width="400"> </center>
+
+아래의 그림처럼 어떠한 확률 분포가 있다고 해봅시다.
+
+<center> <img src="https://www.dropbox.com/s/mpoop19eyu1vp0a/Screen%20Shot%202018-08-13%20at%2012.52.09%20PM.png?dl=1" width="600"> </center>
+
+어떠한 공간의 확률 분포에 있는 한 점은 다른 공간의 확률 분포에서의 한 점이 될 것입니다. 이렇게 위의 그림들과 같이 유클리디안 공간의 확률 분포에서의 한 점이 리만 공간의 확률 분포의 한 점이 되는 것이고, 곡률의 일차 근사가 유클리디안 공간에서는 일차 근사가 아닌 이차 근사이고, 리만 공간에서는 휘어진 공간이기 때문에 곡률을 일차 근사라고 보는 것입니다. 추가적으로 일차 근사와 이차 근사의 차이는 [다크 프로그래머님의 블로그](http://darkpgmr.tistory.com/149)를 참고해주시기 바랍니다. (꼭 보세요!) 
 
 일차 근사와 이차 근사의 차이점과 각각의 장단점, 그리고 추가적으로 Line Search까지 알고 난 후에 이 논문을 보시는 것을 권장해드립니다.
 
@@ -507,8 +513,20 @@ Natural Gradient Method는  Policy Iteration에서와 같이 Greedy Action을 �
 
 <br><br>
 
+# 처음으로
+
+## [PG Travel Guide](https://reinforcement-learning-kr.github.io/2018/06/29/0_pg-travel-guide/)
+
+<br>
+
+# 이전으로
+
+## [DDPG 여행하기](https://reinforcement-learning-kr.github.io/2018/06/26/3_ddpg/)
+
+<br>
+
 # 다음으로
 
-# [NPG Code](https://github.com/reinforcement-learning-kr/pg_travel/blob/master/mujoco/agent/tnpg.py)
+## [NPG Code](https://github.com/reinforcement-learning-kr/pg_travel/blob/master/mujoco/agent/tnpg.py)
 
-# [TRPO 여행하기](https://reinforcement-learning-kr.github.io/2018/06/24/5_trpo/)
+## [TRPO 여행하기](https://reinforcement-learning-kr.github.io/2018/06/24/5_trpo/)

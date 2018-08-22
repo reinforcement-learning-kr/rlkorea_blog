@@ -19,7 +19,7 @@ Proceeding : International Conference on Machine Learning (ICML) 2014
 # 1. 들어가며...
 
 - Deterministic Policy Gradient (DPG) Theorem을 제안합니다.
-    1) 중요한 점은 DPG는 Expected gradient of the action-value function의 형태라는 것입니다.
+    - 중요한 점은 DPG는 Expected gradient of the action-value function의 형태라는 것입니다.
 - Policy variance가 0에 수렴할 경우, DPG는 Stochastic Policy Gradient (SPG)와 동일해집니다. (Theorem 2)
     - Theorem 2로 인해 기존 Policy Gradient (PG) 와 관련된 기법들을 DPG에 적용할 수 있게 됩니다.
         - 예. Sutton PG, natural gradients, actor-critic, episodic/batch methods
@@ -32,7 +32,7 @@ Proceeding : International Conference on Machine Learning (ICML) 2014
         - 무한정 학습을 시키면, SPG도 최적으로 수렴할 것으로 예상되기에 위 성능 비교는 일정 iteration 내로 한정합니다.
     - 기존 기법들에 비해 computation 양이 많지 않습니다.
         - Computation 은 action dimensionality 와 policy parameters 수에 비례합니다.
-        
+
 <br><br>
 
 # 2. Background
@@ -49,7 +49,7 @@ $$
 <br>
 ## 2.2 SPG Theorem
 - State distribution $ \rho^{\pi}(s) $ 은 policy parameters에 영향을 받지만, policy gradient 를 계산할 때는 state distribution 의 gradient 를 고려할 필요가 없습니다.
-- $$\begin{eqnarray}\nabla_{\theta}J(\pi_{\theta}) &=& \int_{S}\rho^{\pi}(s)\int_{A}\nabla_{\theta}\pi_{\theta}(a|s)Q^{\pi}(s,a)dads \nonumber \\ &=& E_{s \sim \rho^{\pi}, a \sim \pi_{\theta}}[\nabla_{\theta}\log\pi_{\theta}(a|s)Q^{\pi}(s,a)]
+$$\begin{eqnarray}\nabla_{\theta}J(\pi_{\theta}) &=& \int_{S}\rho^{\pi}(s)\int_{A}\nabla_{\theta}\pi_{\theta}(a|s)Q^{\pi}(s,a)dads \nonumber \\ &=& E_{s \sim \rho^{\pi}, a \sim \pi_{\theta}}[\nabla_{\theta}\log\pi_{\theta}(a|s)Q^{\pi}(s,a)]
 \end{eqnarray}$$
 
 <br>
@@ -317,6 +317,20 @@ $$
 
 <br><br>
 
+# 처음으로
+
+## [PG Travel Guide](https://reinforcement-learning-kr.github.io/2018/06/29/0_pg-travel-guide/)
+
+<br>
+
+# 이전으로
+
+## [Sutton PG 여행하기](https://reinforcement-learning-kr.github.io/2018/06/28/1_sutton-pg/)
+
+## [Sutton PG Code](https://github.com/reinforcement-learning-kr/pg_travel/blob/master/mujoco/agent/vanila_pg.py)
+
+<br>
+
 # 다음으로
 
-# [DDPG 여행하기](https://reinforcement-learning-kr.github.io/2018/06/26/3_ddpg/)
+## [DDPG 여행하기](https://reinforcement-learning-kr.github.io/2018/06/26/3_ddpg/)

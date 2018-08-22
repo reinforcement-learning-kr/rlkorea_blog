@@ -637,8 +637,22 @@ TRPO video link: https://www.youtube.com/watch?v=jeid0wIrSn4
 
 <br><br>
 
+# 처음으로
+
+## [PG Travel Guide](https://reinforcement-learning-kr.github.io/2018/06/29/0_pg-travel-guide/)
+
+<br>
+
+# 이전으로
+
+## [NPG 여행하기](https://reinforcement-learning-kr.github.io/2018/06/25/4_npg/)
+
+## [NPG Code](https://github.com/reinforcement-learning-kr/pg_travel/blob/master/mujoco/agent/tnpg.py)
+
+<br>
+
 # 다음으로
 
-# [TRPO Code](https://github.com/reinforcement-learning-kr/pg_travel/blob/master/mujoco/agent/trpo_gae.py)
+## [TRPO Code](https://github.com/reinforcement-learning-kr/pg_travel/blob/master/mujoco/agent/trpo_gae.py)
 
-# [GAE 여행하기](https://reinforcement-learning-kr.github.io/2018/06/23/6_gae/)
+## [GAE 여행하기](https://reinforcement-learning-kr.github.io/2018/06/23/6_gae/)
