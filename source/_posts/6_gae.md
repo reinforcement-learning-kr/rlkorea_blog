@@ -95,18 +95,20 @@ $$g^\gamma := \mathbb{E}_{s_{0:\infty} a_{0:\infty}} [\sum_{t=0}^\infty A^{\pi, 
 
 다음으로 advantage function에서 새롭게 접하는 "$\gamma$-just estimator"의 notation에 대해 알아봅시다.
 
-- 먼저 $\gamma$-just estimator는 $g^\gamma$ ${}^1$를 estimate하기 위해 위의 수식에서 $A^{\pi, \gamma}$를 $\gamma$-just estimator로 사용할 때, bias하지 않은 estimator라고 합시다. 그리고 이 $\gamma$-just advantage estimator를 $\hat{A}_t (s_{0:\infty} , a_{0:\infty})$라고 하고, 전체의 trajectory에 대한 하나의 function이라고 합시다.
+- 먼저 $\gamma$-just estimator는 $g^\gamma$ ${}^1$를 estimate하기 위해 위의 수식에서 $A^{\pi, \gamma}$를 $\gamma$-just estimator로 사용할 때, bias하지 않은 estimator라고 합시다. 그리고 이 $\gamma$-just advantage estimator를 <img src="https://www.dropbox.com/s/7g2glqx2kbfynaa/Screen%20Shot%202018-08-22%20at%209.03.46%20PM.png?dl=1" width="100"> 라고 하고, 전체의 trajectory에 대한 하나의 function이라고 합시다.
 - ${}^1$에서 이 논문의 저자가 하고 싶은 말이 있는 것 같습니다. 개인적으로 $\gamma$-just estimator를 이해하는 데에 있어서 중요한 주석이라 정확히 해석하고자 합니다.
     - $A^\pi$를 $A^{\pi, \gamma}$로 사용함으로써 이미 bias하다라고 말했지만, "이 논문에서 하고자 하는 것은 $g^\gamma$에 대해 unbiased estimate를 얻고 싶은 것입니다." 하지만 undiscounted MDP의 policy gradient에 대해서는 당연히 $\gamma$를 사용하기 때문에 biased estimate를 얻습니다. 개인적으로 이것은 일단 무시하고 $\gamma$를 사용할 때 어떻게 unbiased estimate를 얻을 지에 대해 좀 더 포커스를 맞추고 있는 것 같습니다.
     - 그러니까 저 $A^{\pi, \gamma}$를 $\gamma$-just estimator로 바꿔줌으로써 unbiased estimate를 하고 싶다는 것이 뒤이어 나오는 정의와 명제의 핵심이라고 할 수 있습니다.
 
 Definition 1.
 먼저 가정을 합니다. (가정을 바탕으로 이루어지는 정의라는 것을 주목합시다.) 만약
-$$\mathbb{E}_{s_{0:\infty} a_{0:\infty}} [\hat{A}_t (s_{0:\infty}, a_{0:\infty}) \nabla_\theta \log \pi_\theta (a_t | s_t)] = \mathbb{E}_{s_{0:\infty} a_{0:\infty}} [A^{\pi, \gamma} (s_t, a_t) \nabla_\theta \log \pi_\theta (a_t | s_t)]$$
+<center ><img src="https://www.dropbox.com/s/aia9f1l99wyxgah/Screen%20Shot%202018-08-22%20at%209.07.05%20PM.png?dl=1" width="700"> </center>
 두 수식이 같다면, estimator $\hat{A}_t$는 $\gamma$-just입니다.
 
 그리고 만약 모든 t에 대해서 $\hat{A}_t$이 $\gamma$-just이라면, 다음과 같이 표현할 수 있습니다.
-$$\mathbb{E}_{s_{0:\infty} a_{0:\infty}} [\hat{A}_t (s_{0:\infty}, a_{0:\infty}) \nabla_\theta \log \pi_\theta (a_t | s_t)] = g^\gamma$$
+
+<center ><img src="https://www.dropbox.com/s/r4m6ktw8geeu7pe/Screen%20Shot%202018-08-22%20at%209.29.18%20PM.png?dl=1" width="420"> </center>
+
 위의 수식이 바로 unbiased estimate입니다.
 
 $\gamma$-just인 $\hat{A}_t$에 대한 한가지 조건은 $\hat{A}_t$이 두 가지 function $Q_t$ and $b_t$로 나뉠 수 있다는 것입니다.
@@ -118,7 +120,9 @@ Proposition 1.
 모든 $(s_t, a_t)$에 대해,
 $$\mathbb{E}_{s_{t+1}:\infty, a_{t+1}:\infty | s_t, a_t} [Q_t (s_{t:\infty}, a_{t:\infty})] = Q^{\pi, \gamma} (s_t, a_t)$$
 로 인하여 $\hat{A}_t$이 
-$$\hat{A}_{s_{0:\infty}, a_{0:\infty}} = Q_t (s_{0:\infty}, a_{0:\infty}) - b_t (s_{0:t}, a_{0:t-1})$$
+
+<center> <img src="https://www.dropbox.com/s/59ydsav6djwyevl/Screen%20Shot%202018-08-22%20at%209.27.13%20PM.png?dl=1" width="380"> </center>
+
 형태라고 가정합시다. (가정을 바탕으로 이루어지는 명제라는 점을 주목합시다.)
 
 그 때, $\hat{A}_t$은 $\gamma$-just입니다.
@@ -160,7 +164,7 @@ $$\hat{A}_{s_{0:\infty}, a_{0:\infty}} = Q_t (s_{0:\infty}, a_{0:\infty}) - b_t 
 
 이번 section에는 discounted advantage function $A^{\pi, \gamma} (s_t, a_t)$의 accurate estimate $\hat{A}_t$에 대해서 살펴봅시다. 이에 따른 수식은 다음과 같습니다.
 
-$$\hat{g} = \frac{1}{N} \sum_{n=1}^N \sum_{t=0}^\infty \hat{A}_t^n \nabla_{\theta} \log \pi_{\theta}(a_t^n | s_t^n)$$
+<center> <img src="https://www.dropbox.com/s/sn16g5iyzzflju0/Screen%20Shot%202018-08-22%20at%209.22.49%20PM.png?dl=1" width="300"> </center>
 
 여기서 n은 a batch of episodes에 대하여 index한 것입니다.
 
@@ -179,7 +183,8 @@ $\hat{A}_t^{(k)}$은 returns의 $k$-step estimate와 연관지을 수 있고, $\
 
 여기서 $k \rightarrow \infty$로 생각해보면 bias가 일반적으로 점점 더 작아집니다. 왜냐하면 $\gamma^k V(s_{t+k})$가 점점 많이 discounted되서 $-V(s_t)$가 bias에 영향을 미치지 못하기 때문입니다. $k \rightarrow \infty$를 취하면 다음과 같은 수식이 나옵니다.
 
-$$\hat{A}_t^{(\infty)} = \sum_{l=0}^\infty \gamma^l \delta_{t+l}^V = -V(s_t) + \sum_{l=0}^\infty \gamma^l r_{t+l}$$
+<center> <img src="https://www.dropbox.com/s/13fn9wcup8pfh9u/Screen%20Shot%202018-08-22%20at%209.19.52%20PM.png?dl=1" width="320"> </center>
+
 우변의 수식과 같이 empirical returns에서 value function baseline을 뺀 것으로 나타낼 수 있습니다.
 
 Generalized Advantage Estimator GAE($\gamma, \lambda$)는 $k$-step estimators의 exponentially-weighted average로 나타낼 수 있습니다.
@@ -204,7 +209,9 @@ Generalized Advantage Estimator GAE($\gamma, \lambda$)는 $k$-step estimators의
 - 반면에, $\lambda < 1$는 유일하게 value function이 부정확할 때 bias합니다. 그리고 경험상, $\lambda$의 best value는 $\gamma$의 best value보다 훨씬 더 낮습니다. 왜냐하면 $\lambda$가 정확한 value function에 대해 $\gamma$보다 훨씬 덜 bias하기 때문입니다.
 
 GAE를 사용할 때, $g^\gamma$의 biased estimator를 구성할 수 있습니다. 수식은 다음과 같습니다.
-$$g^\gamma \approx \mathbb{E} [\sum_{t=0}^\infty] \nabla_\theta \log \pi_\theta (a_t | s_t) \hat{A}_t^{GAE(\gamma, \lambda)}] = \mathbb{E} [\sum_{t=0}^{\infty} \nabla_\theta \log \pi_\theta (a_t | s_t) \sum_{l=0}^\infty (\gamma \lambda)^l \delta_{t+1}^V]$$
+
+<center> <img src="https://www.dropbox.com/s/ok57dsk52o7pl9r/Screen%20Shot%202018-08-22%20at%209.17.54%20PM.png?dl=1" width="670"> </center>
+
 여기서 $\lambda = 1$일 때 동일해집니다.
 
 <br><br>
@@ -287,8 +294,9 @@ Trust region문제를 풀기 위해서는 다음 스텝을 따릅니다.
 - $\sigma^2 = \frac{1}{N} \sum_{n=1}^{N} \vert\vert V_{\phi old}(s_n) - \hat{V_n} \vert\vert^{2}$을 계산합니다.
 - 그 후에 다음과 같은 constrained opimization문제를 풉니다.
 
-$$minimize_{\phi} \, \sum_{n=1}^N \parallel V_\phi (s_n) - \hat{V}_n \parallel^2$$
-$$subject \, \, to \, \frac{1}{N} \sum_{n=1}^N \frac{\parallel V_\phi (s_n) - V_{\phi old} (s_n) \parallel^2}{2 \sigma^2} \le \epsilon$$
+<center> <img src="https://www.dropbox.com/s/d74cg3votxi2dbg/Screen%20Shot%202018-08-22%20at%209.13.28%20PM.png?dl=1" width="300"> </center>
+
+<center> <img src="https://www.dropbox.com/s/jrkjax71t3j3vk4/Screen%20Shot%202018-08-22%20at%209.13.35%20PM.png?dl=1" width="370"> </center>
 
 - 위의 수식은 사실 old Value function과 새로운 Value function KL distance가 $\epsilon$ 다 작아야한다는 수식과 같습니다. Value function이 평균은 $V_{\phi}(s)$이고 분산이 $\sigma^2$인 conditional Gaussian distribution으로 parameterize되었을 뿐입니다.
 
@@ -296,8 +304,9 @@ $$subject \, \, to \, \frac{1}{N} \sum_{n=1}^N \frac{\parallel V_\phi (s_n) - V_
 
 이 trust region문제의 답을 conjudate gradient algorithm을 이용하여 근사값을 구할 수 있습니다. 특히, 다음과 같은  quadratic program을 풀게됩니다.
 
-$$minimize_{\phi} \, g^T (\phi - \phi_{old})$$
-$$subject \, \, to \, \frac{1}{N} \sum_{n=1}^N (\phi - \phi_{old})^T H(\phi - \phi_{old}) \le \epsilon$$
+<center> <img src="https://www.dropbox.com/s/pawjkm8b9ycwsl5/Screen%20Shot%202018-08-22%20at%209.10.36%20PM.png?dl=1" width="250"> </center>
+
+<center> <img src="https://www.dropbox.com/s/va7wms8uqxnw5rq/Screen%20Shot%202018-08-22%20at%209.10.40%20PM.png?dl=1" width="370"> </center>
 
 - 여기서 $g$는 objective 의 gradient입니다.
 - $j_n = \nabla_{\phi} V_{\phi}(s_n)$일때, $H = \frac{1}{N} \sum_{n} j_n j^T_n$이며, $H$는 objective의 hessian에 대해서 gaussian newton method로 근사한 값입니다. 따라서, value function을 conditional probability로 해석한다면 Fisher information matrix가 됩니다.
@@ -431,6 +440,20 @@ Value function estimation error와 Policy gradient estimation error사이의 관
 
 <br><br>
 
+# 처음으로
+
+## [PG Travel Guide](https://reinforcement-learning-kr.github.io/2018/06/29/0_pg-travel-guide/)
+
+<br>
+
+# 이전으로
+
+## [TRPO 여행하기](https://reinforcement-learning-kr.github.io/2018/06/24/5_trpo/)
+
+## [TRPO Code](https://github.com/reinforcement-learning-kr/pg_travel/blob/master/mujoco/agent/trpo_gae.py)
+
+<br>
+
 # 다음으로
 
-# [PPO 여행하기](https://reinforcement-learning-kr.github.io/2018/06/22/7_ppo/)
+## [PPO 여행하기](https://reinforcement-learning-kr.github.io/2018/06/22/7_ppo/)

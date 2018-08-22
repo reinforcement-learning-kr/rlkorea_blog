@@ -17,13 +17,13 @@ subtitle: 피지여행에 관한 개략적 기록
 
 위의 그림은 강화학습 알고리즘 landscape에서 Policy Optimization의 관점을 중점적으로 하여 나타낸 그림입니다. 위의 그림에서 빨간색 작은 숫자로 나타낸 것이 저희 PG여행에서 다룰 논문들입니다. 순서는 다음과 같습니다.
 
-1. [Sutton_PG](https://reinforcement-learning-kr.github.io/2018/06/28/1_sutton-pg/)
-2. [DPG](https://reinforcement-learning-kr.github.io/2018/06/27/2_dpg/)
-3. [DDPG](https://reinforcement-learning-kr.github.io/2018/06/26/3_ddpg/)
-4. [NPG](https://reinforcement-learning-kr.github.io/2018/06/25/4_npg/)
-5. [TRPO](https://reinforcement-learning-kr.github.io/2018/06/24/5_trpo/)
-6. [GAE](https://reinforcement-learning-kr.github.io/2018/06/23/6_gae/)
-7. [PPO](https://reinforcement-learning-kr.github.io/2018/06/22/7_ppo/)
+1. [Sutton_PG](http://papers.nips.cc/paper/1713-policy-gradient-methods-for-reinforcement-learning-with-function-approximation.pdf)
+2. [DPG](http://proceedings.mlr.press/v32/silver14.pdf)
+3. [DDPG](https://arxiv.org/pdf/1509.02971.pdf)
+4. [NPG](https://papers.nips.cc/paper/2073-a-natural-policy-gradient.pdf)
+5. [TRPO](https://arxiv.org/pdf/1502.05477.pdf)
+6. [GAE](https://arxiv.org/pdf/1506.02438.pdf)
+7. [PPO](https://arxiv.org/pdf/1707.06347.pdf)
 
 위와 같이 총 7가지 논문들을 리뷰하여 블로그로 정리하였습니다. 각 순서에 맞춰 보시는 것을 권장해드립니다.
 

@@ -37,7 +37,7 @@ Sutton_PG부터 시작하여 TRPO, GAE를 거쳐 PPO까지 대단히 고생많�
 - DQN
     - Discrete action space를 가지는 문제들에는 효과적으로 적용 가능하지만, continuous control에도 잘 작동하는지는 검증되지 않았습니다.
 - A3C - "Vanilla" policy gradient methods
-    - Data efficiency와 robustness 측면이 좋지 않습니다.
+    - Data efficiency와 robustness 측면이 좋지 않습니다. A3C의 data efficiency의 경우 on-policy로서 한 번 쓴 data는 바로 버리기 때문에 data efficiency가 좋지 않다는 것입니다.
 - TRPO
     - 간단히 말해 복잡합니다.
     - 또한 noise(ex. dropout)나 parameter sharing(policy와 value function 간 혹은 auxiliary tasks와의)를 포함하는 architecture와의 호환성 없습니다.
@@ -281,6 +281,18 @@ $$\hat{A}_t = \delta_t + (\gamma\lambda)\delta_{t+1} + \cdots + (\gamma\lambda)^
 
 <br><br>
 
+# 처음으로
+
+## [PG Travel Guide](https://reinforcement-learning-kr.github.io/2018/06/29/0_pg-travel-guide/)
+
+<br>
+
+# 이전으로
+
+## [GAE 여행하기](https://reinforcement-learning-kr.github.io/2018/06/23/6_gae/)
+
+<br>
+
 # 다음으로
 
-# [PPO Code](https://github.com/reinforcement-learning-kr/pg_travel/blob/master/mujoco/agent/ppo_gae.py)
+## [PPO Code](https://github.com/reinforcement-learning-kr/pg_travel/blob/master/mujoco/agent/ppo_gae.py)
