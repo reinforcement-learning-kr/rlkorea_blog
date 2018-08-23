@@ -34,14 +34,12 @@ subtitle: 피지여행에 관한 개략적 기록
 # 1. \[Sutton PG\] Policy gradient methods for reinforcement learning with function approximation
 
 [Sutton PG 여행하기](https://reinforcement-learning-kr.github.io/2018/06/28/1_sutton-pg/)
-[Sutton PG Code](https://github.com/reinforcement-learning-kr/pg_travel/blob/master/mujoco/agent/vanila_pg.py)
 
 policy gradient (PG)는 expected reward를 policy의 파라미터에 대한 함수로 모델링하고 이 reward를 최대화하는 policy를 gradient ascent 기법을 이용해서 찾는 기법입니다. 강화학습의 대표격이라고 할 수 있는 Q-learning이라는 훌륭한 방법론이 이미 존재하고 있었지만 Q값의 작은 변화에도 policy가 크게 변할 수도 있다는 단점이 있기 때문에 policy의 점진적인 변화를 통해 더 나은 policy를 찾아가는 PG기법이 개발되었습니다.
 
 이 PG기법은 먼저 개발되었던 [REINFORCE](https://link.springer.com/content/pdf/10.1007/BF00992696.pdf)라는 기법과 관련이 아주 많습니다. 서튼의 PG기법은 REINFORCE 기법을 [actor-critic algorithm](http://papers.nips.cc/paper/1786-actor-critic-algorithms.pdf)을 사용하여 개선시킨 것이라고 볼 수도 있습니다. 저희 PG여행 팀도 처음에는 REINFORCE를 출발지로 삼으려고 했었지만 예전 논문이다보니 논문의 가독성이 너무 떨어져서 강화학습의 아버지라고 할 수 있는 서튼의 논문을 출발지로 삼았습니다. 하지만 이 논문도 만만치 않았습니다. 이 논문을 읽으시려는 분들께 저희의 여행기가 도움이 될 것입니다. PG기법에 대해서 먼저 감을 잡고 시작하시려면 [Andre Karpathy의 PG에 대한 블로그](http://karpathy.github.io/2016/05/31/rl/)를 먼저 한 번 읽어보세요.  한글번역도 있습니다! 1) http://keunwoochoi.blogspot.com/2016/06/andrej-karpathy.html 2) https://tensorflow.blog/2016/07/13/reinforce-pong-at-gym/
 
 [Sutton PG 여행하기](https://reinforcement-learning-kr.github.io/2018/06/28/1_sutton-pg/)
-[Sutton PG Code](https://github.com/reinforcement-learning-kr/pg_travel/blob/master/mujoco/agent/vanila_pg.py)
 
 <br><br>
 
