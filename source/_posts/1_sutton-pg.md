@@ -430,6 +430,4 @@ $$
 
 # 다음으로
 
-## [Sutton PG Code](https://github.com/reinforcement-learning-kr/pg_travel/blob/master/mujoco/agent/vanila_pg.py)
-
 ## [DPG 여행하기](https://reinforcement-learning-kr.github.io/2018/06/27/2_dpg/)
