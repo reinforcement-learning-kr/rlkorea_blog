@@ -554,6 +554,9 @@ class Actor(nn.Module):
         return mu, std, logstd
 ```
 
+swish와 tanh를 사용한 학습을 비교한 그래프입니다. 하늘색 그래프가 swish를 사용한 결과, 파란색이 tanh를 사용한 결과입니다. score는 episode 마다의 reward의 합입니다.
+<center><img src="https://www.dropbox.com/s/3d07c1kql4h5oqk/Screenshot%202018-08-24%2016.33.45.png?dl=1" width="350px"></center>
+
 이제 multi-agent로 학습하도록 변경하면 됩니다. PPO의 경우 memory에 time horizon 동안의 sample을 시간순서대로 저장하고 GAE를 구한 이후에 minibatch로 추출해서 학습합니다. 따라서 여러개의 agent로 학습하기 위해서는 memory를 따로 만들어서 각각의 GAE를 구해서 학습해야합니다. Unity에서는 Mujoco에서 했던 것처럼 deque로 memory를 만들지 않고 따로 named tuple로 구현한 memory class를 import 해서 사용했습니다. utils 폴더 밑에 memory.py 코드에 구현되어있으며 코드는 https://github.com/pytorch/tutorials/blob/master/Reinforcement%20(Q-)Learning%20with%20PyTorch.ipynb
 에서 가져왔습니다. 
 
@@ -619,51 +622,48 @@ train_model(actor, critic, actor_optim, critic_optim, sts, ats, returns, advants
 이렇게 학습한 에이전트는 다음과 같이 걷습니다. 이렇게 walker를 학습시키고 나니 어떻게 하면 사람처럼 자연스럽게 걷는 것을 agent 스스로 학습할 수 있을까라는 고민을 하게 되었습니다.
 <center><img src="https://www.dropbox.com/s/fyz1kn5v92l3rrk/plane-595.gif?dl=1"></center>
 
+Unity ml-agent에서 제공하는 pretrained된 모델을 다음과 같이 걷습니다. 저희가 학습한 agent와 상당히 다르게 걷는데 왜 그런 차이가 나는지도 분석하고 싶습니다. 
+<center><img src="https://www.dropbox.com/s/xwz766g7c4eiaia/plane-unity.gif?dl=1"></center>
+
 
 </br>
 ## 3. Unity Curved Surface 제작 및 학습기
-### 3.1 도입
-처음부터 만들 수는 없으니, 적당한 것을 찾아볼까? (**중요** Price : 0)
+Unity ml-agent에서 제공하는 기본 Walker 환경에서 학습하고 나니 바닥을 조금 울퉁불퉁하게 혹은 경사가 진 곳에서 걷는 것을 학습해보고 싶다라는 생각이 들었습니다. 따라서 간단하게 걷는 배경을 다르게 하는 시도를 해봤습니다. 
+
+</br>
+### 3.1 Curved Surface 만들기
+Agent가 걸어갈 배경을 처음부터 만드는 것보다 구할 수 있다면 만들어진 배경을 구하기로 했습니다. Unity를 유료라는 점에서 선택했듯이 배경을 무료로 구할 수 있는 방법을 선택했습니다. 
 <center><img src="https://www.dropbox.com/s/e0tsp3e3c9uq2zh/Screenshot%202018-08-23%2000.19.14.png?dl=1"></center>
 
-오...괜찮아보이네. 점 찍어서 대강 굴곡 형태 잡아주면 알아서 곡면 만들어주는 듯?
+무료로 공개되어있는 Unity 배경 중에서 Curved Ground 라는 것을 가져와서 작업하기로 했습니다. 이 환경 같은 경우 spline을 그리듯이 중간의 점을 이동시키면서 사용자가 곡면을 수정할 수 있습니다.
 <center><img src="https://www.dropbox.com/s/3ppmxotrf6qhzaf/Screenshot%202018-08-23%2000.20.25.png?dl=1"></center>
 
-일단 곡면이 잘 만들어지는 지 제대로 돌아가는 지 보면....
+간단하게 곡면을 만들어서 공을 굴려보면 다음과 같이 잘 굴러갑니다. 
 <center><img src="https://www.dropbox.com/s/2e8yqvqj1a4th27/slope_walker_ball.gif?dl=1"></center>
-잘 되네.
 
-### 3.2 실전
-그럼 이제 여러 에이전트들이 학습할 수 있도록 학습 환경을 만들자~!
-#### 환경 구축
-[초기]
-<center><img src="https://www.dropbox.com/s/m492xsfp4bolmz5/Screenshot%202018-08-23%2000.36.06.png?dl=1">
+여러 에이전트가 학습할 수 있도록 오목한 경사면을 제작했습니다. 초반의 모습은 다음과 같았습니다. 
+<img src="https://www.dropbox.com/s/m492xsfp4bolmz5/Screenshot%202018-08-23%2000.36.06.png?dl=1">
 
-[후기]
+하지만 최종으로는 다음과 같은 곡면으로 사용했습니다. 위 사진의 배경과 아래 사진의 배경이 다른 점은 slope 길이, 내리막 경사, 오르막 경사입니다. Slope 길이의 경우 길이를 기존 plane 과 동일하게 했더니, 오르막 올라가는 부분이 학습이 잘 안 되었습니다. 따라서 길이를 줄였습니다. 내리막 경사의 경우 너무 경사지면 학습이 잘 안 되고, 너무 완만하니 내리막 티가 잘 안 나기 때문에 적절한 경사를 설정했습니다. 오르막 경사의 경우 내리막보다는 오르막이 더 어려울 것이라고 판단해서 오르막 경사를 낮게 설정했습니다. 
 <img src="https://www.dropbox.com/s/idbov4wtd6jeqb2/Screenshot%202018-08-23%2000.36.54.png?dl=1">
-- 초기에서 후기로 가며 변경 사항들
-    - Slope 길이 - 길이를 기존 plane 과 동일하게 했더니, 오르막 올라가는 부분이 학습이 잘 안 됨. 그래서 좀 길이를 줄임.
-    - 내리막 경사 - 너무 경사지면 학습이 잘 안 되고, 너무 완만하니 내리막 티가 잘 안 나고...
-    - 오르막 경사 - 막연히 오르막이 좀 더 어려울테니, 오르막 길이를 길게, 높이를 낮게 해서 경사를 내리막보다는 완만히 하자.
-    - 색 - 좀 밝은 색으로 하자.
 
-#### 에이전트 튜닝
-너무 빨리 쓰러져서...혹시나 나아질까...발 각도도 변경해보고...
-<img src="https://www.dropbox.com/s/znvikbeoj7gku0u/Screenshot%202018-08-23%2000.38.22.png?dl=1">
+</br>
 
-#### 3.3 결과
-그래도 생각보다는 잘 못 걸음..
+### 3.2 Curved Surface에서 학습하기
+위 환경으로 학습을 할 때, agent가 너무 초반에 빨리 쓰러지는 현상이 발생했습니다. 혹시 발의 각도가 문제일까 싶어서 발 각도를 변경해보았습니다. 
+
+<center><img src="https://www.dropbox.com/s/znvikbeoj7gku0u/Screenshot%202018-08-23%2000.38.22.png?dl=1" width="400px"></center>
+
+하지만 역시 평지에서 걷는 것처럼 걷도록 학습이 안되었습니다. 이 환경에서 더 잘 학습하려면 더 여러가지를 시도해봐야할 것 같습니다. (그래도 걷는 게 기특합니다..)
+<center><img src="https://www.dropbox.com/s/4fqpsdmnzvnvia0/curved-736.gif?dl=1"></center>
+
 <img src="https://www.dropbox.com/s/t5ngr0io4xeex6y/curved-736-overview.gif?dl=1">
 
-<audio src="https://www.dropbox.com/s/rvtsgj5w3kmh5y1/Hand-in-Hand.mp3?dl=1" controls="controls" loop="" preload="auto"></audio>
+</br>
+## 4. 구현 후기
+피지여행 구현팀은 총 4명으로 진행했습니다. 각 팀원의 후기를 적어보겠습니다.
 
-### 3.4 부푼 꿈
-#### 환경을 멋있게
-건강엔 등산이지. 산을 타보자. (이건 Asset Store 에 있는 "Fire Progation(by Lewis Ward)"" 을 활용)
-병렬 학습은 시켜야겠고...
-한 평면에 여러 에이전트를 위치시키기는 힘드니, 쌓자!
-<img src="https://www.dropbox.com/s/uom140d4w3ir4e2/env-mountain.png?dl=1">
-
-#### 포기
-급경사로 인해 학습 망함...
-시간 관계 상 생략하기로...
+- 팀원 장수영:
+- 팀원 공민서:
+- 팀원 양혁렬:
+- 팀원 이웅원:
