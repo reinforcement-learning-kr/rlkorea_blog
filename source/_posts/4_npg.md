@@ -18,7 +18,7 @@ Proceeding : Advances in Neural Information Processing Systems (NIPS) 2002
 
 # 1. 들어가며...
 
-2002년 당시에도 많은 연구자들이 objective function의 gradient 값을 따라서 좋은 policy $\pi$를 찾고자 하였습니다. 하지만 기존의 우리가 알던 gradient descent method는 steepest descent direction이 아닐 수 있기 때문에(쉽게 말해 가장 가파른 방향을 따라서 내려가야 하는데 그러지 못할 수도 있다는 것입니다.) 이 논문에서 steepest descent direction를 나타내는 natural gradient method를 policy gradient에 적용하여 좋은 policy $\pi$를 찾습니다. gradient descent는 parameter를 한 번에 많이 update 할 수 없는 반면, natural gradient는 가장 좋은 action을 고르도록 학습이 됩니다.
+이 논문이 발표된 2002년 당시에도 많은 연구자들이 objective function의 gradient 값을 따라서 좋은 policy $\pi$를 찾고자 하였습니다. 하지만 기존의 우리가 알던 gradient descent method는 steepest descent direction이 아닐 수 있기 때문에(쉽게 말해 가장 가파른 방향을 따라서 내려가야 하는데 그러지 못할 수도 있다는 것입니다.) 이 논문에서 steepest descent direction를 나타내는 natural gradient method를 policy gradient에 적용하여 좋은 policy $\pi$를 찾습니다. 
 
 <br>
 ## 1.1 NPG 흐름 잡기
@@ -67,7 +67,7 @@ natural gradient + policy gradient를 처음 제시했다는 것은 좋지만 np
 
 # 2. Introduction
 
-소개는 앞에서 다 했기 떄문에 간략하게 다시 한 번 정리하겠습니다. direct policy gradient method는 future reward의 gradient를 따라 policy를 update합니다. 하지만 gradient descent는 non-covariant입니다. 따라서 이 논문에서는 covarient gradient를 제시합니다. 바로 "Natural Gradient" 입니다. 
+소개는 앞에서 다 했기 때문에 간략하게 다시 한 번 정리하겠습니다. direct policy gradient method는 future reward의 gradient를 따라 policy를 update합니다. 하지만 gradient descent는 non-covariant입니다. 따라서 이 논문에서는 covarient gradient를 제시합니다. 바로 "Natural Gradient" 입니다. 
 
 또한 natural gradient와 policy iteration의 연관성을 설명합니다. natural policy gradient is moving toward choosing a greedy optimal action (이런 연결점은 아마도 step-size를 덜 신경쓰고 싶어서 그런게 아닌가 싶습니다)
 
@@ -357,7 +357,7 @@ $\mathbf{A}\mathbf{x} = \mathbf{b}$의 해를 구하는 문제를 생각해봅�
 
 위의 방정식에서 $\mathbf{b}$를 이항시키면 $\mathbf{A}\mathbf{x} - \mathbf{b} = 0$이 됩니다. 최적화문제는 많은 경우 1차 미분이 0이 되는 지점이 해일 확률이 높습니다. $\mathbf{A}\mathbf{x} - \mathbf{b} = 0$을 1차 미분으로 가지는 함수는 무엇일까요?
 
-$$\mathbf{x}) = \frac{1}{2}\mathbf{x}^\mathrm{T}\mathbf{A}\mathbf{x} - \mathbf{x}^\mathrm{T}\mathbf{b}$$
+$$f( \mathbf{x} ) = \frac{1}{2}\mathbf{x}^\mathrm{T}\mathbf{A}\mathbf{x} - \mathbf{x}^\mathrm{T}\mathbf{b}$$
 
 위의 함수는 $\mathbf{A}\mathbf{x} - \mathbf{b}$를 1차 미분값으로 가집니다. 이 때 $\mathbf{A}$는 symmetric positive definite해야 합니다.
 
