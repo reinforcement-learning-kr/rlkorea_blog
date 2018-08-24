@@ -3,7 +3,7 @@ title: PG Travel Guide
 date: 2018-06-29 01:11:26
 tags: ["프로젝트", "피지여행"]
 categories: 프로젝트
-author: 공민서, 김동민, 양혁렬, 이동민, 이웅원, 장수영, 차금강
+author: 김동민, 이동민, 차금강
 subtitle: 피지여행에 관한 개략적 기록
 ---
 
@@ -59,7 +59,7 @@ deterministic policy gradeint (DPG)는 어찌보면 상당히 도전적인 아�
 
 [DDPG 여행하기](https://reinforcement-learning-kr.github.io/2018/06/26/3_ddpg/)
 
-DPG의 후속 연구로 DPG보다 더 큰 주목을 받은 논문입니다. 소위 말하는 deep deterministic policy gradient (DDPG)로 불리는 기술을 제안한 논문입니다. 이 논문의 저자 중 일부는 그 유명한 DQN 논문의 저자이기도 합니다. Q-learning과 deep neural network를 접목시켰던 DQN처럼 이 논문도 DQN과 deep neural network를 접목시킨 논문입니다.
+DPG의 후속 연구로 DPG보다 더 큰 주목을 받은 논문입니다. 소위 말하는 deep deterministic policy gradient (DDPG)로 불리는 기술을 제안한 논문입니다. 이 논문의 저자 중 일부는 그 유명한 DQN 논문의 저자이기도 합니다. Q-learning과 deep neural network를 접목시켰던 DQN처럼 이 논문도 DPG와 deep neural network를 접목시킨 논문입니다.
 
 이 논문은 DQN으로는 좋은 성능을 내지 못했던 continuous action을 가지는 상황들에 대해서 상당히 훌륭한 결과를 보이면서 큰 주목을 받았습니다. 소위 말하는 deep reinforcement learning (DRL)에서 Q-learning 계열의 DQN, PG 계열의 DDPG로 양대산맥을 이루는 논문이라고 할 수 있습니다. 두 논문 모두 Deepmind에서 나왔다는 것은 Deepmind 기술력이 DRL 분야에서 최정점에 있음을 보여주는 상징이 아닌가 싶습니다. 논문 자체는 그리 어렵지 않습니다. 새로운 아이디어를 제시했다기보다는 딥러닝을 활용한 강화학습의 가능성을 보여주는 논문이라는 점에서 큰 의의를 가지는 것 같습니다. 여러분도 한번 코딩에 도전해보시는게 어떨까요?
 
@@ -72,7 +72,7 @@ DPG의 후속 연구로 DPG보다 더 큰 주목을 받은 논문입니다. 소�
 [NPG 여행하기](https://reinforcement-learning-kr.github.io/2018/06/25/4_npg/)
 [NPG Code](https://github.com/reinforcement-learning-kr/pg_travel/blob/master/mujoco/agent/tnpg.py)
 
-이 논문은 뒤이어 나오는 TRPO를 더 잘 이해하기 위해서 보는 논문입니다. 이번 논문부터 내용이 상당히 어려워집니다. 굉장히 들어보지 못했던 내용들이 많이 나옵니다. 하지만 이 블로그를 보시면 많은 부분들이 채워질 것이라고 믿습니다.
+이 논문은 뒤이어 나오는 TRPO를 더 잘 이해하기 위해서 보는 논문입니다. 이번 논문부터 내용이 상당히 어려워집니다. 다소 생소한 수학 개념들이 많이 나오기 때문입니다. 하지만 이 블로그를 보시면 많은 부분들이 채워질 것이라고 믿습니다.
 
 2002년 당시에도 많은 연구자들이 objective function의 gradient 값을 따라서 좋은 policy $\pi$를 찾고자 하였습니다. 하지만 기존의 우리가 알던 gradient descent method는 steepest descent direction이 아닐 수 있기 때문에(쉽게 말해 가장 가파른 방향을 따라서 내려가야 하는데 그러지 못할 수도 있다는 것입니다.) 이 논문에서 steepest descent direction를 나타내는 natural gradient method를 policy gradient에 적용하여 좋은 policy $\pi$를 찾습니다. gradient descent는 parameter를 한 번에 많이 update 할 수 없는 반면, natural gradient는 가장 좋은 action을 고르도록 학습이 됩니다.
 
