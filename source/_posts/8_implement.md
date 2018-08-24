@@ -402,42 +402,225 @@ PPO의 학습 결과는 다음과 같습니다.
 <img src="https://www.dropbox.com/s/rkxa836ap931kbd/Screenshot%202018-08-23%2013.50.57.png?dl=1">
 
 
-
+</br>
 ## 2. Unity ml-agent 학습
 Mujoco Hopper(half-cheetah와 같은 것도)에 Vanilla PG, TNPG, TRPO, PPO를 구현해서 적용했습니다. Mujoco의 경우 이미 Hyper parameter와 같은 정보들이 논문이나 블로그에 있기 때문에 상대적으로 continuous control로 시작하기에는 좋습니다. 맨 처음에 말했듯이 Mujoco는 1달만 무료이고 그 이후부터 유료이며 확장성이 떨어집니다. 좀 더 general한 agent를 학습시키기에 좋은 환경이 필요합니다. 따라서 Unity ml-agent를 살펴봤습니다. Repository는 다음과 같습니다. 
 - [Unity ml-agent repository](https://github.com/Unity-Technologies/ml-agents)
 - [Unity ml-agent homepage](https://unity3d.com/machine-learning/)
+
 <img src="https://www.dropbox.com/s/lapholj8r4nxmb1/Screenshot%202018-08-24%2013.41.31.png?dl=1">
 
-Unity ml-agent는 기존 Unity를 그대로 사용하면서 쉽게 강화학습 에이전트를 붙일 수 있도록 설계되어 있습니다. Unity ml-agent에서는 저희가 살펴본 알고리즘 중에 가장 최신 알고리즘은 PPO를 적용해봤습니다. 기본적으로 제공하는 환경 이외에 저희가 customize 한 환경에서도 학습해봤습니다.  
+현재 Unity ml-agent에서 기본으로 제공하는 환경은 다음과 같습니다. Unity ml-agent는 기존 Unity를 그대로 사용하면서 쉽게 강화학습 에이전트를 붙일 수 있도록 설계되어 있습니다. Unity ml-agent에서는 Walker 환경에서 저희가 살펴본 알고리즘 중에 가장 최신 알고리즘은 PPO를 적용해봤습니다. 이 포스트를 보시는 분들은 이 많은 다른 환경에 자유롭게 저희 코드를 적용할 수 있습니다.
+- [각 환경에 대한 설명](https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Learning-Environment-Examples.md)
 
-### 2.1 환경 만들기 : 
+<img src="https://www.dropbox.com/s/lrbodw5dypxowmw/Screenshot%202018-08-24%2014.06.14.png?dl=1">
 
-유니티를 한번도 접해보지않은 상황에서 환경을 어떻게 만들어야할지 감이 잡히지 않았다.
-우선적으로 3DBall 예제가 있는 듯 했지만, 친절한듯 친절하지않은 예제 문서로 인해 인터넷에서 선구자들의 지식을 구했다. 예를 들면, 파이썬으로 브레인을 제어하기위해선 External 속성으로 꼭 바꿔줘야하는 것 등이다. 3DBall 환경 구축에 성공했을 때의 화면이다.
-<img src="https://i.imgur.com/5S5qGUI.gif" width=500px/>
+Unity ml-agent를 이용해서 강화학습을 하기 위해서는 다음과 같이 진행됩니다. 단계별로 설명하겠습니다. 
 
-아래의 링크페이지에서 유니티 ML-agent 환경 구축에 대한 정보를 얻었다.
-[https://medium.com/@indiecontessa/setting-up-a-python-environment-with-tensorflow-on-macos-for-training-unity-ml-agents-faf19d71201](https://medium.com/@indiecontessa/setting-up-a-python-environment-with-tensorflow-on-macos-for-training-unity-ml-agents-faf19d71201)
+- Unity에서 환경 만들기
+- Python에서 unity 환경 불러와서 테스트하기
+- 기존에 하던대로 학습하기
 
-또한 브레인, 아카데미 등 ML-agent에 대한 보다 자세한 사항은 장수영님께서 설명해주셨다. 한번 프로세스를 밟고나면 모든게 쉽다. 우리의 본 목표인 Walker환경은 기본 템플릿으로 주어진 것만해도 충분했다.
 
 </br>
-### 2.2 ML-agent + PyTorch
-ML-agent와 PyTorch를 연결하는 데에는 이웅원님께서 사전에 작성해놓은 코드가 있었다.아래의 사진은 이웅원님이 코드 로직을 설명해주는 상황이다.
+### 2.1 Walker 환경 만들기
+강화학습을 하는 많은 분들이 Unity를 한 번도 다뤄보지 않은 경우가 많습니다. 저도 그런 경우라서 어떻게 환경을 만들어야할지 처음에는 감이 잡히지 않았습니다. 하지만 Unity ml-agent에서는 상당히 자세한 guide를 제공합니다. 다음은 Unity ml-agent의 가장 기본적인 환경인 3DBall에 대한 tutorial입니다. 설치 guide도 제공하고 있으니 참고하시면 될 것 같습니다.
+- [3DBall 예제 tutorial](https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Basic-Guide.md)
+- [Unity ml-agent 설치 guide](https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Installation.md)
+
+Unity ml-agent에서 제공하는 3DBall tutorial을 참고해서 Walker 환경을 만들었습니다. Walker 환경을 만드는 과정을 간단히 말씀드리겠습니다. 다음 그림의 단계들을 동일하므로 따라하시면 됩니다. Unity를 열고 unity-environment로 들어가시면 됩니다.
+<img src="https://www.dropbox.com/s/fbdqg781w46a5mz/Screenshot%202018-08-24%2014.50.50.png?dl=1">
+
+그러면 화면 하단에서 다음과 같은 것을 볼 수 있습니다. Assets/ML-Agents/Examples로 들어가보면 Walker가 있습니다. Scenes에서 Walker를 더블클릭하면 됩니다.
+<img src="https://www.dropbox.com/s/h349xml3faln0wy/Screenshot%202018-08-24%2014.52.14.png?dl=1">
+
+더블클릭해서 나온 화면에서 오른쪽 상단의 파란색 화살표를 누르면 환경이 실행이 됩니다. 저희가 학습하고자 하는 agent는 바로 이녀석입니다. 왼쪽 리스트를 보면 WalkerPair가 11개가 있는 것을 볼 수 있습니다. Unity ml-agent 환경은 기본적으로 Multi-agent로 학습하도록 설정되어있습니다. 따라서 여러개의 Walker들이 화면에 보이는 것입니다. 
+<img src="https://www.dropbox.com/s/cy8m5kqdmkhopjo/Screenshot%202018-08-24%2014.54.57.png?dl=1">
+
+리스트 중에 Walker Academy를 클릭해서 그 하위에 있는 WalkerBrain을 더블클릭합니다. 그러면 화면 오른쪽에 다음과 같은 Brain 설정을 볼 수 있습니다. Brain은 쉽게 말해서 Agent라고 생각하면 됩니다. 이 Agent는 상태로 212차원의 vector가 주어지며 다 continuous한 값을 가집니다. 행동은 39개의 행동을 할 수 있으며 다 Continuous입니다. Mujoco에 비해서 상태나 행동의 차원이 상당히 높습니다. 여기서 중요한 것은 Brain Type입니다. Brain type은 internal, external, player, heuristic이 있습니다. player로 type을 설정하고 화면 상단의 play 버튼을 누르면 여러분이 agent를 움직일 수 있습니다. 하지만 Walker는 사람이 움직이는게 거의 불가능하므로 player 기능은 사용할 수 없습니다. 다른 환경에서는 사용해볼 수 있으니 재미로 한 번 플레이해보시면 좋습니다! 
+<center><img src="https://www.dropbox.com/s/uxfm162f1scbzo5/Screenshot%202018-08-24%2015.09.04.png?dl=1" width="400px"></center>
+
+이번에는 WalkerPair에서 WalkerAgent를 더블클릭해보겠습니다. 이 설정을 보아 5000 step이 episode의 max step인 것을 볼 수 있습니다.
+<center><img src="https://www.dropbox.com/s/r6gwemlczwic2ma/Screenshot%202018-08-24%2015.16.19.png?dl=1" width="400px"></center>
+
+이제 상단 file menu에서 build setting에 들어갑니다. 환경을 build해서 python 코드에서 import하기 위해서입니다. 물론 unity 환경과 python 코드를 binding해주는 부분은 ml-agent 코드 안에 있습니다. Build 버튼을 누르면 환경이 build가 됩니다.
+<center><img src="https://www.dropbox.com/s/4dtgoz1k8896vxs/Screenshot%202018-08-24%2015.19.07.png?dl=1" width="500px"></center>
+
+
+</br>
+### 2.2 Python에서 unity 환경 불러와서 테스트하기
+환경을 build 했으면 build한 환경을 python에서 불러와서 random action으로 테스트해봅니다. 환경을 테스트하는 코드는 pg_travel repository에서 unity 폴더 밑에 있습니다. test_env.py라는 코드는 간단하게 다음과 같습니다. Build한 walker 환경은 env라는 폴더 밑에 넣어줍니다. unityagent를 import하는데 ml-agent를 git clone 해서 python 폴더 내에서 "python setup.py install"을 실행했다면 문제없이 import 됩니다. UnityEnvironment를 통해 env라는 환경을 선언할 수 있습니다. 이렇게 선언하고 나면 gym과 상당히 유사한 형태로 환경과 상호작용이 가능합니다. 
+
+```python
+import numpy as np
+from unityagents import UnityEnvironment
+from utils.utils import get_action
+
+if __name__=="__main__":
+    env_name = "./env/walker_test"
+    train_mode = False
+
+    env = UnityEnvironment(file_name=env_name)
+
+    default_brain = env.brain_names[0]
+    brain = env.brains[default_brain]
+    env_info = env.reset(train_mode=train_mode)[default_brain]
+
+    num_inputs = brain.vector_observation_space_size
+    num_actions = brain.vector_action_space_size
+    num_agent = env._n_agents[default_brain]
+
+    print('the size of input dimension is ', num_inputs)
+    print('the size of action dimension is ', num_actions)
+    print('the number of agents is ', num_agent)
+   
+    score = 0
+    episode = 0
+    actions = [0 for i in range(num_actions)] * num_agent
+    for iter in range(1000):
+        env_info = env.step(actions)[default_brain]
+        rewards = env_info.rewards
+        dones = env_info.local_done
+        score += rewards[0]
+
+        if dones[0]:
+            episode += 1
+            score = 0
+            print('{}th episode : mean score of 1st agent is {:.2f}'.format(
+                episode, score))
+```
+
+위 코드를 실행하면 다음과 같이 실행창에 뜹니다. External brain인 것을 알 수 있고 default_brain은 brain 중에 하나만 가져왔기 때문에 number of brain은 1이라고 출력합니다. input dimension은 212이고 action dimension은 39이고 agent 수는 11인 것으로봐서 제대로 환경이 불러와진 것을 확인할 수 있습니다. 
+<img src="https://www.dropbox.com/s/cioa9h7qu25vonz/Screenshot%202018-08-24%2015.47.43.png?dl=1">
+
+이 환경에서 행동하려면 agent 숫자만큼 행동을 줘야합니다. 모두 0로 행동을 주고 실행하면 다음과 같이 뒤로 넘어지는 행동을 반복합니다. env.step(actions)[default_brain]으로 env_info를 받아오면 거기서부터 reward와 done, next_state를 받아올 수 있습니다. 이제 학습하기만 하면 됩니다. 
+<img src="https://www.dropbox.com/s/8qrmxoski6p4n07/Screenshot%202018-08-24%2016.00.21.png?dl=1">
+
+</br>
+### 2.3 Walker 학습하기
+기존에 Mujoco에 적용했던 PPO 코드를 그대로 Walker에 적용하니 잘 학습이 안되었습니다. 다음 사진이 저희가 중간 해커톤으로 모여서 이 상황을 공유할 때의 사진입니다.
 <img src="https://i.imgur.com/1aR2Z77.png" width=500px>
 
-Walker환경에 적용했을 당시, 웅원님과 구현팀의 이슈는 동일한 학습 시간이 흘러도 Unity Baseline의 점수만큼 도달하기가 힘들다는 것이었다. 1차적으로 생각할 수 있었던 것은 웅원님의 코드는 단일 에이전트를 학습시키는 코드였고, Unity Baseline의 코드는 다수의 에이전트를 학습시키는 코드였다. 그 외의 코드 상의 버그나 PPO 알고리즘의 구현에서 문제가 있다고 판단하기가 어려워 Unity Baseline과 로직 비교를 하는 시간이 필요했다.
+Unity ml-agent에서는 PPO를 기본 agent로 제공합니다. 학습 코드도 제공하기 때문에 mujoco에 적용했던 코드와의 차이점을 분석할 수 있었습니다. mujoco 코드와 ml-agent baseline 코드의 차이점은 다음과 같습니다. 
 
-</br>
-### 2.3 Unity Baseline Code-Review
-Unity-Baseline코드를 보며 어려웠던 점은, Unity ML agent로 제공하는 예제 환경에 모두 적용가능한 에이전트를 구현하기 위해 코드의 양과 복잡도가 상당했다는 점이었다. 사실, 팀에 필요한 로직은 정말정말 일부에 불과했으나, 헤매고 헤매다 발견하고나서야 알아낸 사실이었다. 아래의 그림은 코드리뷰를 할 당시에 작성했던 마인드맵이다.
+- agent 여러개를 이용, 별개의 memory에 저장한 후에 gradient를 합침
+- GAE 및 time horizon 등 hyper parameter가 다름
+- Actor와 Critic의 layer가 1층 더 두꺼우며 hidden layer 자체의 사이즈도 더 큼
+- hidden layer의 activation function이 tanh가 아닌 swish
+
+ml-agent baseline 코드리뷰할 때 작성했던 마인드맵은 다음과 같습니다.
 <img src="https://i.imgur.com/YeaEntG.png">
 
-Unity-Baseline을 보면서 크게 두가지에 초점을 맞춰 코드리뷰를 진행하였다. 첫째로 멀티 에이전트 학습 로직을 알아내기, 둘째로 세부적으로 어떤 차이가 있는지 면밀히 캐내보기 였고 Swish라는 활성화 함수, 레이어 개수나 노드 개수, learning_rate 같은 하이퍼 파라미터의 차이가 있었고 양혁렬님께서 멀티에이전트 학습 로직을 파악해 PyTorch로 구현에 성공했다.
+크게는 두 가지를 개선해서 성능이 많이 향상했습니다.
+1. Network 수정
+2. multi-agent를 활용해서 학습
+
+Network 코드는 다음과 같습니다. Hidden Layer를 하나 더 늘렸으며 swish activation function을 사용할 수 있도록 변경했습니다. 사실 swish라는 activation function은 처음 들어보는 생소한 함수였습니다. 하지만 ml-agent baseline에서 사용했다는 사실과 구현이 상당히 간단하다는 점에서 저희 코드에 적용했습니다. 단순히 x * sigmoid(x) 를 하면 됩니다. swish는 별거 아닌 것 같지만 상당한 성능 개선을 가져다줬습니다. 사실 ReLU나 ELU 등 여러 다른 activation function을 적용해서 비교해보는게 best긴 하지만 시간 관계상 그렇게까지 테스트해보지는 못했습니다. 기존에 TRPO나 PPO는 왜 tanh를 사용했었는지도 의문인 점입니다.
+
+```python
+class Actor(nn.Module):
+    def __init__(self, num_inputs, num_outputs, args):
+        self.args = args
+        self.num_inputs = num_inputs
+        self.num_outputs = num_outputs
+        super(Actor, self).__init__()
+        self.fc1 = nn.Linear(num_inputs, args.hidden_size)
+        self.fc2 = nn.Linear(args.hidden_size, args.hidden_size)
+        self.fc3 = nn.Linear(args.hidden_size, args.hidden_size)
+        self.fc4 = nn.Linear(args.hidden_size, num_outputs)
+
+        self.fc4.weight.data.mul_(0.1)
+        self.fc4.bias.data.mul_(0.0)
+
+    def forward(self, x):
+        if self.args.activation == 'tanh':
+            x = F.tanh(self.fc1(x))
+            x = F.tanh(self.fc2(x))
+            x = F.tanh(self.fc3(x))
+            mu = self.fc4(x)
+        elif self.args.activation == 'swish':
+            x = self.fc1(x)
+            x = x * F.sigmoid(x)
+            x = self.fc2(x)
+            x = x * F.sigmoid(x)
+            x = self.fc3(x)
+            x = x * F.sigmoid(x)
+            mu = self.fc4(x)
+        else:
+            raise ValueError
+
+        logstd = torch.zeros_like(mu)
+        std = torch.exp(logstd)
+        return mu, std, logstd
+```
+
+이제 multi-agent로 학습하도록 변경하면 됩니다. PPO의 경우 memory에 time horizon 동안의 sample을 시간순서대로 저장하고 GAE를 구한 이후에 minibatch로 추출해서 학습합니다. 따라서 여러개의 agent로 학습하기 위해서는 memory를 따로 만들어서 각각의 GAE를 구해서 학습해야합니다. Unity에서는 Mujoco에서 했던 것처럼 deque로 memory를 만들지 않고 따로 named tuple로 구현한 memory class를 import 해서 사용했습니다. utils 폴더 밑에 memory.py 코드에 구현되어있으며 코드는 https://github.com/pytorch/tutorials/blob/master/Reinforcement%20(Q-)Learning%20with%20PyTorch.ipynb
+에서 가져왔습니다. 
+
+state, action, reward, mask를 저장하는데 불러올 때 각각을 따로 불러올 수 있기 때문에 비효율적 시간을 많이 줄여줍니다. 
+```python
+Transition = namedtuple('Transition', ('state', 'action', 'reward', 'mask'))
 
 
+class Memory(object):
+    def __init__(self):
+        self.memory = []
 
+    def push(self, state, action, reward, mask):
+        """Saves a transition."""
+        self.memory.append(Transition(state, action, reward, mask))
+
+    def sample(self):
+        return Transition(*zip(*self.memory))
+
+    def __len__(self):
+        return len(self.memory)
+```
+
+main.py 에서는 이 memory를 agent의 개수만큼 생성합니다. 
+
+```python
+memory = [Memory() for _ in range(num_agent)]
+```
+sample을 저장할 때도 agent마다 따로 따로 저장합니다. 
+
+```python
+for i in range(num_agent):
+    memory[i].push(states[i], actions[i], rewards[i], masks[i])
+
+```
+
+time horizon이 끝나면 모은 sample 들을 가지고 학습하기 위한 값으로 만드는 과정을 진행합니다. 각각의 memory를 가지고 GAE와 old_policy, old_value 등을 계산해서 하나의 batch로 합칩니다. 그렇게 train_model 메소드에 전달하면 기존과 동일하게 agent를 업데이트합니다.
+
+```python
+sts, ats, returns, advants, old_policy, old_value = [], [], [], [], [], []
+
+for i in range(num_agent):
+    batch = memory[i].sample()
+    st, at, rt, adv, old_p, old_v = process_memory(actor, critic, batch, args)
+    sts.append(st)
+    ats.append(at)
+    returns.append(rt)
+    advants.append(adv)
+    old_policy.append(old_p)
+    old_value.append(old_v)
+
+sts = torch.cat(sts)
+ats = torch.cat(ats)
+returns = torch.cat(returns)
+advants = torch.cat(advants)
+old_policy = torch.cat(old_policy)
+old_value = torch.cat(old_value)
+
+train_model(actor, critic, actor_optim, critic_optim, sts, ats, returns, advants,
+            old_policy, old_value, args)
+```
+
+이렇게 학습한 에이전트는 다음과 같이 걷습니다. 이렇게 walker를 학습시키고 나니 어떻게 하면 사람처럼 자연스럽게 걷는 것을 agent 스스로 학습할 수 있을까라는 고민을 하게 되었습니다.
+<center><img src="https://www.dropbox.com/s/fyz1kn5v92l3rrk/plane-595.gif?dl=1"></center>
+
+
+</br>
 ## 3. Unity Curved Surface 제작 및 학습기
 ### 3.1 도입
 처음부터 만들 수는 없으니, 적당한 것을 찾아볼까? (**중요** Price : 0)
