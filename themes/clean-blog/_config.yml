@@ -5,7 +5,7 @@ menu:
   Tags: /tags
   Categories: /categories
   Github:
-    url: https://bomee88.github.io/
+    url: https://github.com/reinforcement-learning-kr
     icon: github
 
 # Title on top left of menu. Leave empty to use main blog title
@@ -20,7 +20,7 @@ default_post_title: RLKorea
 # Comments. Choose one by filling up the information
 comments:
   # Disqus comments
-  disqus_shortname:
+  disqus_shortname: rlkorea
   # Facebook comments
   facebook:
     appid: 
@@ -28,7 +28,7 @@ comments:
     comment_colorscheme: 
 
 # Google Analytics Tracking ID
-google_analytics:
+google_analytics: UA-125432253-1
 
 # Addthis ID
 addthis:
@@ -40,10 +40,10 @@ favicon: /img/favicon.ico
 twitter_url:
 twitter_handle:
 facebook_url:
-github_url: 
+github_url: https://github.com/reinforcement-learning-kr
 gitlab_url:
 linkedin_url:
-mailto: bomee88@naver.com
+mailto: rlkorea7@gmail.com
 
 marked:
   gfm: true # GitHub flavored markdown 지원

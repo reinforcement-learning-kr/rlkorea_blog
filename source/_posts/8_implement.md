@@ -5,6 +5,7 @@ tags: ["프로젝트", "피지여행"]
 categories: 프로젝트
 author: 이웅원, 장수영, 공민서, 양혁렬
 subtitle: 피지여행 구현 이야기
+comments: true
 ---
 
 
