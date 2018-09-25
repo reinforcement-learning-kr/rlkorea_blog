@@ -128,7 +128,7 @@ $$L^{CLIP}(\theta) = \hat{E}_t [min(r_t(\theta) \, \hat{A}_t,  clip(r_t(\theta),
 
 - Advantage Function $\hat{A}_t$가 양수일 때
     - Advantage가 현재보다 높다라는 뜻이며 파라미터를 +의 방향으로 업데이트 하여야 합니다. 다시 말해 어떠한 상태 $s$에서 행동 $a$가 평균보다 좋다는 의미입니다. 따라서 이를 취할 확률이 증가하게 되고, $r_t (\theta)$를 clip하여 $\epsilon$보다 커지지 않도록 유도하는 것입니다.
-    - 추가적으로, TRPO에서 다뤘던 constraint가 아니라 단순히 clip하는 것이기 때문에 $\pi_\theta (a_t|s_t)$의 증가량은 $\epsilon$보다 더 커질 수도 있지만, 더 커져봐야 objective function에 도움이 되지 않기에 대부분 $\epsilon$ 이하로 유지합니다.
+    - 추가적으로, TRPO에서 다뤘던 constraint가 아니라 단순히 clip하는 것이기 때문에 실제로 $\pi_\theta (a_t|s_t)$의 증가량이 $\epsilon$보다 더 커질 수도 있습니다. 하지만 증가량이 더 커졌다고 하더라도 objective function을 업데이트 할 때 효과적이지 않을 수 있기 때문에 대부분 clip을 통해서 $\epsilon$ 이하로 유지합니다.
     - 또한 만약 $r_t (\theta)$가 objective function의 값을 감소시키는 방향으로 움직이는 경우더라도 $1-\epsilon$보다 작아져도 됩니다. 여기서의 목적은 최대한 lowerbound를 구하는 것이 목적이기 때문입니다. 그러니까 쉽게 말해서 왼쪽 그림에서도 볼 수 있듯이 $1+\epsilon$만 구하는 데에 포커스를 맞추고 있고, $1-\epsilon$은 신경쓰지 않고 있는 것입니다. (이 부분은 Advantage Function $\hat{A}_t$가 음수일 때도 동일합니다.)
 - Advantage Function $\hat{A}_t$가 음수일 때 
     - Advantage가 현재보다 좋지 않다라는 뜻이며 그의 반대 방향으로 업데이트 하여야 합니다. 다시 말해 어떠한 상태 $s$에서 행동 $a$가 평균보다 좋지 않다는 의미입니다. 따라서 이를 취할 확률이 감소하게 되고, $r_t (\theta)$를 clip하여 $\epsilon$보다 작아지지 않도록 유도하는 것입니다.  
