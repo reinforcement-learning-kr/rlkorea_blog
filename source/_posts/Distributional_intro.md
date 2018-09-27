@@ -1,7 +1,7 @@
 ---
 title: Introduction to Distributional RL
-date: 2018-08-23 14:18:32
-tags: ["프로젝트", "Distributional RL"]
+date: 2018-09-27 14:18:32
+tags: ["프로젝트", "DistRL"]
 categories: 프로젝트
 author: 민규식
 subtitle: Introduction to Distributional RL
@@ -16,7 +16,7 @@ comments: true
 우선 일반적인 강화학습 알고리즘과 distributional RL 알고리즘을 간단하게 그림으로 비교한 것이 다음과 같습니다. 
 
 <p align= "center">
-  <img src="../distributional_img/Fig0.png" width="600" alt="Comparison" />
+  <img src="/img/Fig0.png" width="600" alt="Comparison" />
 </p>
 
 
@@ -25,7 +25,7 @@ comments: true
 하지만!!! 환경이 **랜덤성**을 포함하고 있는 경우 상황에 따라 동일한 state에서 동일한 action을 취하더라도 다음 state에서 받는 reward가 변할 수 있습니다. 이런 상황에 대한 예시를 한번 들어보겠습니다! 아래의 경우처럼 자동차가 운전을 하고 있다고 해보겠습니다.
 
 <p align= "center">
-  <img src="../distributional_img/Fig1.png" width="600" alt="Driving example" />
+  <img src="/img/Fig1.png" width="600" alt="Driving example" />
 </p>
 
 
@@ -34,7 +34,7 @@ comments: true
 이렇게 확률적인 상황에서는 예측되는 reward를 분포로 나타내면 아래와 같이 나타낼 수 있습니다. 
 
 <p align= "center">
-  <img src="../distributional_img/Fig2.png" width="500" alt="Distribution" />
+  <img src="/img/Fig2.png" width="500" alt="Distribution" />
 </p>
 
 
