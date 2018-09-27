@@ -1,3 +1,13 @@
+---
+title: Introduction to Distributional RL
+date: 2018-08-23 14:18:32
+tags: ["프로젝트", "Distributional RL"]
+categories: 프로젝트
+author: 민규식
+subtitle: Introduction to Distributional RL
+comments: true
+---
+
 # Distributional RL
 ## Introduction
 
