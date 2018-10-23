@@ -59,8 +59,8 @@ comments: true
 
 각 알고리즘들에 대한 설명은 다음의 링크들을 따라가시면 됩니다 
 
-- [C51]("https://reinforcement-learning-kr.github.io/2018/10/02/C51/")
-- [QR-DQN]()
+- [C51](https://reinforcement-learning-kr.github.io/2018/10/02/C51/)
+- [QR-DQN](https://reinforcement-learning-kr.github.io/2018/10/22/QR-DQN/)
 - [IQN]()
 
 

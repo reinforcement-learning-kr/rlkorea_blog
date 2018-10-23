@@ -38,7 +38,7 @@ Proceeding : The Thirty-Second AAAI Conference on Artificial Intelligence (AAAI-
 
 <p align= "center">
 
-<img src="img/paper_qrdqn.png" alt="paper" style="width: 800px;"/>
+<img src="/img/paper_qrdqn.png" alt="paper" style="width: 800px;"/>
 
  </p>
 
@@ -69,7 +69,7 @@ QR-DQN의 경우 C51과 비교했을 때 다음의 내용들에서 차이를 가
 
 <p align="center">
 
- <img src="img/support_and_prob.png" alt="value distribution" width="800"/>
+ <img src="/img/support_and_prob.png" alt="value distribution" width="800"/>
 
 </p>
 
@@ -79,7 +79,7 @@ QR-DQN과 C51의 경우 output을 구하는데 차이가 있습니다. 해당 �
 
 <p align="center">
 
- <img src="img/c51_qrdqn.png" alt="value distribution" width="600"/>
+ <img src="/img/c51_qrdqn.png" alt="value distribution" width="600"/>
 
 </p>
 
@@ -113,7 +113,7 @@ C51의 경우 support를 구하기 위해서 다음의 parameter들을 결정해
 
  <p align="center">
 
- <img src="img/quantile.png" alt="quantile" width="400"/>
+ <img src="/img/quantile.png" alt="quantile" width="400"/>
 
 </p>
 
@@ -121,7 +121,7 @@ C51의 경우 support를 구하기 위해서 다음의 parameter들을 결정해
 
  <p align="center">
 
- <img src="img/cdf.png" alt="cdf" width="400"/>
+ <img src="/img/cdf.png" alt="cdf" width="400"/>
 
 </p>
 
@@ -129,13 +129,13 @@ C51의 경우 support를 구하기 위해서 다음의 parameter들을 결정해
 
 CDF의 함수를 F, distribution function을 Z라고 했을 때 다음과 같이 식을 표시합니다. 
 
- <img src="img/cdf_function.png" alt="cdf" width="200"/>
+ <img src="/img/cdf_function.png" alt="cdf" width="200"/>
 
 
 
 Quantile regression은 모든 quantile에 대한 CDF의 역함수입니다. 그렇기 때문에 위의 식을 다음과 같이 역함수의 형태로 나타낼 수 있습니다. 
 
-<img src="img/quantile_regression.png" alt="quantile regression" width="200"/>
+<img src="/img/quantile_regression.png" alt="quantile regression" width="200"/>
 
 즉 Quantile regression은 동일하게 나눈 확률들을 input으로 하여 각각의 support를 구하는 것입니다. 그럼 왜 본 논문에서는 quantile regression을 통해 구한 support들간의 차이를 줄이는 방향으로 학습을 수행할까요? 이것은 **Wasserstein Distance**와 관련이 있습니다. 
 
@@ -147,7 +147,7 @@ C51논문에서 언급하였듯이 Distributional RL은 다음의 contraction �
 
 <p align="center">
 
- <img src="img/contraction.png" alt="cdf" width="600"/>
+ <img src="/img/contraction.png" alt="cdf" width="600"/>
 
 </p>
 
@@ -157,7 +157,7 @@ p-Wasserstein distance의 식은 아래와 같습니다.
 
 <p align="center">
 
- <img src="img/wasserstein.png" alt="cdf" width="600"/>
+ <img src="/img/wasserstein.png" alt="cdf" width="600"/>
 
 </p> 
 
@@ -165,7 +165,7 @@ p-Wasserstein distance의 식은 아래와 같습니다.
 
 <p align="center">
 
- <img src="img/wasserstein_graph.png" alt="cdf" width="500"/>
+ <img src="/img/wasserstein_graph.png" alt="cdf" width="500"/>
 
 </p> 
 
@@ -179,7 +179,7 @@ p-Wasserstein distance의 식은 아래와 같습니다.
 
 <p align="center">
 
- <img src="img/midpoint.png" alt="cdf" width="500"/>
+ <img src="/img/midpoint.png" alt="cdf" width="500"/>
 
 </p> 
 
@@ -187,7 +187,7 @@ p-Wasserstein distance의 식은 아래와 같습니다.
 
  <p align="center">
 
- <img src="img/minimizer_lemma.png" alt="cdf" width="700"/>
+ <img src="/img/minimizer_lemma.png" alt="cdf" width="700"/>
 
 </p> 
 
@@ -195,7 +195,7 @@ p-Wasserstein distance의 식은 아래와 같습니다.
 
  <p align="center">
 
- <img src="img/midpoint_graph.png" alt="cdf" width="800"/>
+ <img src="/img/midpoint_graph.png" alt="cdf" width="800"/>
 
 </p> 
 
@@ -230,7 +230,7 @@ QR-DQN은 아래와 같이 CDF를 동일한 수의 quantile로 나누고 그때�
 
 <p align="center">
 
- <img src="img/QR_cdf_normal.png" alt="cdf normal" width="400"/>
+ <img src="/img/QR_cdf_normal.png" alt="cdf normal" width="400"/>
 
 </p>
 
@@ -240,7 +240,7 @@ QR-DQN은 아래와 같이 CDF를 동일한 수의 quantile로 나누고 그때�
 
  <p align="center">
 
- <img src="img/QR_cdf_abnormal.png" alt="cdf abnormal" width="400"/>
+ <img src="/img/QR_cdf_abnormal.png" alt="cdf abnormal" width="400"/>
 
 </p>
 
@@ -250,7 +250,7 @@ CDF는 확률변수 값에 따른 확률을 누적해서 더하기 때문에 확
 
 <p align="center">
 
- <img src="img/quantile_regression_loss.png" alt="Quantile regression loss" width="400"/>
+ <img src="/img/quantile_regression_loss.png" alt="Quantile regression loss" width="400"/>
 
 </p>
 
@@ -271,7 +271,7 @@ Target supports가 [2, 4, 8, 9]이고 추정된 support가 [1, 4, 5, 8]이라고
 
 <p align="center">
 
- <img src="img/qr_dqn_loss1.png" alt="Quantile regression loss1" width="800"/>
+ <img src="/img/qr_dqn_loss1.png" alt="Quantile regression loss1" width="800"/>
 
 </p>
 
@@ -281,7 +281,7 @@ Quantile regression loss 중 **과정 2**에 해당하는 부분이 다음과 �
 
 <p align="center">
 
- <img src="img/qr_dqn_loss2.png" alt="Quantile regression loss" width="300"/>
+ <img src="/img/qr_dqn_loss2.png" alt="Quantile regression loss" width="300"/>
 
 </p>
 
@@ -289,7 +289,7 @@ Error의 각 column에 해당하는 quantile의 중앙값들을 나타낸 것이
 
 <p align="center">
 
- <img src="img/qr_dqn_loss2_1.png" alt="Quantile regression loss" width="800"/>
+ <img src="/img/qr_dqn_loss2_1.png" alt="Quantile regression loss" width="800"/>
 
 </p>
 
@@ -297,7 +297,7 @@ Error의 각 column에 해당하는 quantile의 중앙값들을 나타낸 것이
 
 <p align="center">
 
- <img src="img/qr_dqn_loss2_2.png" alt="Quantile regression loss" width="800"/>
+ <img src="/img/qr_dqn_loss2_2.png" alt="Quantile regression loss" width="800"/>
 
 </p>
 
@@ -305,7 +305,7 @@ Error의 각 column에 해당하는 quantile의 중앙값들을 나타낸 것이
 
 <p align="center">
 
- <img src="img/qr_dqn_loss3_1.png" alt="Quantile regression loss" width="300"/>
+ <img src="/img/qr_dqn_loss3_1.png" alt="Quantile regression loss" width="300"/>
 
 </p>
 
@@ -313,7 +313,7 @@ Error의 각 column에 해당하는 quantile의 중앙값들을 나타낸 것이
 
  <p align="center">
 
- <img src="img/qr_dqn_loss3_2.png" alt="Quantile regression loss" width="300"/>
+ <img src="/img/qr_dqn_loss3_2.png" alt="Quantile regression loss" width="300"/>
 
 </p>
 
@@ -323,7 +323,7 @@ Error의 각 column에 해당하는 quantile의 중앙값들을 나타낸 것이
 
  <p align="center">
 
- <img src="img/qr_dqn_loss4.png" alt="Quantile regression loss" width="800"/>
+ <img src="/img/qr_dqn_loss4.png" alt="Quantile regression loss" width="800"/>
 
 </p>
 
@@ -344,7 +344,7 @@ Error의 각 column에 해당하는 quantile의 중앙값들을 나타낸 것이
 
  <p align="center">
 
- <img src="img/qr_dqn_compare.png" alt="Quantile regression loss" width="800"/>
+ <img src="/img/qr_dqn_compare.png" alt="Quantile regression loss" width="800"/>
 
 </p>
 
@@ -352,7 +352,7 @@ Error의 각 column에 해당하는 quantile의 중앙값들을 나타낸 것이
 
  <p align="center">
 
- <img src="img/qr_dqn_compare2.png" alt="Quantile regression loss" width="800"/>
+ <img src="/img/qr_dqn_compare2.png" alt="Quantile regression loss" width="800"/>
 
 </p>
 
@@ -372,7 +372,7 @@ Error의 각 column에 해당하는 quantile의 중앙값들을 나타낸 것이
 
  <p align="center">
 
- <img src="img/quantile_huber.png" alt="Huber loss" width="500"/>
+ <img src="/img/quantile_huber.png" alt="Huber loss" width="500"/>
 
 </p>
 
@@ -382,7 +382,7 @@ Error의 각 column에 해당하는 quantile의 중앙값들을 나타낸 것이
 
  <p align="center">
 
- <img src="img/HuberLoss.png" alt="Huber loss" width="500"/>
+ <img src="/img/HuberLoss.png" alt="Huber loss" width="500"/>
 
 </p>
 
@@ -390,7 +390,7 @@ Error의 각 column에 해당하는 quantile의 중앙값들을 나타낸 것이
 
  <p align="center">
 
- <img src="img/Quantile_Huber_Loss.png" alt="Huber loss" width="500"/>
+ <img src="/img/Quantile_Huber_Loss.png" alt="Huber loss" width="500"/>
 
 </p>
 
@@ -398,7 +398,7 @@ Rho의 부분을 위와 같이 수정하여 최종적으로 아래와 같은 Qua
 
  <p align="center">
 
- <img src="img/Quantile_Huber_Loss_final.png" alt="Huber loss" width="500"/>
+ <img src="/img/Quantile_Huber_Loss_final.png" alt="Huber loss" width="500"/>
 
 </p>
 
@@ -408,7 +408,7 @@ Rho의 부분을 위와 같이 수정하여 최종적으로 아래와 같은 Qua
 
  <p align="center">
 
- <img src="img/QR-DQN_algorithm.png" alt="Algorithm" width="600"/>
+ <img src="/img/QR-DQN_algorithm.png" alt="Algorithm" width="600"/>
 
 </p>
 
@@ -435,7 +435,7 @@ Target distribution을 계산할 때는 target network를 통해 추정한 suppo
 
  <p align="center">
 
- <img src="img/env1.png" alt="Two room windy grid world" width="300"/>
+ <img src="/img/env1.png" alt="Two room windy grid world" width="300"/>
 
 </p>
 
@@ -449,7 +449,7 @@ Agent는 x_s에서 출발하며 x_G에 도달하면 1의 reward를 얻습니다.
 
 <p align="center">
 
- <img src="img/QR_result_value.png" alt="Two room windy grid world" width="700"/>
+ <img src="/img/QR_result_value.png" alt="Two room windy grid world" width="700"/>
 
 </p>
 
@@ -457,7 +457,7 @@ Agent는 x_s에서 출발하며 x_G에 도달하면 1의 reward를 얻습니다.
 
 <p align="center">
 
- <img src="img/result_value_wasserstein.png" alt="Two room windy grid world" width="700"/>
+ <img src="/img/result_value_wasserstein.png" alt="Two room windy grid world" width="700"/>
 
 </p>
 
@@ -477,19 +477,19 @@ Atari 환경에서 성능을 검증하기 위해 본 논문에서 설정한 파�
 
 <p align="center">
 
- <img src="img/QR_DQN_Atari3.png" alt="algorithm" class ="center" width="500"/>
+ <img src="/img/QR_DQN_Atari3.png" alt="algorithm" class ="center" width="500"/>
 
 </p>
 
 <p align="center">
 
- <img src="img/QR_DQN_Atari2.png" alt="algorithm" class ="center" width="500"/>
+ <img src="/img/QR_DQN_Atari2.png" alt="algorithm" class ="center" width="500"/>
 
 </p>
 
 <p align="center">
 
- <img src="img/QR_DQN_Atari1.png" alt="algorithm" class ="center" width="500"/>
+ <img src="/img/QR_DQN_Atari1.png" alt="algorithm" class ="center" width="500"/>
 
 </p>
 
@@ -511,7 +511,7 @@ QR-DQN의 경우 이전 논문인 C51에 비해 다음의 부분들에서 많은
 
 <p align="center">
 
- <img src="img/gamma_contraction.png" alt="gamma contraction" class ="center" width="400"/>
+ <img src="/img/gamma_contraction.png" alt="gamma contraction" class ="center" width="400"/>
 
 </p>
 
