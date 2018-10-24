@@ -9,7 +9,7 @@ subtitle: Distributional RL 2번째 논문
 
 ---
 
-<center> <img src="/img/paper_c51.png" width="800"> </center>
+<center> <img src="/img/paper_qrdqn.png" width="800"> </center>
 
 논문 저자 : [Will Dabney](https://arxiv.org/search/cs?searchtype=author&query=Dabney%2C+W), [Mark Rowland](https://arxiv.org/search/cs?searchtype=author&query=Rowland%2C+M), [Marc G. Bellemare](https://arxiv.org/search/cs?searchtype=author&query=Bellemare%2C+M+G), [Rémi Munos](https://arxiv.org/search/cs?searchtype=author&query=Munos%2C+R)    
 논문 링크 : [ArXiv](https://arxiv.org/abs/1710.10044)
@@ -505,18 +505,6 @@ QR-DQN의 경우 이전 논문인 C51에 비해 다음의 부분들에서 많은
 - Wasserstein distance를 줄이는 방향으로 학습을 수행하므로 distributional RL의 수렴성을 수학적으로 만족함!
 - Support와 관련된 파라미터가 Quantile의 숫자 하나밖에 없음! (support의 범위 같은 것을 정할 필요 없음)
 - 귀찮은 Projection 과정 생략 가능 
-
-1. support에 관련된 파라미터들을 결정해줘야하며 게임의 reward 범위에 따라 이 값들을 따로 설정해야 할 수 있습니다. 이런 점에 조금 귀찮은 점이 있습니다. 
-2. 알고리즘에 굉장히 번거로운 projection 과정이 포함되어 있습니다. 
-3. 마지막으로 해당 알고리즘의 경우 수학적으로 수렴성을 보장하지 못하는 알고리즘입니다. 
-
-<p align="center">
-
- <img src="D:/Min/Projects/distributional_rl/2_CartPole_QR-DQN/img/gamma_contraction.png" alt="gamma contraction" class ="center" width="400"/>
-
-</p>
-
-
 
 <br>
 
