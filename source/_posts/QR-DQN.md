@@ -256,7 +256,7 @@ CDF는 확률변수 값에 따른 확률을 누적해서 더하기 때문에 확
 
 1. Target network를 통해 구한 target support들과 network를 통해 추정한 support들의 차이를 구한다. 
    (각 target support와 추정된 support의 차이를 모두 구해야함)
-2. 차이 값이 0보다 작은 경우 (1-tau)를, 0보다 크거나 같은 경우 (tau)를 곱해준다. 
+2. 차이 값이 0보다 작은 경우 (tau-1)을, 0보다 크거나 같은 경우 (tau)를 곱해준다. 
 3. 해당 결과를 target에 대해서는 평균을 (E), prediction에 대해서는 sum을 해주어 최종 loss를 도출   
 
 <br>
@@ -354,7 +354,7 @@ Error의 각 column에 해당하는 quantile의 중앙값들을 나타낸 것이
 
 </p>
 
-위 부분에서 볼 수 있듯이 높은 quantile에 대해서 낮은 support값을 추정하는 경우 error (u)가 대부분 양수인 것을 확인할 수 있습니다. 가장 마지막 support에 대해서 u가 0보다 크거나 같은 경우 곱해지는 tau값은 0.875입니다. 반대로 u가 0보다 작은 경우 곱해지는 값은  (1-tau)인 0.125입니다. 
+위 부분에서 볼 수 있듯이 높은 quantile에 대해서 낮은 support값을 추정하는 경우 error (u)가 대부분 양수인 것을 확인할 수 있습니다. 가장 마지막 support에 대해서 u가 0보다 크거나 같은 경우 곱해지는 tau값은 0.875입니다. 반대로 u가 0보다 작은 경우 곱해지는 값은  (tau-1)인 0.125입니다. 
 
 이렇게 높은 quantile에 대한 support가 낮은 값을 추정하는 경우 위와 같은 연산 때문에 penalty가 생기게 되고 loss를 줄이는 방향으로 학습하다보면 높은 quantile에 대한 support가 다른 support들에 비해 높은 값을 추정할 수 있도록 학습되는 것입니다!! 위의 예시는 낮은 quantile에 대한 support가 높은 값을 추정하는 경우에도 유사하게 적용할 수 있습니다. 
 
