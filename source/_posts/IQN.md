@@ -1,4 +1,22 @@
-# IQN
+---
+title: Implicit Quantile Networks for Distributional Reinforcement Learning
+date: 2018-10-30 20:38:40
+tags: ["논문", "Distributional RL", "IQN"]
+categories: 논문 정리
+author: 민규식
+subtitle: Distributional RL 3번째 논문
+
+
+
+---
+
+<center> <img src="https://www.dropbox.com/s/mmxtgylh0ntatp4/IQN_paper.png?dl=1" width="800"> </center>
+
+논문 저자 : [Will Dabney](https://arxiv.org/search/cs?searchtype=author&query=Dabney%2C+W), [Georg Ostrovski](https://arxiv.org/search/cs?searchtype=author&query=Ostrovski%2C+G), [David Silver](https://arxiv.org/search/cs?searchtype=author&query=Silver%2C+D), [Rémi Munos](https://arxiv.org/search/cs?searchtype=author&query=Munos%2C+R)    
+논문 링크 : [ArXiv](https://arxiv.org/abs/1806.06923)
+Proceeding : The 36th International Conference on Machine Learning (*ICML 2018*)        
+정리 : 민규식
+
 #### 먼저 읽어주세요!
 
 [Distributional Reinforcement Learning](https://reinforcement-learning-kr.github.io/2018/09/27/Distributional_intro/)
