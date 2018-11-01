@@ -18,20 +18,6 @@ Proceeding : The Thirty-Second AAAI Conference on Artificial Intelligence (AAAI-
 
 ---
 
-#### 먼저 읽어주세요!
-
-[Distributional Reinforcement Learning](https://reinforcement-learning-kr.github.io/2018/09/27/Distributional_intro/)
-
-[C51](https://reinforcement-learning-kr.github.io/2018/10/02/C51/)
-
-
-
-#### 알고리즘 구현!
-
-[Github Repo](https://github.com/reinforcement-learning-kr/distributional_rl/tree/master/2_CartPole_QR-DQN)
-
-<br>
-
 ## Introduction
 
 본 게시물은 2017년 10월에 발표된 논문 [Distributional Reinforcement Learning with Quantile Regression(QR-DQN)](https://arxiv.org/abs/1710.10044) 의 내용에 대해 설명합니다.
@@ -511,7 +497,23 @@ QR-DQN의 경우 C51 및 다양한 deep reinforcement learning 알고리즘들�
 
 다음 게시물에서는 QR-DQN 논문의 후속 논문인 [Implicit Quantile Networks for Distributional Reinforcement Learning(IQN))](https://arxiv.org/abs/1806.06923) 논문에 대해 살펴보도록 하겠습니다!!! 😄
 
+<br>
 
+## Implementation
+
+본 논문의 코드는 다음의 Github를 참고해주세요. 
+
+[Github](https://github.com/reinforcement-learning-kr/distributional_rl)
+
+<br>
+
+## Other Posts
+
+[Distributional RL 개요](https://reinforcement-learning-kr.github.io/2018/09/27/Distributional_intro/)
+
+[C51](https://reinforcement-learning-kr.github.io/2018/10/02/C51/)
+
+[IQN](https://reinforcement-learning-kr.github.io/2018/10/30/IQN/)
 
 <br>
 

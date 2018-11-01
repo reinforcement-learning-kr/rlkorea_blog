@@ -17,21 +17,7 @@ subtitle: Distributional RL 3번째 논문
 Proceeding : The 36th International Conference on Machine Learning (*ICML 2018*)        
 정리 : 민규식
 
-#### 먼저 읽어주세요!
 
-[Distributional Reinforcement Learning](https://reinforcement-learning-kr.github.io/2018/09/27/Distributional_intro/)
-
-[C51](https://reinforcement-learning-kr.github.io/2018/10/02/C51/)
-
-[QR-DQN](https://reinforcement-learning-kr.github.io/2018/10/22/QR-DQN/)
-
-
-
-#### 알고리즘 구현!
-
-[Github Repo](https://github.com/reinforcement-learning-kr/distributional_rl/tree/master/3_CartPole_IQN)
-
-<br>
 
 ## Introduction
 
@@ -340,13 +326,11 @@ Risk-averse > Neutral > Risk-seeking
 IQN 알고리즘을 57개의 Atari game에 테스트한 결과가 다음과 같습니다. 
 
 <p align="center">
-
 <img src="https://www.dropbox.com/s/p530cm694ey9v0h/Result1.png?dl=1" alt="Result1" width="600"/>
 
 </p>
 
 <p align="center">
-
 <img src="https://www.dropbox.com/s/p4v7brznezqo4lk/Result2.png?dl=1" alt="Result2" width="600"/>
 
 </p>
@@ -354,6 +338,22 @@ IQN 알고리즘을 57개의 Atari game에 테스트한 결과가 다음과 같�
 위의 결과에서 볼 수 있듯이 IQN은 단일 알고리즘임에도 불구하고 여러가지 기법을 조합한 Rainbow에 약간 못미치는 성능을 보입니다. 하지만 다른 단일 알고리즘인 Prioritized experience replay, C51, QR-DQN에 비해서는 모두 우수한 성능을 보이고 있습니다. 특히 QR-DQN에 비해 많은 변화가 없음에도 불구하고 기존의 단일 알고리즘 중 가장 좋은 성능을 보였던 QR-DQN보다 월등히 우수한 성능을 보이고 있습니다. 
 
 <br>
+
+### Robustness Test
+
+다음의 결과는 같이 작업을 수행한 `윤승제`님께서 테스트해주신 결과입니다. Cartpole을 기본 파라미터로 학습을 수행한 후 **Pole의 길이**와 **Pole의 질량**을 다양하게 변경해가면서 테스트를 수행하였습니다. 알고리즘은 DQN과 IQN의 결과를 비교하였습니다.
+
+
+
+<p align="center">
+
+<img src="https://www.dropbox.com/s/wbvlmmc8oudw4kb/robustness.png?dl=1" alt="Result_robustness" width="800"/>
+
+</p>
+
+까맣게 될수록 500점을 내지 못하고 중간에 떨어진 것입니다. 위의 결과에서 볼 수 있듯이 DQN은 파라미터의 변화에 취약하여 값을 변경하는 것에 따라 성능이 크게 저하되는 것을 확인할 수 있었습니다. 하지만 IQN의 경우 파라미터 변화에 매우 robust하여 parameter가 변해도 대부분의 경우 500점을 얻는 것을 확인할 수 있었습니다. 
+
+
 
 ## Conclusion
 
@@ -369,7 +369,25 @@ IQN의 경우 다양한 deep reinforcement learning 알고리즘들에 비해 �
 
 <br>
 
-IQN을 끝으로 Deepmind에서 현재까지 (2018.10.30) 발표한 distributional RL에 대한 논문들에 대한 리뷰를 마치도록 하겠습니다!! 감사합니다!! :smile:
+IQN을 끝으로 Deepmind에서 현재까지 (2018.11.01) 발표한 distributional RL에 대한 논문들에 대한 리뷰를 마치도록 하겠습니다!! 감사합니다!! :smile:
+
+<br>
+
+## Implementation
+
+본 논문의 코드는 다음의 Github를 참고해주세요. 
+
+[Github](https://github.com/reinforcement-learning-kr/distributional_rl)
+
+<br>
+
+## Other Posts
+
+[Distributional RL 개요](https://reinforcement-learning-kr.github.io/2018/09/27/Distributional_intro/)
+
+[C51](https://reinforcement-learning-kr.github.io/2018/10/02/C51/)
+
+[QR-DQN](https://reinforcement-learning-kr.github.io/2018/10/22/QR-DQN/)
 
 <br>
 
