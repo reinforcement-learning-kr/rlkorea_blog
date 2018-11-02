@@ -9,7 +9,7 @@ subtitle: Distributional RL 2번째 논문
 
 ---
 
-<center> <img src="/img/paper_c51.png" width="800"> </center>
+<center> <img src="https://www.dropbox.com/s/ftl2dcwz274qkh5/paper_qrdqn.png?dl=1" width="800"> </center>
 
 논문 저자 : [Will Dabney](https://arxiv.org/search/cs?searchtype=author&query=Dabney%2C+W), [Mark Rowland](https://arxiv.org/search/cs?searchtype=author&query=Rowland%2C+M), [Marc G. Bellemare](https://arxiv.org/search/cs?searchtype=author&query=Bellemare%2C+M+G), [Rémi Munos](https://arxiv.org/search/cs?searchtype=author&query=Munos%2C+R)    
 논문 링크 : [ArXiv](https://arxiv.org/abs/1710.10044)
@@ -18,27 +18,12 @@ Proceeding : The Thirty-Second AAAI Conference on Artificial Intelligence (AAAI-
 
 ---
 
-#### 먼저 읽어주세요!
-
-[Distributional Reinforcement Learning](https://reinforcement-learning-kr.github.io/2018/09/27/Distributional_intro/)
-
-[C51](https://reinforcement-learning-kr.github.io/2018/10/02/C51/)
-
-
-
-#### 알고리즘 구현!
-
-[Github Repo](https://github.com/reinforcement-learning-kr/distributional_rl/tree/master/2_CartPole_QR-DQN)
-
-<br>
-
 ## Introduction
 
 본 게시물은 2017년 10월에 발표된 논문 [Distributional Reinforcement Learning with Quantile Regression(QR-DQN)](https://arxiv.org/abs/1710.10044) 의 내용에 대해 설명합니다.
 
 <p align= "center">
-
-<img src="/img/paper_qrdqn.png" alt="paper" style="width: 800px;"/>
+<img src="https://www.dropbox.com/s/ftl2dcwz274qkh5/paper_qrdqn.png?dl=1" alt="paper" style="width: 800px;"/>
 
  </p>
 
@@ -69,7 +54,7 @@ QR-DQN의 경우 C51과 비교했을 때 다음의 내용들에서 차이를 가
 
 <p align="center">
 
- <img src="/img/support_and_prob.png" alt="value distribution" width="800"/>
+ <img src="https://www.dropbox.com/s/hfy4ynt2ic9tgtx/support_and_prob.png?dl=1" alt="value distribution" width="800"/>
 
 </p>
 
@@ -79,7 +64,7 @@ QR-DQN과 C51의 경우 output을 구하는데 차이가 있습니다. 해당 �
 
 <p align="center">
 
- <img src="/img/c51_qrdqn.png" alt="value distribution" width="600"/>
+ <img src="https://www.dropbox.com/s/7qkn9a4fz37th6m/c51_qrdqn.png?dl=1" width="600"/>
 
 </p>
 
@@ -87,7 +72,6 @@ QR-DQN과 C51의 경우 output을 구하는데 차이가 있습니다. 해당 �
 
 - C51: support를 동일한 간격으로 고정, network의 output으로 확률을 구함 
 - QR-DQN: 확률을 동일하게 설정, network의 output으로 support를 구함 
-
 
 
 
@@ -113,7 +97,7 @@ C51의 경우 support를 구하기 위해서 다음의 parameter들을 결정해
 
  <p align="center">
 
- <img src="/img/quantile.png" alt="quantile" width="400"/>
+ <img src="https://www.dropbox.com/s/dint0ee5q2kkpcm/quantile.png?dl=1" alt="quantile" width="400"/>
 
 </p>
 
@@ -121,7 +105,7 @@ C51의 경우 support를 구하기 위해서 다음의 parameter들을 결정해
 
  <p align="center">
 
- <img src="/img/cdf.png" alt="cdf" width="400"/>
+ <img src="https://www.dropbox.com/s/dzkhyy77oljdi7o/cdf.png?dl=1" alt="cdf" width="400"/>
 
 </p>
 
@@ -129,13 +113,13 @@ C51의 경우 support를 구하기 위해서 다음의 parameter들을 결정해
 
 CDF의 함수를 F, distribution function을 Z라고 했을 때 다음과 같이 식을 표시합니다. 
 
- <img src="/img/cdf_function.png" alt="cdf" width="200"/>
+ <img src="https://www.dropbox.com/s/dsone4lqernj54p/cdf_function.png?dl=1" alt="cdf" width="200"/>
 
 
 
 Quantile regression은 모든 quantile에 대한 CDF의 역함수입니다. 그렇기 때문에 위의 식을 다음과 같이 역함수의 형태로 나타낼 수 있습니다. 
 
-<img src="/img/quantile_regression.png" alt="quantile regression" width="200"/>
+<img src="https://www.dropbox.com/s/7kgktid1hpc7nba/quantile_regression.png?dl=1" alt="quantile regression" width="200"/>
 
 즉 Quantile regression은 동일하게 나눈 확률들을 input으로 하여 각각의 support를 구하는 것입니다. 그럼 왜 본 논문에서는 quantile regression을 통해 구한 support들간의 차이를 줄이는 방향으로 학습을 수행할까요? 이것은 **Wasserstein Distance**와 관련이 있습니다. 
 
@@ -147,7 +131,7 @@ C51논문에서 언급하였듯이 Distributional RL은 다음의 contraction �
 
 <p align="center">
 
- <img src="/img/contraction.png" alt="cdf" width="600"/>
+ <img src="https://www.dropbox.com/s/wb2vqtia3064ydw/contraction.png?dl=1" alt="cdf" width="600"/>
 
 </p>
 
@@ -157,7 +141,7 @@ p-Wasserstein distance의 식은 아래와 같습니다.
 
 <p align="center">
 
- <img src="/img/wasserstein.png" alt="cdf" width="600"/>
+ <img src="https://www.dropbox.com/s/jja6ahq9l0q5a78/wasserstein.png?dl=1" alt="cdf" width="600"/>
 
 </p> 
 
@@ -165,7 +149,7 @@ p-Wasserstein distance의 식은 아래와 같습니다.
 
 <p align="center">
 
- <img src="/img/wasserstein_graph.png" alt="cdf" width="500"/>
+ <img src="https://www.dropbox.com/s/l1zx9hgb271kzar/wasserstein_graph.png?dl=1" alt="cdf" width="500"/>
 
 </p> 
 
@@ -179,7 +163,7 @@ p-Wasserstein distance의 식은 아래와 같습니다.
 
 <p align="center">
 
- <img src="/img/midpoint.png" alt="cdf" width="500"/>
+ <img src="https://www.dropbox.com/s/yghdhpm4d2wk94d/midpoint.png?dl=1" alt="cdf" width="500"/>
 
 </p> 
 
@@ -187,7 +171,7 @@ p-Wasserstein distance의 식은 아래와 같습니다.
 
  <p align="center">
 
- <img src="/img/minimizer_lemma.png" alt="cdf" width="700"/>
+ <img src="https://www.dropbox.com/s/z75aewiscsojdhl/minimizer_lemma.png?dl=1" alt="cdf" width="700"/>
 
 </p> 
 
@@ -195,7 +179,7 @@ p-Wasserstein distance의 식은 아래와 같습니다.
 
  <p align="center">
 
- <img src="/img/midpoint_graph.png" alt="cdf" width="800"/>
+ <img src="https://www.dropbox.com/s/k7bes1ujqui8vss/midpoint_graph.png?dl=1" alt="cdf" width="800"/>
 
 </p> 
 
@@ -219,8 +203,8 @@ p-Wasserstein distance의 식은 아래와 같습니다.
 
 위에서 보셨듯이 QR-DQN은 Quantile Regression이라는 기법을 이용하여 value distribution을 정의합니다. 이에 따라 **Quantile Regression Loss**라는 특별한 loss를 이용하여 학습을 수행합니다. 우선 quantile regression loss의 목적은 다음의 2가지입니다. 
 
-1.  Target value distribution과 네트워크를 통해 예측된 value distribution간 차이를 줄이도록 네트워크 학습 
-2.  네트워크가 낮은 quantile에 대해서는 낮은 support값을, 높은 quantile에 대해서는 높은 support를 도출하도록 학습  
+1. Target value distribution과 네트워크를 통해 예측된 value distribution간 차이를 줄이도록 네트워크 학습 
+2. 네트워크가 낮은 quantile에 대해서는 낮은 support값을, 높은 quantile에 대해서는 높은 support를 도출하도록 학습  
 
 
 
@@ -230,7 +214,7 @@ QR-DQN은 아래와 같이 CDF를 동일한 수의 quantile로 나누고 그때�
 
 <p align="center">
 
- <img src="/img/QR_cdf_normal.png" alt="cdf normal" width="400"/>
+ <img src="https://www.dropbox.com/s/xk1eey4bh35w0qc/QR_cdf_normal.png?dl=1" alt="cdf normal" width="400"/>
 
 </p>
 
@@ -240,7 +224,7 @@ QR-DQN은 아래와 같이 CDF를 동일한 수의 quantile로 나누고 그때�
 
  <p align="center">
 
- <img src="/img/QR_cdf_abnormal.png" alt="cdf abnormal" width="400"/>
+ <img src="https://www.dropbox.com/s/68ng0senkvdjp7n/QR_cdf_abnormal.png?dl=1" alt="cdf abnormal" width="400"/>
 
 </p>
 
@@ -250,15 +234,15 @@ CDF는 확률변수 값에 따른 확률을 누적해서 더하기 때문에 확
 
 <p align="center">
 
- <img src="/img/quantile_regression_loss.png" alt="Quantile regression loss" width="400"/>
+ <img src="https://www.dropbox.com/s/md1l7vbvt7w0brq/quantile_regression_loss.png?dl=1" alt="Quantile regression loss" width="400"/>
 
 </p>
 
 위의 식은 다음의 과정을 거쳐서 진행됩니다. 
 
-1. Target support들과 network를 통해 추정한 support들의 차이를 구한다. 
+1. Target network를 통해 구한 target support들과 network를 통해 추정한 support들의 차이를 구한다. 
    (각 target support와 추정된 support의 차이를 모두 구해야함)
-2. 차이 값이 0보다 작은 경우 (1-tau)를, 0보다 크거나 같은 경우 (tau)를 곱해준다. 
+2. 차이 값이 0보다 작은 경우 (tau-1)을, 0보다 크거나 같은 경우 (tau)를 곱해준다. 
 3. 해당 결과를 target에 대해서는 평균을 (E), prediction에 대해서는 sum을 해주어 최종 loss를 도출   
 
 <br>
@@ -271,7 +255,7 @@ Target supports가 [2, 4, 8, 9]이고 추정된 support가 [1, 4, 5, 8]이라고
 
 <p align="center">
 
- <img src="/img/qr_dqn_loss1.png" alt="Quantile regression loss1" width="800"/>
+ <img src="https://www.dropbox.com/s/itc14ozvvglr4xc/qr_dqn_loss1.png?dl=1" alt="Quantile regression loss1" width="800"/>
 
 </p>
 
@@ -281,7 +265,7 @@ Quantile regression loss 중 **과정 2**에 해당하는 부분이 다음과 �
 
 <p align="center">
 
- <img src="/img/qr_dqn_loss2.png" alt="Quantile regression loss" width="300"/>
+ <img src="https://www.dropbox.com/s/fns0p28m7utsyb0/qr_dqn_loss2.png?dl=1" alt="Quantile regression loss" width="300"/>
 
 </p>
 
@@ -289,7 +273,7 @@ Error의 각 column에 해당하는 quantile의 중앙값들을 나타낸 것이
 
 <p align="center">
 
- <img src="/img/qr_dqn_loss2_1.png" alt="Quantile regression loss" width="800"/>
+ <img src="https://www.dropbox.com/s/kavn0uisgwdityo/qr_dqn_loss2_1.png?dl=1" alt="Quantile regression loss" width="800"/>
 
 </p>
 
@@ -297,7 +281,7 @@ Error의 각 column에 해당하는 quantile의 중앙값들을 나타낸 것이
 
 <p align="center">
 
- <img src="/img/qr_dqn_loss2_2.png" alt="Quantile regression loss" width="800"/>
+ <img src="https://www.dropbox.com/s/6whtc7t28e7dyz9/qr_dqn_loss2_2.png?dl=1" alt="Quantile regression loss" width="800"/>
 
 </p>
 
@@ -305,7 +289,7 @@ Error의 각 column에 해당하는 quantile의 중앙값들을 나타낸 것이
 
 <p align="center">
 
- <img src="/img/qr_dqn_loss3_1.png" alt="Quantile regression loss" width="300"/>
+ <img src="https://www.dropbox.com/s/0hlpemekpg16cgr/qr_dqn_loss3_1.png?dl=1" alt="Quantile regression loss" width="300"/>
 
 </p>
 
@@ -313,7 +297,7 @@ Error의 각 column에 해당하는 quantile의 중앙값들을 나타낸 것이
 
  <p align="center">
 
- <img src="/img/qr_dqn_loss3_2.png" alt="Quantile regression loss" width="300"/>
+ <img src="https://www.dropbox.com/s/efckt3pgrewclqn/qr_dqn_loss3_2.png?dl=1" alt="Quantile regression loss" width="300"/>
 
 </p>
 
@@ -323,7 +307,7 @@ Error의 각 column에 해당하는 quantile의 중앙값들을 나타낸 것이
 
  <p align="center">
 
- <img src="/img/qr_dqn_loss4.png" alt="Quantile regression loss" width="800"/>
+ <img src="https://www.dropbox.com/s/wfjzmvdgx8zxsf1/qr_dqn_loss4.png?dl=1" alt="Quantile regression loss" width="800"/>
 
 </p>
 
@@ -344,7 +328,7 @@ Error의 각 column에 해당하는 quantile의 중앙값들을 나타낸 것이
 
  <p align="center">
 
- <img src="/img/qr_dqn_compare.png" alt="Quantile regression loss" width="800"/>
+ <img src="https://www.dropbox.com/s/ikzy0i7k78nmr51/qr_dqn_compare.png?dl=1" alt="Quantile regression loss" width="800"/>
 
 </p>
 
@@ -352,11 +336,11 @@ Error의 각 column에 해당하는 quantile의 중앙값들을 나타낸 것이
 
  <p align="center">
 
- <img src="/img/qr_dqn_compare2.png" alt="Quantile regression loss" width="800"/>
+ <img src="https://www.dropbox.com/s/vpjidvf7a1dkqry/qr_dqn_compare2.png?dl=1" alt="Quantile regression loss" width="800"/>
 
 </p>
 
-위 부분에서 볼 수 있듯이 높은 quantile에 대해서 낮은 support값을 추정하는 경우 error (u)가 대부분 양수인 것을 확인할 수 있습니다. 가장 마지막 support에 대해서 u가 0보다 크거나 같은 경우 곱해지는 tau값은 0.875입니다. 반대로 u가 0보다 작은 경우 곱해지는 값은  (1-tau)인 0.125입니다. 
+위 부분에서 볼 수 있듯이 높은 quantile에 대해서 낮은 support값을 추정하는 경우 error (u)가 대부분 양수인 것을 확인할 수 있습니다. 가장 마지막 support에 대해서 u가 0보다 크거나 같은 경우 곱해지는 tau값은 0.875입니다. 반대로 u가 0보다 작은 경우 곱해지는 값은  (tau-1)인 0.125입니다. 
 
 이렇게 높은 quantile에 대한 support가 낮은 값을 추정하는 경우 위와 같은 연산 때문에 penalty가 생기게 되고 loss를 줄이는 방향으로 학습하다보면 높은 quantile에 대한 support가 다른 support들에 비해 높은 값을 추정할 수 있도록 학습되는 것입니다!! 위의 예시는 낮은 quantile에 대한 support가 높은 값을 추정하는 경우에도 유사하게 적용할 수 있습니다. 
 
@@ -372,7 +356,7 @@ Error의 각 column에 해당하는 quantile의 중앙값들을 나타낸 것이
 
  <p align="center">
 
- <img src="/img/quantile_huber.png" alt="Huber loss" width="500"/>
+ <img src="https://www.dropbox.com/s/ik1v03jcxj1crhi/quantile_huber.png?dl=1" alt="Huber loss" width="500"/>
 
 </p>
 
@@ -382,7 +366,7 @@ Error의 각 column에 해당하는 quantile의 중앙값들을 나타낸 것이
 
  <p align="center">
 
- <img src="/img/HuberLoss.png" alt="Huber loss" width="500"/>
+ <img src="https://www.dropbox.com/s/dtfi0y1retnchwa/HuberLoss.png?dl=1" alt="Huber loss" width="500"/>
 
 </p>
 
@@ -390,15 +374,17 @@ Error의 각 column에 해당하는 quantile의 중앙값들을 나타낸 것이
 
  <p align="center">
 
- <img src="/img/Quantile_Huber_Loss.png" alt="Huber loss" width="500"/>
+ <img src="https://www.dropbox.com/s/0b1dim8bafuig9p/Quantile_Huber_Loss.png?dl=1" alt="Huber loss" width="500"/>
 
 </p>
+
+위의 부분에서 기존에는 u<0 일 때 (tau-1) 이었던 것이 (1-tau)로 바뀌었습니다. 이는 Huber loss가 적용되면서 L(u)가 0보다 커졌기 때문에 (1-tau)를 해줘야 최종적으로 loss값이 양수가 됩니다. 
 
 Rho의 부분을 위와 같이 수정하여 최종적으로 아래와 같은 Quantile Huber Loss에 적용해주면 Quantile Huber Loss에 대한 모든 설명이 마무리됩니다!! :) 
 
  <p align="center">
 
- <img src="/img/Quantile_Huber_Loss_final.png" alt="Huber loss" width="500"/>
+ <img src="https://www.dropbox.com/s/g834dg6uq8kvtce/Quantile_Huber_Loss_final.png?dl=1" alt="Huber loss" width="500"/>
 
 </p>
 
@@ -408,7 +394,7 @@ Rho의 부분을 위와 같이 수정하여 최종적으로 아래와 같은 Qua
 
  <p align="center">
 
- <img src="/img/QR-DQN_algorithm.png" alt="Algorithm" width="600"/>
+ <img src="https://www.dropbox.com/s/wt2ohbo1cifwvw4/QR-DQN_algorithm.png?dl=1" alt="Algorithm" width="600"/>
 
 </p>
 
@@ -435,7 +421,7 @@ Target distribution을 계산할 때는 target network를 통해 추정한 suppo
 
  <p align="center">
 
- <img src="/img/env1.png" alt="Two room windy grid world" width="300"/>
+ <img src="https://www.dropbox.com/s/xcy1im29xjc1rel/env1.png?dl=1" alt="Two room windy grid world" width="300"/>
 
 </p>
 
@@ -449,7 +435,7 @@ Agent는 x_s에서 출발하며 x_G에 도달하면 1의 reward를 얻습니다.
 
 <p align="center">
 
- <img src="/img/QR_result_value.png" alt="Two room windy grid world" width="700"/>
+ <img src="https://www.dropbox.com/s/xivl1qhtfmr8z7b/QR_result_value.png?dl=1" alt="Two room windy grid world" width="700"/>
 
 </p>
 
@@ -457,7 +443,7 @@ Agent는 x_s에서 출발하며 x_G에 도달하면 1의 reward를 얻습니다.
 
 <p align="center">
 
- <img src="/img/result_value_wasserstein.png" alt="Two room windy grid world" width="700"/>
+ <img src="https://www.dropbox.com/s/tzav16rkhtt07cz/result_value_wasserstein.png?dl=1" alt="Two room windy grid world" width="700"/>
 
 </p>
 
@@ -477,19 +463,19 @@ Atari 환경에서 성능을 검증하기 위해 본 논문에서 설정한 파�
 
 <p align="center">
 
- <img src="/img/QR_DQN_Atari3.png" alt="algorithm" class ="center" width="500"/>
+ <img src="https://www.dropbox.com/s/of3x9s2xkx7y4yo/QR_DQN_Atari3.png?dl=1" class ="center" width="500"/>
 
 </p>
 
 <p align="center">
 
- <img src="/img/QR_DQN_Atari2.png" alt="algorithm" class ="center" width="500"/>
+ <img src="https://www.dropbox.com/s/3as73k26vjhjlns/QR_DQN_Atari2.png?dl=1" class ="center" width="500"/>
 
 </p>
 
 <p align="center">
 
- <img src="/img/QR_DQN_Atari1.png" alt="algorithm" class ="center" width="500"/>
+ <img src="https://www.dropbox.com/s/giantm2igkpy53t/QR_DQN_Atari1.png?dl=1" alt="algorithm" class ="center" width="500"/>
 
 </p>
 
@@ -505,25 +491,29 @@ QR-DQN의 경우 이전 논문인 C51에 비해 다음의 부분들에서 많은
 - Support와 관련된 파라미터가 Quantile의 숫자 하나밖에 없음! (support의 범위 같은 것을 정할 필요 없음)
 - 귀찮은 Projection 과정 생략 가능 
 
-1.  support에 관련된 파라미터들을 결정해줘야하며 게임의 reward 범위에 따라 이 값들을 따로 설정해야 할 수 있습니다. 이런 점에 조금 귀찮은 점이 있습니다. 
-2.  알고리즘에 굉장히 번거로운 projection 과정이 포함되어 있습니다. 
-3.  마지막으로 해당 알고리즘의 경우 수학적으로 수렴성을 보장하지 못하는 알고리즘입니다. 
-
-<p align="center">
-
- <img src="/img/gamma_contraction.png" alt="gamma contraction" class ="center" width="400"/>
-
-</p>
-
-
-
 <br>
 
 QR-DQN의 경우 C51 및 다양한 deep reinforcement learning 알고리즘들에 비해 좋은 성능을 보였으며 확률적인 환경에서 value distribution에 대한 추정도 매우 정확했음을 알 수 있습니다. 
 
-다음 게시물에서는 QR-DQN 논문의 후속 논문인 [Implicit Quantile Networks for Distributional Reinforcement Learning(IQN))](https://arxiv.org/abs/1806.06923) 논문에 대해 살펴보도록 하겠습니다!!! :smile:
+다음 게시물에서는 QR-DQN 논문의 후속 논문인 [Implicit Quantile Networks for Distributional Reinforcement Learning(IQN))](https://arxiv.org/abs/1806.06923) 논문에 대해 살펴보도록 하겠습니다!!! 😄
 
+<br>
 
+## Implementation
+
+본 논문의 코드는 다음의 Github를 참고해주세요. 
+
+[Github](https://github.com/reinforcement-learning-kr/distributional_rl)
+
+<br>
+
+## Other Posts
+
+[Distributional RL 개요](https://reinforcement-learning-kr.github.io/2018/09/27/Distributional_intro/)
+
+[C51](https://reinforcement-learning-kr.github.io/2018/10/02/C51/)
+
+[IQN](https://reinforcement-learning-kr.github.io/2018/10/30/IQN/)
 
 <br>
 
