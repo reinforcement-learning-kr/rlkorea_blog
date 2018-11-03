@@ -105,33 +105,55 @@ Sampling을 통해 학습을 수행하고 action을 선택하는 경우 이 risk
 - Risk-averse policy
 - Risk-seeking policy 
 
-위의 2가지는 tau를 sampling하는 distribution을 변경시켜 설정할 수 있습니다. 아주 단순한 경우에는 action을 선택할 때 tau를 sampling하는 범위를 제한해주어 선택할 수 있습니다. 
+<br>
 
-우선 **Risk-averse policy**부터 살펴보도록 하겠습니다. 이는 이름 그대로 risk는 피하는 방향으로 action을 선택하는 기법입니다. 예를 들어 tau = [0, 0.5]로 범위를 제한해보도록 하겠습니다. 이 경우 하위 50%의 확률에 대해서만 sampling을 수행합니다.  이런 경우 아래와 같은 결과를 확인할 수 있습니다. 
-
-
+[A Comprehensive Survey on Safe Reinforcement Learning](http://www.jmlr.org/papers/volume16/garcia15a/garcia15a.pdf) 논문을 보시면 다음과 같은 내용이 나옵니다.  
 
 <p align="center">
 
- <img src="https://www.dropbox.com/s/jtvk920xe5ubqs7/risk_averse.png?dl=1" alt="Risk averse" width="1000"/>
+ <img src="https://www.dropbox.com/s/xivtpfaufuaf732/risk_sensitive_criterion.png?dl=1" alt="Risk sensitive criterion" width="800"/>
 
 </p>
 
-위와 같이 하위 50%에 대해서만 sampling을 수행하는 것은 distribution에서 왼쪽 절반만 이용하는 것과 동일합니다. 전체 value distribution을 통해 비교해보면 risk가 상대적으로 높은 a2에 대한 기대값이 a1에 대한 기대값보다 큽니다. 이렇게 되면 a2를 최종 action으로 선택할 것입니다. 하지만 [0, 0.5]에 해당하는 distribution만 이용하는 경우 risk가 상대적으로 낮은 a1의 기대값이 a2의 기대값보다 커지게 됩니다. 이렇게 되면 a1을 최종 action으로 선택하게 됩니다. 
+위의 definition을 보시면 scalar parameter beta를 통해 risk의 level을 결정합니다. 이 beta를 risk sensitivity parameter라고 합니다. 이 beta가 0보다 큰 경우 risk-averse, 0보다 작은 경우 risk-seeking, 그리고 0인 경우 risk-neutral policy가 됩니다. 
 
-자 위와 같은 간단한 예시를 통해 risk-averse policy인 경우 어떻게 기대값은 더 낮아도 위험이 적은 distribution을 가지는 a1을 선택하게 되는지 알아보았습니다. Risk가 높은 action을 선택하도록 유도하는 **Risk-seeking policy**의 경우 딱 위의 상황이랑 반대로 적용해보면 됩니다. tau를 [0.5, 1]로 적용한 결과가 아래와 같습니다. 
+어떻게 beta를 통해 risk의 level을 결정할 수 있는지, sampling을 이용하면 어떻게 risk-sensitive policy를 결정할 수 있는지 한번 알아보겠습니다.  
 
-
+우선 risk-sensitive policy에 따라 action을 선택하는 식은 다음과 같습니다.  
 
 <p align="center">
 
- <img src="https://www.dropbox.com/s/19q9zx7o8b4npj7/risk_seeking.png?dl=1" alt="Risk averse" width="1000"/>
+ <img src="https://www.dropbox.com/s/cw6uk13z25bzhgu/risk_sensitive_equation.png?dl=1" alt="Risk sensitive criterion" width="600"/>
 
 </p>
 
-위와 같이 risk-seeking의 경우 risk가 상대적으로 높은 a2를 선택하게 될 가능성이 높아집니다. 위와 같은 과정을 통해 risk sensitive policy를 결정할 수 있는 것입니다. 
+<p align="center">
+
+<img src="https://www.dropbox.com/s/jtvk920xe5ubqs7/risk_averse.png?dl=1" alt="Risk averse" width="800"/>
+
+</p>
+
+위의 경우는 RIsk-averse 입니다. 기존의 경우 a2의 distribution에 대한 평균값이 a1의 distribution에 대한 평균값보다 크기 때문에 a2를 최종적인 action으로 선택했을 것입니다. 하지만 a1보다 a2의 분산이 훨씬 크기 때문에 beta가 양수인 경우 (distribution의 평균) - beta * (distribution의 분산)의 계산을 수행하면 연산의 결과값은 a2보다 a1이 더 큽니다. 이에 따라 risk가 더 낮은 a1을 선택하게 되는 것이고 위와 같은 과정을 통해 risk-averse policy에 따라 action을 선택하게 됩니다.   
+
+CDF의 낮은 영역에서만 tau를 sampling하는 경우 위와 유사한 결과를 확인할 수 있습니다. Tau를 낮은 범위 내에서 sampling하는 경우 낮은 value들에 대한 tau들이 sampling되지만 a2의 경우 a1보다 분산이 훨씬 크기 때문에 sampling 된 결과들의 기대값은 a1이 a2보다 크게 됩니다. 
 
 
+
+Risk-seeking의 경우 위의 risk-averse와 반대의 상황을 확인할 수 있습니다. 
+
+ 
+
+<p align="center">
+
+<img src="https://www.dropbox.com/s/19q9zx7o8b4npj7/risk_seeking.png?dl=1" alt="Risk seeking" width="800"/>
+
+</p>
+
+위의 경우는 RIsk-seeking 입니다. 기존의 경우 a1의 distribution에 대한 평균값이 a2의 distribution에 대한 평균값보다 크기 때문에 a1를 최종적인 action으로 선택했을 것입니다. 하지만 a1보다 a2의 분산이 훨씬 크기 때문에 beta가 음수인 경우 (distribution의 평균) - beta * (distribution의 분산)의 계산을 수행하면 연산의 결과값은 a1보다 a2가 더 큽니다. 이에 따라 risk가 더 큰 a2를 선택하게 되는 것이고 위와 같은 과정을 통해 risk-seeking policy에 따라 action을 선택하게 됩니다.   
+
+CDF의 높은 영역에서만 tau를 sampling하는 경우 위와 유사한 결과를 확인할 수 있습니다. Tau를 높은 범위 내에서 sampling하는 경우 높은 value들에 대한 tau들이 sampling되지만 a2의 경우 a1보다 분산이 훨씬 크기 때문에 sampling 된 결과들의 기대값은 a2가 a1보다 크게 됩니다. 
+
+<br>
 
 논문에서는 다음과 같은 4가지 기법들을 이용해 tau를 위한 sampling distribution을 변경하고 다양한 risk-sensitive policy를 선택하게 됩니다. 
 
