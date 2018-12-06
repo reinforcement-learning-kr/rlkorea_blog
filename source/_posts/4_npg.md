@@ -294,7 +294,7 @@ $$=\pi(a;s,\theta)(1+\psi(s,a)^T\delta\theta) + O(\delta\theta^2)$$
 
 $$=\pi(a;s,\theta)(1+\alpha\psi(s,a)^T\bar{w}) + O(\delta\theta^2)$$
 
-$$=\pi(a;s,\theta)(1+\alpha f^{\pi}(s,a;\bar{w}) + O(\delta\theta^2)$$
+$$=\pi(a;s,\theta)(1+\alpha f^{\pi}(s,a;\bar{w})) + O(\delta\theta^2)$$
 
 policy 자체가 function approximator의 크기대로 업데이트가 되므로 local하게 best action의 probability는 커지고 다른 probability의 크기는 작아질 것입니다. 하지만 만약 greedy improvement가 된다하더라도 그게 performance의 improvement를 보장하는 것은 아닙니다. 하지만 line search와 함께 사용할 경우 improvement를 보장할 수 있습니다. 왜 그런지는 처음에 말씀드린 블로그 [다크 프로그래머님의 블로그](http://darkpgmr.tistory.com/149)를 참고해주시기 바랍니다.
 

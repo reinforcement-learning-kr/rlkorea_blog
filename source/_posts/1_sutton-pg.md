@@ -116,7 +116,7 @@ $$\rho(\pi)=\lim_{n\to\infty}\frac{1}{n}E[r_1+r_2+\cdots+r_n|\pi] = \sum_s d^\pi
     - 위의 (limit수식과 summation수식 사이의) 등식은 왜 성립할까요? Time average와 Ensemble average가 같다는 뜻으로 [ergodic](https://en.wikipedia.org/wiki/Ergodicity)한 system에서 성립합니다.
 
 * Value of a state-action pair given a policy
-$$Q^{\pi(s,a)} = \sum_{t=1}^\infty E[r_t - \rho(\pi)|S_0=s, A_0=a, \pi]$$
+$$Q^{\pi} (s,a) = \sum_{t=1}^\infty E[r_t - \rho(\pi)|S_0=s, A_0=a, \pi]$$
     - 위의 Q-function의 표현식이 정의인지 유도된 것인지는 이 포스트를 작성하는 저희도 아직 확실히 모르겠습니다. 다만, $r_t$들을 더하면 무한대로 발산할 가능성이 매우 높은데 $\rho$를 빼줌으로해서 어찌보면 평균 reward로부터의 차이를 더하는 것이라고 할 수 있고 이것은 bound된 값일 가능성이 더 높기 때문에 Q-function을 이렇게 표현하는 것이 더 안전하다고 할 수 있습니다. 이 부분에 대해서 좋은 의견이 있으시면 피드백을 주시면 감사하겠습니다!
 
 * State-value function
