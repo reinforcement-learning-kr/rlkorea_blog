@@ -11,7 +11,7 @@ subtitle: Inverse RL 1번째 논문
 
 논문 저자 : Andrew Y. Ng, Stuart Russell
 논문 링크 : http://ai.stanford.edu/~ang/papers/icml00-irl.pdf
-Proceeding :
+Proceeding : International Conference on Machine Learning (ICML) 2000
 
 ---
 
