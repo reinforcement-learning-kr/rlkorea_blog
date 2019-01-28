@@ -32,11 +32,11 @@ subtitle: Let's do Inverse RL Guide
 
 # 1. \[Linear_IRL\] Algorithms for Inverse Reinforcement Learning
 
-[Linear IRL 여행하기]()
+[Linear_IRL 여행하기]()
 
 짧은 글 소개, 요약
 
-[Sutton PG 여행하기]()
+[Linear_IRL 여행하기]()
 
 <br><br>
 
