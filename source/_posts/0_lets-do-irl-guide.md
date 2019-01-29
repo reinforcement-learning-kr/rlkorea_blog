@@ -11,7 +11,9 @@ subtitle: Let's do Inverse RL Guide
 
 # 0. Inverse RL의 세계로
 
-반갑습니다! 저희는 Inverse RL을 흐름을 살펴보기 위해 모인 IRL탐험대입니다. 강화학습에서 reward라는 요소는 굉장히 중요합니다. 왜냐하면 agent라는 아이가 유일하게 학습할 수 있는 요소이기 때문입니다. 일반적으로 강화학습에서는 사람이 reward를 일일히 정해주지만, 실제로 그 reward에 따라 "desirable"  action이 나오지 않을 수도 있습니다. 여기서 생각해볼 수 있는 것이 바로 "expert"의 행동을 통해 reward를 찾는 것입니다.
+반갑습니다! 저희는 Inverse RL을 흐름을 살펴보기 위해 모인 IRL 프로젝트 팀입니다.
+
+강화학습에서 reward라는 요소는 굉장히 중요합니다. 왜냐하면 agent라는 아이가 유일하게 학습할 수 있는 요소이기 때문입니다. 일반적으로 강화학습에서는 사람이 reward를 일일히 정해주지만, 실제로 그 reward에 따라 "desirable"  action이 나오지 않을 수도 있습니다. 여기서 생각해볼 수 있는 것이 바로 "expert"의 행동을 통해 reward를 찾는 것입니다.
 
 저희는 Andrew Ng의 논문인 Linear IRL과 Pieter Abbeel의 논문인 APP를 필두로 하여 MMP, MaxEnt, 그리고 보통 IRL을 통해 얻어진 reward로 다시 RL을 풀어서 policy를 얻어야하지만, 이 과정을 한번에 풀어버리는 GAIL, 최근 들어 GAIL을 뛰어넘는 VAIL까지 살펴보고자 합니다.
 
@@ -32,22 +34,22 @@ subtitle: Let's do Inverse RL Guide
 
 # 1. \[Linear_IRL\] Algorithms for Inverse Reinforcement Learning
 
-[Linear_IRL 여행하기]()
+[Linear_IRL 여행하기](https://reinforcement-learning-kr.github.io/2019/01/28/1_linear-irl/)
 
 짧은 글 소개, 요약
 
-[Linear_IRL 여행하기]()
+[Linear_IRL 여행하기](https://reinforcement-learning-kr.github.io/2019/01/28/1_linear-irl/)
 
 <br><br>
 
 # 2. \[APP\] Apprenticeship Learning via Inverse Reinforcement Learning
 
-[APP 여행하기]()
+[APP 여행하기](https://reinforcement-learning-kr.github.io/2019/02/01/2_app/)
 [APP Code]()
 
 짧은 글 소개, 요약
 
-[APP 여행하기]()
+[APP 여행하기](https://reinforcement-learning-kr.github.io/2019/02/01/2_app/)
 [APP Code]()
 
 <br><br>
@@ -95,3 +97,19 @@ subtitle: Let's do Inverse RL Guide
 
 [VAIL 여행하기]()
 [VAIL Code]()
+
+<br><br>
+
+# Team
+
+이동민 : [Github](https://github.com/dongminleeai), [Facebook](https://www.facebook.com/dongminleeai)
+
+윤승제 : [Github](https://github.com/sjYoondeltar), [Facebook](https://www.facebook.com/seungje.yoon)
+
+이승현 : [Github](https://github.com/Clyde21c), [Facebook](https://www.facebook.com/Clyde21c)
+
+이건희 : [Github](https://github.com/Geonhee-LEE), [Facebook](https://www.facebook.com/Geonheeee)
+
+김준태 : [Github](https://github.com/OPAYA), [Facebook](https://www.facebook.com/kjt7889)
+
+김예찬 : [Github](https://github.com/suhoy901), [Facebook](https://www.facebook.com/suhoy90)
