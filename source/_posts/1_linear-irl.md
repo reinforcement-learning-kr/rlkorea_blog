@@ -9,8 +9,8 @@ subtitle: Inverse RL 1번째 논문
 
 <center> <img src="../../../../img/irl/linear_irl_1.png" width="850"> </center>
 
-논문 저자 : Andrew Y. Ng, Stuart Russell
-논문 링크 : http://ai.stanford.edu/~ang/papers/icml00-irl.pdf
+Author : Andrew Y. Ng, Stuart Russell
+Paper Link : http://ai.stanford.edu/~ang/papers/icml00-irl.pdf
 Proceeding : International Conference on Machine Learning (ICML) 2000
 
 ---
@@ -20,14 +20,12 @@ Proceeding : International Conference on Machine Learning (ICML) 2000
 이 논문은 Markov Decision Processes에서의 **Inverse Reinforcement Learning(IRL)**을 다룹니다. 여기서 IRL이란, observed, optimal behavior이 주어질 때 reward function을 찾는 것입니다.
 
 IRL은 두 가지 장점이 존재합니다.
-
-- 숙련된 행동을 얻기 위한 apprenticeship Learning
-- 최적화된 reward function을 알아내는 것
+1) 숙련된 행동을 얻기 위한 apprenticeship Learning
+2) 최적화된 reward function을 알아내는 것
 
 이 논문에서는 IRL의 reward function에 대해 세 가지 알고리즘을 제시합니다.
-
-- 첫 번째와 두 번째는 전체의 policy를 알고 있는 case를 다루는 것입니다. finite state space에서의 tabulated reward function과 potentially infinite state space에 대한 reward function의 linear functional approximation을 다룹니다.
-- 세 번째로는 observed trajectories의 finite set을 통해서만 policy를 알고 있을 때 더 다양한 realistic case에 대한 알고리즘입니다.
+1) 첫 번째와 두 번째는 전체의 policy를 알고 있는 case를 다루는 것입니다. finite state space에서의 tabulated reward function과 potentially infinite state space에 대한 reward function의 linear functional approximation을 다룹니다.
+2) 세 번째로는 observed trajectories의 finite set을 통해서만 policy를 알고 있을 때 더 다양한 realistic case에 대한 알고리즘입니다.
 
 이 논문은 2000년에 나온 논문으로서 그 당시에 어떻게 하면 reward function을 역으로 찾을 수 있는지를 증명을 통해서 다루고 있고, 왜 reward function이 중요한 지를 중요하게 말하고 있습니다. 그러니까 IRL을 통해 reward를 얻어 RL을 하는 실질적인 학습을 말하는 논문보다는 reward function에 대해서 말하고 있고 이에 따른 알고리즘들을 말하는 논문입니다. "reward function은 이렇게 생겨야 돼! 그리고 우리는 이러한 알고리즘들을 통해 reward function을 찾아낼 수 있어!"라는 듯이 말하고 있습니다.
 
@@ -53,9 +51,8 @@ Determine : reward function을 최적화하는 것
 두 번째로는 특정한 도메인에서 잘 행동할 수 있는 intelligent agent를 구성할 수 있다는 것입니다. 보통 agent designer들은 그들이 정하는 reward function의 optimization이 "desirable" 행동을 만들 것이라는 굉장히 rough한 생각을 가질 수 있습니다. 그렇지만 아주 간단한 RL 문제라도 이것은 agent designer들을 괴롭힐 수 있습니다. 여기서 한 가지 사용할 수 있는 것이 바로 다른 "expert" agent의 행동입니다.
 
 가장 넓은 set인 **"Imitation Learning"** 안에는 일반적으로 expert agent를 통한 학습이 두 가지 방법이 있습니다.
-
-- 첫 번째로는 **"IRL"** 이라는 것이 있고, IRL을 이용한 하나의 방법으로서 Pieter Abbeel이 주로 쓰는 알고리즘의 이름인 Apprenticeship Learning이라는 것이 존재합니다. 그래서 IRL이란 teacher의 demonstation에서의 optimal policy를 통해 reward를 찾는 것을 말합니다.
-- 다음으로 **"Behavioral Cloning"** 이라는 것이 있습니다. 아예 supervised learning처럼 행동을 복제한다고 생각하면 됩니다.
+1) 첫 번째로는 **"IRL"** 이라는 것이 있고, IRL을 이용한 하나의 방법으로서 Pieter Abbeel이 주로 쓰는 알고리즘의 이름인 Apprenticeship Learning이라는 것이 존재합니다. 그래서 IRL이란 teacher의 demonstation에서의 optimal policy를 통해 reward를 찾는 것을 말합니다.
+2) 다음으로 **"Behavioral Cloning"** 이라는 것이 있습니다. 아예 supervised learning처럼 행동을 복제한다고 생각하면 됩니다.
 
 일반적으로 IRL을 통해서 cost를 얻고, RL을 통해서 policy를 찾는 것이 모든 IRL의 목적입니다. 하지만 이렇게 2 step을 해야한다는 점에서 많은 complexity가 생기고, 그렇다고 IRL을 통해서 얻은 cost만 가지고는 별로 할 수 있는게 없습니다. 따라서 앞서 말한 과정을 2 step만에 하는 것이 아니라 1 step만에 풀어버리는 논문이 바로 Generative Adversarial Imitation Learning(GAIL)이라는 논문입니다. 이후의 논문들은 다 GAIL을 응용한 것이기 때문에 GAIL만 이해하면 그 뒤로는 필요할 때 찾아서 보면 될 것 같고, GAIL이라는 것을 이용하여 여러 가지 연구를 해볼 수도 있을 것 같습니다.
 
@@ -283,7 +280,7 @@ $$\hat{V}^\pi (s_0) = \alpha_1 \hat{V}_1^\pi (s_0) + \cdots + \alpha_d \hat{V}_d
 $$V^{\pi^*} (s_0) \geq V^{\pi_i} (s_0), \,\,\, i = 1, ... , k \,\,\,\,\,\,\,\,\,\, (12)$$
 
 그리고 section 4에서 마지막에 있던 수식에서, objective function을 약간 바꿀 수 있습니다. 따라서 optimization의 식은 다음과 같이 될 수 있다.
-**Third objective function & algorithm**
+**Final objective function & algorithm**
 
 $$maximize \,\,\,\,\, \sum_{i=1}^k p(\hat{V}^{\pi^*} (s_0) - \hat{V}^{\pi_i} (s_0))$$
 
