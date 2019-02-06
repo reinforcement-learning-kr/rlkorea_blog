@@ -282,9 +282,7 @@ We are now equipped to compute a subgradient $g_w^q \in \partial c(w)$ of our ob
 
 위의 수식에서 추가적인 notation은 다음과 같습니다.
 
-$$\mu^* = arg \max_{\mu \in \mathcal{G}} \{{(w^T F_i + l_i^T)\mu\}}$$
-
-$$\Delta^w \mu_i = \mu^∗ − \mu_i$$
+$$\mu* = arg \max_{\mu \in \mathcal{G}} \\{(w^T F_i + l_i^T)\mu\\}$$
 
 The subgradient compares the state-action visitation frequency counts between the expert policy $\mu_i$ and the optimal policy $\mu^*$ with respect to current reward function $w^T F_i$.
 
