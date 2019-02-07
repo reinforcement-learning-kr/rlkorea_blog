@@ -441,18 +441,18 @@ Value function estimation error와 Policy gradient estimation error사이의 관
 
 # 처음으로
 
-## [PG Travel Guide](https://reinforcement-learning-kr.github.io/2018/06/29/0_pg-travel-guide/)
+## [Let's do Inverse RL Guide](https://reinforcement-learning-kr.github.io/2019/01/22/0_lets-do-irl-guide/)
 
 <br>
 
 # 이전으로
 
-## [TRPO 여행하기](https://reinforcement-learning-kr.github.io/2018/06/24/5_trpo/)
+## [GAIL 여행하기](https://reinforcement-learning-kr.github.io/2019/02/13/5_gail/)
 
-## [TRPO Code](https://github.com/reinforcement-learning-kr/pg_travel/blob/master/mujoco/agent/trpo_gae.py)
+## [GAIL Code]()
 
 <br>
 
 # 다음으로
 
-## [PPO 여행하기](https://reinforcement-learning-kr.github.io/2018/06/22/7_ppo/)
+## [VAIL Code]()
