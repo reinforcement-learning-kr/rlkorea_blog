@@ -318,16 +318,18 @@ $$
 
 # 처음으로
 
-## [PG Travel Guide](https://reinforcement-learning-kr.github.io/2018/06/29/0_pg-travel-guide/)
+## [Let's do Inverse RL Guide](https://reinforcement-learning-kr.github.io/2019/01/22/0_lets-do-irl-guide/)
 
 <br>
 
 # 이전으로
 
-## [Sutton PG 여행하기](https://reinforcement-learning-kr.github.io/2018/06/28/1_sutton-pg/)
+## [Linear IRL 여행하기](https://reinforcement-learning-kr.github.io/2019/01/28/1_linear-irl/)
 
 <br>
 
 # 다음으로
 
-## [DDPG 여행하기](https://reinforcement-learning-kr.github.io/2018/06/26/3_ddpg/)
+## [APP Code]()
+
+## [MMP 여행하기](https://reinforcement-learning-kr.github.io/2019/02/07/3_mmp/)

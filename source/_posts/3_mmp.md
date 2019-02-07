@@ -17,9 +17,9 @@ Proceeding : International Conference on Machine Learning (ICML) 2006
 
 # 0. Abstract
 
-일반적으로 Supervised learning techniques를 통해 sequential, goal-directed behavior에 대한 imitation learning은 어렵습니다. 이 논문에서는 maximum margin을 이용한 prediction problem에 대해 sequential, goal-directed behavior을 학습하는 것을 다룹니다. 더 구체적으로 말하자면, 각 features부터 cost까지 한번에 mapping하는 것을 학습해서, 이 cost에 대한 Markov Decision Process(MDP)에서의 optimal policy가 expert's behavior를 모방하도록 하는 것입니다.
+일반적으로 Supervised learning techniques를 통해 sequential, goal-directed behavior에 대한 imitation learning은 어렵습니다. 이 논문에서는 maximum margin을 이용한 prediction problem에 대해 sequential, goal-directed behavior을 학습하는 것을 다룹니다. 더 구체적으로 말하자면, **features부터 cost까지 한번에 mapping하는 것을 학습** 해서, 이 cost에 대한 Markov Decision Process(MDP)에서의 optimal policy가 expert's behavior를 모방하도록 하는 것입니다.
 
-또한 inference를 위해 fast algorithms을 이용하여 subgradient method의 기반인 structured maximum margin learning으로서 간단하고 효율적인 접근을 보였습니다. 비록 이러한 fast algorithm technique는 일반적으로 사용하지만, QP formulation의 한계를 벗어난 문제에서는 $A^*$나 Dynamic Programming(DP) 접근들이 policy를 learning하는 것을 다룰 수 있도록 만든다는 것을 보였습니다.
+또한 inference를 위해 fast algorithms을 이용하여 subgradient method의 기반인 structured maximum margin learning으로서 간단하고 효율적인 접근을 보였습니다. 비록 이러한 fast algorithm technique는 일반적으로 사용하지만, QP formulation의 한계를 벗어난 문제에서는 $A^*$나 Dynamic Programming(DP) 접근들이 policy를 learning하는 것을 더 쉽게 다룰 수 있도록 만듭니다.
 
 실험에서는 outdoor mobile robot들을 이용하여 route planning에 적용합니다.
 
@@ -59,7 +59,7 @@ Mobile robotics에서는 일반적으로 **perception** subsystem과 **planning*
 
 하지만 불행하게도, perception의 model부터 planner에 대한 cost까지 하는 것은 종종 어렵습니다.
 
-따라서 이 논문에서는 새로운 방법을 제시합니다. **perception features부터 planner에 대한 cost까지 (Perception + Planning)** mapping하는 것을 자동화하는 방법입니다. 최종 목표는 features부터 cost function까지 mapping하는 것을 한번에 학습하는 것입니다. 그래서 이러한 cost function에 대한 optimal policy가 expert의 behavior을 한번에 모방하도록 하는 것입니다.
+따라서 이 논문에서는 새로운 방법을 제시합니다. **perception features부터 planner에 대한 cost까지 (Perception + Planning)** mapping하는 것을 자동화하는 방법입니다. 최종 목표는 features부터 cost function까지 mapping하는 것을 한번에 학습하는 것입니다. 그래서 이러한 cost function에 대한 optimal policy로 expert의 behavior을 한번에 모방하도록 하는 것입니다.
 
 <br>
 ## 1.3 Three fold
@@ -91,7 +91,7 @@ $s$ is initial state distribution.
 
 $\gamma$ is a discount factor on rewards. if any, $\gamma$ is aborbed into the transition probabilities.
 
-Reward $R$은 따로 두지 않고, demonstrated behavior를 모방하는 policies를 만들기 위해 supervised examples로부터 학습됩니다.
+Reward $R$은 따로 두지 않고, demonstrated behavior를 모방하는 policies를 만들기 위한 examples(expert's trajectory or path)로부터 학습됩니다.
 
 $v \in \mathcal{V}$ is primal variables of value function
 
@@ -101,13 +101,13 @@ $\mu \in \mathcal{G}$ is **dual state-action frequency counts**. equal to $y$.
 
 그리고 여기서는 오직 stationary policies만을 고려합니다. The generalization is straightforward.
 
-#### state-action frequency counts란?
+#### state-action frequency counts란? (중요)
 
-Inverse RL의 궁극적인 목표를 다르게 말해보면 expert가 어떠한 행동을 했을 때, 여기서의 state-action visitation frequency counts(줄여서 visitation frequency)를 구합니다. 그리고 우리의 목적은 expert의 visitation frequency과 최대한 비슷한 visitation frequency를 만들어내는 어떤 reward를 찾는 것입니다.
+Inverse RL의 궁극적인 목표를 다르게 말해보면 expert가 어떠한 행동을 했을 때, 여기서의 state-action visitation frequency counts(줄여서 visitation frequency)를 구합니다. 그리고 **우리의 목적은 expert의 visitation frequency과 최대한 비슷한 visitation frequency를 만들어내는 어떤 reward를 찾는 것** 입니다.
 
-일반적으로, RL 문제는 reward가 주어졌을 때, 이 reward의 expected sum을 최대로 하는 policy를 찾는다고 알려져 있습니다. 그런데 이 문제의 dual problem은 visitation frequency를 찾는 것입니다.
+일반적으로, RL 문제는 reward가 주어졌을 때, 이 reward의 expected sum을 최대로 하는 policy를 찾는다고 알려져 있습니다. 그런데 **이 문제의 dual problem은 visitation frequency를 찾는 것입니다.**
 
-다시 말해 optimal policy와 optimal visitation frequency counts는 1:1 관계라는 것입니다.
+다시 말해 optimal policy와 optimal visitation frequency counts는 **1:1 관계** 라는 것입니다.
 
 ### 2.1.2 The input to our algorithm
 
@@ -123,15 +123,15 @@ $y_i$ is expert's demonstration (desired trajectory or full policy). equal to **
 
 $f_i (y)$ denote vector of expected feature counts $F_i \mu$ of the $i$th example.
 
-$\mathcal{L}_i$ : Some additional loss function (heuristic)
+$\mathcal{L}_i$ is some additional loss function (heuristic)
 
 ### 2.1.3 Detail description
 
 $\mu_i^{x, a}$ is the expected state-action frequency for state $x$ and action $a$ of example $i$.
 
-- $\mu_i$를 자세히보면 $\mu$에 $i$가 붙은 형태로 되어있습니다. 여기서 example $i$라는 것 총 trajectory(or path)의 length 중에서 하나의 index를 말하는 것입니다. expert의 경우, 보통 전체 trajectory를 한꺼번에 취하기 때문에 이 논문에서는 구별하기 위해 $i$라는 notation을 쓴 것입니다.
+- $\mu_i$를 자세히보면 $\mu$에 $i$가 붙은 형태로 되어있습니다. 여기서 example $i$라는 것 총 trajectory(or path)의 length 중에서 하나의 index(example)를 말하는 것입니다. expert의 경우, 보통 전체 trajectory를 한꺼번에 취하기 때문에 이 논문에서는 구별하기 위해 $i$라는 notation을 쓴 것입니다.
 
-$\mathcal{D} = \\{(\mathcal{X}_i, \mathcal{A}_i, p_i, f_i, y_i, \mathcal{L}_i)\\} \equiv \\{(\mathcal{X}_i, \mathcal{A}_i, \mathcal{G}_i, F_i, \mathcal{\mu}_i, \mathcal{l}_i)\\}$ 
+$\mathcal{D} = \\{(\mathcal{X}_i, \mathcal{A}_i, p_i, f_i, y_i, \mathcal{L}_i)\\} \equiv \\{(\mathcal{X}_i, \mathcal{A}_i, \mathcal{G}_i, F_i, \mathcal{\mu}_i, \mathcal{l}_i)\\}$
 
 - ($\mathcal{D}$는 $\mathcal{D}_{i=1}^n$)
 
@@ -168,7 +168,7 @@ $$\min_{w, \zeta_i} \frac{1}{2} \parallel w \parallel^2 + \frac{\gamma}{n} \sum_
 
 $$s.t. \,\, \forall i \,\,\,\, w^T f_i (y_i) \geq \max_{\mu \in \mathcal{G}_i} (w^T f_i (y) + \mathcal{L} (y_i, y)) - \zeta_i \,\,\,\,\,\,\,\,\, (2)$$
 
-s.t.로 나오는 constraint의 intuition을 보자면, expert's policies가 margin에 대해 다른 모든 policies보다 더 높은 experted reward를 가지도록 하는 only weight vectors를 찾자는 것입니다.
+s.t.로 나오는 constraint의 intuition을 보자면, expert's policies가 margin에 대해 **다른 모든 policies보다 더 높은 experted reward를 가지도록 하는 only weight vectors를 찾자** 는 것입니다.
 
 다음으로 위의 수식에 나오는 notation에 대해서 자세히 알아보겠습니다.
 
@@ -178,7 +178,7 @@ $\zeta_i$ is **slack variable**. The slack variable permit violations of these c
 
 $\gamma \geq 0$ is scaled for a penalty. 보통 $c$ ($c \geq 0$)라고도 하는데, 최소화 조건을 반영하는 정도를 결정하는 값으로 우리가 적절히 정해주어야 합니다. c값이 크면 전체 margin도 커지므로 오분류를 적게 허용(엄격)한다는 뜻이고, 반대로 c값이 작으면 margin이 작아지므로 비교적 높은 오분류를 허용(관대)한다는 뜻입니다.
 
-$\beta_i \geq 0$는 example들이 다른 length일 때 normalization하기 위해서 사용되는 data dependent scalars입니다.
+$\beta_i \geq 0$는 examples가 다른 length일 때 normalization하기 위해서 사용되는 data dependent scalars입니다.
 
 $w^T f_i(y_i)$ is expert's reward.
 
@@ -202,7 +202,7 @@ $$s.t. \,\, \forall i \,\,\,\, w^T F_i \mu_i \geq \max_{\mu \in \mathcal{G}_i} (
 
 ### 2.3.3 One compact quadratic program for MMP
 
-이어서 수식 (4)에서 nonlinear, convex constraints는 오른쪽 side의 dual을 계산함으로써 linear constraints의 compact set으로 다음과 같이 변형될 수 있습니다.
+이어서 수식 (4)인 nonlinear, convex constraints는 우항의 dual을 계산함으로써 linear constraints의 compact set으로 다음과 같이 변형될 수 있습니다.
 
 $$\forall i \,\,\,\, w^T F_i \mu_i \geq \min_{v \in V_i} \, (s_i^T v) - \zeta_i \,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\, (5)$$
 
@@ -220,9 +220,9 @@ $$\forall i \,\,\,\, w^T F_i \mu_i \geq \min_{v \in V_i} \, (s_i^T v) - \zeta_i 
 
 $$\forall i,x,a \,\,\,\, v_i^x \geq (w^T F_i + l_i)^{x,a} + \sum_{x'} p_i (x'|x,a) v_i^{x'} \,\,\,\,\,\,\,\, (9)$$
 
-위의 수식은 MMP 문제를 One compact quadratic program으로써 풀 수 있도록 만든 것입니다. 하지만 아쉽게도 위의 constraints의 수는 state-action pairs와 training examples에 대해 linear하게 scaling됩니다.
+위의 수식은 MMP 문제를 One compact quadratic program으로써 풀 수 있도록 만든 것입니다. 하지만 아쉽게도 위의 **constraints의 수는 state-action pairs와 training examples에 대해 linear하게 scaling** 됩니다.
 
-이러한 program을 직접적으로 optimize할 수 있도록 이미 만들어져 있는 QP software가 있지만, 뒤이어 나오는 **section 3** 에서 **subgradient methods** 의 이용함으로써 One compact quadratic program에 대해 크게 향상시킬 수 있는 다른 alternative formulation을 이용하고자 합니다.
+이러한 program을 직접적으로 optimize할 수 있도록 이미 만들어져 있는 QP software가 있지만, 뒤이어 나오는 **section 3** 에서 **subgradient methods** 의 이용함으로써 One compact quadratic program보다 더 크게 향상시킬 수 있는 다른 alternative formulation을 이용하고자 합니다.
 
 추가적으로, **Section 4** 에서는 최종 objective function에 유용한 방법들을 생각해 볼 것입니다. 그리고 나서 path planning problems에 대한 적절한 examples를 말할 것입니다.
 
@@ -230,14 +230,14 @@ $$\forall i,x,a \,\,\,\, v_i^x \geq (w^T F_i + l_i)^{x,a} + \sum_{x'} p_i (x'|x,
 
 # 3. Efficient Optimization
 
-실제로, 수식 (9)에서의 quadratic program을 해결하는 것은 적어도 single MDP의 linear programming을 해결하는 것만큼 어렵습니다. 그래서 수식 (9)를 quadratic program으로 해결하려는 것이 적절한 전략이 될 수 있지만, 다르게 보면 많은 문제들에 대해 policy iteration과 $A^*$ algorithm처럼 이론적으로나 실험적으로나 더 빠르게 해결할 수 있도록 특별하게 design된 algorithm이 존재한다는 것으로 볼 수 있습니다.
+실제로, 수식 (9)에서의 quadratic program을 해결하는 것은 적어도 single MDP의 linear programming을 해결하는 것만큼 어렵습니다. 그래서 수식 (9)를 quadratic program으로 해결하려는 것이 적절한 방법이 될 수 있지만, 다르게 보면 많은 문제들에 대해 policy iteration과 $A^*$ algorithm처럼 이론적으로나 실험적으로나 더 빠르게 해결할 수 있도록 design된 algorithm으로 해결할 수도 있습니다.
 
 따라서 이 논문에서는 더 나아가 **fast maximization algorithm을 사용하는 iterative method 기반인 subgradient method로 접근합니다.**
 
 <br>
 ## 3.1 Objective function
 
-첫 번째 step은 optimization program(One compact quadratic program)을 "hinge-loss" form으로 변형하는 것입니다.
+첫 번째 step은 optimization program(One compact quadratic program)을 **"hinge-loss"** form으로 변형하는 것입니다.
 
 변형된 objective function은 다음과 같습니다.
 
@@ -269,7 +269,7 @@ convex function $c : \mathcal{W} \rightarrow \mathbb{R}$의 subgradient는 vecto
 최종 objective function을 보기전에, 먼저 $c(w)$의 subgradient를 계산하기 위해, subgradient에 대해 잘 알려진 4가지 속성들에 대해서 알아봅시다. (**3번 중요**)
 1) Subgradient operators are linear.
 2) The gradient is the unique subgradient of a differentiable function.
-3) Denoting $y^∗ = arg\max_y [f (x, y)]$ for differentiable $f (., y)$, $\nabla_x f(x,y∗)$ is a subgradient of the piecewise(구분적으로, 구간적으로) differentiable convex function $\max_y [f (x, y)]$.
+**3)** Denoting $y^∗ = arg\max_y [f (x, y)]$ for differentiable $f (., y)$, $\nabla_x f(x,y∗)$ is a subgradient of the piecewise(구분적으로, 구간적으로) differentiable convex function $\max_y [f (x, y)]$.
 4) An analogous chain rule holds as expected.
 
 3번을 보면, 결국 subgradient method를 통해 하고 싶은 것은 piecewise differentiable convex function인 $f(x,y)$ 중에서 제일 큰 $\max_y [f (x, y)]$를 subgradient로 구해서, 그 중 가장 큰 값인 $y^∗ = arg\max_y [f (x, y)]$를 통해 $\nabla_x f(x,y∗)$를 하겠다는 것입니다.
@@ -289,7 +289,7 @@ $$\Delta^w \mu_i = \mu^∗ − \mu_i \,\,\,\,\,\,\,\,\,\,\,\, (12-2)$$
 
 수식 (12-2)를 직관적으로 보면, subgradient가 현재의 reward function $w^T F_i$에 관하여 **optimal policy와 example policy 사이의 state-action visitation frequency count를 비교한다는 점**을 발견할 수 있습니다.
 
-또한 subgradient를 계산하는 것은 $\mu^* = arg \max_{\mu \in \mathcal{G}} (w^T F_i + l_i^T)\mu$을 해결하는 것과 같습니다. 다시 말해 reward function $w^T F_i + l_i^T$를 해결한다는 것입니다.
+또한 **subgradient를 계산하는 것은 $\mu^* = arg \max_{\mu \in \mathcal{G}} (w^T F_i + l_i^T)\mu$을 해결하는 것과 같습니다.** 다시 말해 reward function $w^T F_i + l_i^T$를 해결한다는 것입니다.
 
 <br>
 ## 3.4 Algorithm 1. Max Margin Planning
@@ -311,12 +311,13 @@ $$\Delta^w \mu_i = \mu^∗ − \mu_i \,\,\,\,\,\,\,\,\,\,\,\, (12-2)$$
 <br>
 ## 4.1 Guarantees in the Batch Setting
 
-subgradient method로 구성된 algorithm들의 잘 연구된 class 중 하나는 batch setting으로 둘 수 있다는 것입니다.
+subgradient method로 구성된 algorithm들의 잘 연구된 class 중 하나는 **batch setting** 으로 둘 수 있다는 것입니다.
 
 batch setting에는 두 가지 key point가 존재합니다.
-1) 이 method에서 step-size sequence $\\{ \alpha_t \\}$의 선택은 상당히 중요합니다. $\\{ \alpha_t \\}$에 따라서 convergence guarantee가 달라집니다.
-2) 우리의 결과는 objective function을 유지하기 위해 strong convexity assumption이 필요합니다.
-따라서 Given G$\mathcal{W} \subseteq \mathbb{R}^d$, a function $f: \mathcal{W} \rightarrow \mathbb{R}$ is $\eta$-strongly convex if there exists $g: \mathcal{W} \rightarrow \mathbb{R}$ such that for all $w$, $w' \in \mathcal{W}$:
+1) 이 method에서 **step-size sequence** $\\{ \alpha_t \\}$의 선택은 상당히 중요합니다. $\\{ \alpha_t \\}$에 따라서 convergence guarantee가 달라집니다.
+2) 우리의 결과는 objective function을 유지하기 위해 **strong convexity assumption** 이 필요합니다.
+
+따라서 Given $\mathcal{W} \subseteq \mathbb{R}^d$, a function $f: \mathcal{W} \rightarrow \mathbb{R}$ is $\eta$-strongly convex if there exists $g: \mathcal{W} \rightarrow \mathbb{R}$ such that for all $w$, $w' \in \mathcal{W}$:
 
 <center> <img src="../../../../img/irl/mmp_6.png" width="500"> </center>
 
@@ -330,14 +331,14 @@ Theorem 1은 우리가 충분히 작고 일정한 stepsize를 통해 linear conv
 
 대안적으로, 우리는 $t \geq 1$에 대해 $\alpha_t = \frac{r}{t}$ 형태의 감소하는 step size rule을 고를 수 있습니다. 여기서 $r$은 learning rate로 생각할 수 있는 some positive constant입니다.
 
-이러한 rule을 통해, Algorithm 1은 minimum에서 convergence가 보장되지만, 위에서 말했던 strong convexity assumption에서만 오직 sublinear rate로 수렴될 수 있습니다.
+이러한 rule을 통해, **Algorithm 1은 minimum에서 convergence가 보장되지만, 위에서 말했던 strong convexity assumption에서만 오직 sublinear rate로 수렴** 될 수 있습니다.
 
 <br>
 ## 4.2 Optimization in an Online Setting
 
 다양한 optimization techniques와 다르게, subgradient method는 batch setting에서 더 확장됩니다.
 
-online setting에서는 적절하게 관련된 domain에 대한 다양한 planning problem들을 생각해볼 수 있습니다. 특히, 그 중 하나는 path를 plan하기 위해 필요로 하는 domain을 제공하는 것입니다. 더 정확하게는 "correct" path를 제공하는 것입니다.
+**online setting** 에서는 적절하게 관련된 domain에 대한 다양한 planning problem들을 생각해볼 수 있습니다. 특히, 그 중 하나는 path를 plan하기 위해 필요로 하는 domain을 제공하는 것입니다. 더 정확하게는 **"correct" path** 를 제공하는 것입니다.
 
 At each time step $i$:
 1) We observe $\mathcal{G}_i$ and $F_i$.
@@ -346,14 +347,14 @@ At each time step $i$:
 
 즉, strongly convex cost function(앞서 다뤘던 수식 (10))이 되기 위해 $c_i(w) = \frac{1}{2} \parallel w \parallel^2 + \\{ \max_{\mu \in \mathcal{G}_i} (w^T F_i + l_i)\mu\\} − w^T F_i \mu_i$를 정의할 수 있다는 것입니다. 그리고 우리는 $y_i$, $\mathcal{G}_i$, $F_i$가 주어진다면 계산할 수 있습니다.
 
-정리하자면, 앞서 본 cost function(Equation 10)에서 $\frac{1}{n}\sum_{i=1}^n \beta_i$가 없어진 것과 같이 online setting이 가능하다는 것을 보여줍니다.
+정리하자면, 앞서 본 cost function(Equation 10)에서 $\frac{1}{n}\sum_{i=1}^n \beta_i$가 없어진 것과 같이 **online setting이 가능하다는 것** 을 보여줍니다.
 
 This is now an **online convex programming problem**.
 
 <br>
 ## 4.3 Modifications for Acyclic Positive Costs (Think of Worst Case)
 
-acyclic(특정 방향이 없는, 사이클이 없는, 비순환적인) domain의 infinite horizon problems에서, $A^*$와 $A^*$의 변종들은 일반적으로 좋은 paln을 찾기위한 가장 효율적인 방법입니다. 이러한 domain에서는 strictly negative한 reward를 생각해볼 필요가 있습니다(동일하게, cost는 strictly positive). 다시 말해 best case에 대해서만 생각해볼 것이 아니라 worst case에 대해서도 생각해볼 필요가 있다는 것입니다. 이렇게 하지 않으면 infinite reward path가 발생할지도 모르기 때문입니다. 이러한 negativity의 strictness는 heuristic의 존재를 더 확실히게 보장하는 것이라고 볼 수 있습니다.
+acyclic(특정 방향이 없는, 사이클이 없는, 비순환적인) domain의 infinite horizon problems에서, $A^*$와 이것의 변종들은 일반적으로 좋은 paln을 찾기위한 가장 효율적인 방법입니다. 이러한 domain에서는 **strictly negative한 reward** 를 생각해볼 필요가 있습니다(동일하게, cost는 strictly positive). 다시 말해 best case에 대해서만 생각해볼 것이 아니라 **worst case** 에 대해서도 생각해볼 필요가 있다는 것입니다. 이렇게 하지 않으면 infinite reward path가 발생할지도 모르기 때문입니다. 이러한 **negativity의 strictness는 heuristic의 존재를 더 확실히게 보장** 하는 것이라고 볼 수 있습니다.
 
 $F_i \geq 0$이라고 가정하면, 이러한 negativity의 strictness는 두 가지 방법을 통해 쉽게 구현할 수 있습니다.
 1) w에 component-wise negativity constraints를 추가
@@ -364,12 +365,12 @@ $F_i \geq 0$이라고 가정하면, 이러한 negativity의 strictness는 두 �
 <br>
 ## 4.4 Incorporating Prior Knowledge
 
-이 section은 앞서 Algorithm 1의 Line 8에서와 말한 것과 같이 Option으로 prior knowledge을 통해 추가적인 constraints를 둘 수 있다는 것을 보여줍니다.
+이 section은 앞서 Algorithm 1의 Line 8에서와 말한 것과 같이 option으로 **prior knowledge** 을 통해 추가적인 constraints를 둘 수 있다는 것을 보여줍니다.
 1) 0 vector 대신에 $w$에 prior belief에 대한 solution을 regularizing하는 것
 2) loss function을 통해 특정한 state-action pairs를 poor choices으로 표시하는 것. algorithm이 이러한 요소로 인하여 large magin을 가지도록 강제합니다.
 3) $w$에 constraint 형태로 domain knowledge를 포함시키는 것 (e.g 특정한 영역의 state를 다른 state보다 cost가 적어도 두 배가 되도록 요구.)
 
-이러한 방법들은 training example의 사용 외에도 learner에게 expert의 knowledge를 전달하는 강력한 방법입니다.
+이러한 방법들은 training examples의 사용 외에도 learner에게 expert의 knowledge를 전달하는 강력한 방법입니다.
 
 <br><br>
 
@@ -406,16 +407,14 @@ $F_i \geq 0$이라고 가정하면, 이러한 negativity의 strictness는 두 �
 
 Figure 2은 holdout region으로부터의 결과입니다.
 
-그림에서 loss-augmented path (blue)은 일반적으로 마지막 학습된 경로보다 일반적으로 좋은 결과를 수행하지 못하는 것을 나타났습니다.
+그림에서 loss-augmented path (blue)은 일반적으로 마지막 학습된 경로보다 일반적으로 좋은 결과를 수행하지 못하는 것을 나타났습니다. 왜냐하면 loss-augmentation은 높은 loss의 영역을 최종 학습 지도보다 더욱 desirable하게 만들기 때문입니다.
 
-왜냐하면 loss-augmentation은 높은 loss의 영역을 최종 학습 지도보다 더욱 desirable하게 만들기 때문입니다. 
-
-직관적으로, 만약 학습자가 loss-augmented cost map에 대해서 잘 수행할 수 있다면, loss-augmentation없이도 더욱 잘 수행되어야 한다는 것입니다. 이것은 margin을 가지고 학습된 개념입니다.
+**직관적으로, 만약 학습자가 loss-augmented cost map에 대해서 잘 수행할 수 있다면, loss-augmentation없이도 더욱 잘 수행되어야 한다는 것입니다.** 이것은 margin을 가지고 학습된 개념입니다.
 
 <br>
 ## 5.3 Results using two alternative approaches
 
-<center> <img src="../../../../img/irl/mmp_11.png" width="800"> </center>
+<center> <img src="../../../../img/irl/mmp_11.png" width="700"> </center>
 
 - Left : the result of a next-action classifier applied superimposed on a visualization of the second dataset.
 - Right : a cost map learned by manual training of a regression.
@@ -439,7 +438,7 @@ Figure 2은 holdout region으로부터의 결과입니다.
      1. Expert knowledge of the planner
      2. Iterated training and observation
      3. The trainer had prior knowledge of the cost maps found under MMP batch learning on this dataset.
-   - 추가 정보가 주어진 cost map은 정성적으로 올바른 것처럼 보이지만, 그림 3과 그림 4는 상당히 좋지 않은 성능을 보여줍니다..
+   - 추가 정보가 주어진 cost map은 정성적으로 올바른 것처럼 보이지만, 그림 3과 그림 4는 상당히 좋지 않은 성능을 보여줍니다.
 
 <br><br>
 
@@ -447,25 +446,23 @@ Figure 2은 holdout region으로부터의 결과입니다.
 
 Maximum Margin Planning과 직접적으로 연관된 두 가지 work가 있습니다.
 
-그 중 하나가 바로 Inverse RL입니다.
+그 중 하나가 바로 **Inverse RL** 입니다.
 
-IRL의 목표는 MDP에서 agent의 행동을 관찰하는 하여 agent의 행동으로 부터 reward function를 추출하는 것입니다. 그러나 이것은 기본적으로 ill-posed 문제로 알고 있습니다. 그럼에도 불구하고, MMP와 같이 유사한 효과를 가진 IRL 아이디어들을 시도한 몇 가지 heuristic 시도가 있었습니다.
+IRL의 목표는 MDP에서 agent의 행동을 관찰하는 하여 agent의 행동으로 부터 reward function를 추출하는 것입니다. 그러나 이것은 기본적으로 ill-posed problem으로 알고 있습니다. 그럼에도 불구하고, MMP와 같이 유사한 효과를 가진 IRL 아이디어들을 시도한 몇 가지 heuristic 시도가 있었습니다.
 
-유용한 heuristic 방법은 바로 이전 논문인 *Abbeel, P., & Ng, A. Y. (2004). Apprenticeship learning via inverse reinforcement learning* APP 논문입니다. 학습자의 정책과 시연되는 예제간의 expected feature counts을 통해 매칭을 시도하는 학습 방법입니다.
+유용한 heuristic 방법은 바로 이전 논문인 **APP** 논문입니다. 학습자의 정책과 시연되는 예제간의 expected feature counts을 통해 매칭을 시도하는 학습 방법입니다.
 
-MMP의 경우 IRL algorithm의 variant과는 다른 스타일의 algorithm입니다.
-
-MMP는 하나의 MDP 보다 많은 정책 시연들을 허용하도록 설계되어 있습니다. 여러 특징 맵, 다른 시작 지점과 목표 지점, 완전히 새로운 맵과 목표 지점을 가지는 학습자의 목표를 이용하여 예제들을 시연했습니다. 또한 MMP는 상당히 다른 IRL적 알고리즘 접근 방법을 유도합니다.
+MMP의 경우 IRL algorithm의 variant과는 다른 스타일의 algorithm입니다. MMP는 하나의 MDP 보다 많은 정책 시연들을 허용하도록 설계되어 있습니다. 여러 특징 맵, 다른 시작 지점과 목표 지점, 완전히 새로운 맵과 목표 지점을 가지는 학습자의 목표를 이용하여 예제들을 시연했습니다.
 
 IRL과 MMP간의 관계는 **generative and discriminative learning** 간의 구별을 연상시킵니다.
 
-일반적인 IRL의 경우, feature matching을 시도합니다. agent가 MDP에서 (거의 최적같이) 행동하고 (거의) feature expectation에 매칭 가능할 때 학습하도록 설계되었습니다(Generative models과 같은 strong 가정). 예를 들어, feature expecatation을 매칭하는 능력은 algorithm의 행동이 feature가 선형인 모든 cost function에 대해서 near-optimal일 것이라는 것을 의미합니다.
+**일반적인 IRL의 경우, feature matching을 시도합니다.** agent가 MDP에서 (거의 최적같이) 행동하고 (거의) feature expectation에 매칭 가능할 때 학습하도록 설계되었습니다(Generative models과 같은 strong 가정). 예를 들어 feature expecatation을 매칭하는 능력은 algorithm의 행동이 feature가 선형인 모든 cost function에 대해서 near-optimal일 것이라는 것을 의미합니다.
 
-반대로 MMP의 경우, 우리의 목표가 직접적으로 output 행동을 모방하는 것이라는 weaker 가정을 하고 실제 MDP나 reward 함수에 대해 agnostic합니다. 여기서 MDP는 output decision들을 구조화하고 경쟁을 하려고 하는 expert가 natual class을 제공합니다.
+**반대로 MMP의 경우, 우리의 목표가 직접적으로 output behavior을 모방하는 것이라는 weaker 가정을 하고 실제 MDP나 reward function에 대해 agnostic합니다.** 여기서 MDP는 output decision들을 구조화하고 경쟁하려고 하는 expert의 잠재적인 natural class을 제공합니다.
 
 정리하자면,
-Generative model : 개별 클래스의 분포를 모델링한다.
-Discriminative model : Discriminative 모델은 기본 확률 분포 또는 데이터 구조를 모델링하지 않고 기본 데이터를 해당 클래스에 직접 매핑(class 경계를 통해 학습). SVM은 이러한 기준을 만족 시키므로 decision tree와 마찬가지로 discriminative model.
+**Generative Model** : 개별 클래스의 분포를 모델링합니다.
+**Discriminative Model** : Discriminative 모델은 기본 확률 분포 또는 데이터 구조를 모델링하지 않고 기본 데이터를 해당 클래스에 직접 mapping(class 경계를 통해 학습). SVM은 이러한 기준을 만족시키므로 decision tree와 마찬가지로 discriminative model이라고 할 수 있습니다.
 
 <br><br>
 
@@ -477,10 +474,12 @@ Discriminative model : Discriminative 모델은 기본 확률 분포 또는 데�
 
 # 이전으로
 
-## [APP 여행하기]()
+## [APP 여행하기](https://reinforcement-learning-kr.github.io/2019/02/01/2_app/)
+
+## [APP Code]()
 
 <br>
 
 # 다음으로
 
-## [MaxEnt 여행하기]()
+## [MaxEnt 여행하기](https://reinforcement-learning-kr.github.io/2019/02/10/4_maxent/)

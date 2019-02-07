@@ -32,13 +32,13 @@ subtitle: Let's do Inverse RL Guide
 
 <br><br>
 
-# 1. \[Linear_IRL\] Algorithms for Inverse Reinforcement Learning
+# 1. \[Linear IRL\] Algorithms for Inverse Reinforcement Learning
 
-[Linear_IRL 여행하기](https://reinforcement-learning-kr.github.io/2019/01/28/1_linear-irl/)
+[Linear IRL 여행하기](https://reinforcement-learning-kr.github.io/2019/01/28/1_linear-irl/)
 
 짧은 글 소개, 요약
 
-[Linear_IRL 여행하기](https://reinforcement-learning-kr.github.io/2019/01/28/1_linear-irl/)
+[Linear IRL 여행하기](https://reinforcement-learning-kr.github.io/2019/01/28/1_linear-irl/)
 
 <br><br>
 

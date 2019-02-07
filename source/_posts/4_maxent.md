@@ -3,7 +3,7 @@ title: Maximum Entropy Inverse Reinforcement Learning
 date: 2019-02-10
 tags: ["프로젝트", "GAIL하자!"]
 categories: 프로젝트
-author: 이승현
+author: 이동민
 subtitle: Inverse RL 4번째 논문
 ---
 
@@ -514,18 +514,18 @@ Natural Gradient Method는  Policy Iteration에서와 같이 Greedy Action을 �
 
 # 처음으로
 
-## [PG Travel Guide](https://reinforcement-learning-kr.github.io/2018/06/29/0_pg-travel-guide/)
+## [Let's do Inverse RL Guide](https://reinforcement-learning-kr.github.io/2019/01/22/0_lets-do-irl-guide/)
 
 <br>
 
 # 이전으로
 
-## [DDPG 여행하기](https://reinforcement-learning-kr.github.io/2018/06/26/3_ddpg/)
+## [MMP 여행하기](https://reinforcement-learning-kr.github.io/2019/02/07/3_mmp/)
 
 <br>
 
 # 다음으로
 
-## [NPG Code](https://github.com/reinforcement-learning-kr/pg_travel/blob/master/mujoco/agent/tnpg.py)
+## [MaxEnt Code]()
 
-## [TRPO 여행하기](https://reinforcement-learning-kr.github.io/2018/06/24/5_trpo/)
+## [GAIL 여행하기](https://reinforcement-learning-kr.github.io/2019/02/13/5_gail/)
