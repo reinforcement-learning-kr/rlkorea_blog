@@ -1,22 +1,21 @@
 ---
-title: Natural Policy Gradient
-date: 2018-06-25 11:36:45
-tags: ["프로젝트", "피지여행"]
+title: Maximum Entropy Inverse Reinforcement Learning
+date: 2019-02-10
+tags: ["프로젝트", "GAIL하자!"]
 categories: 프로젝트
-author: 김동민, 이동민, 이웅원, 차금강
-subtitle: 피지여행 4번째 논문
+author: 이승현
+subtitle: Inverse RL 4번째 논문
 ---
 
-<center> <img src="https://www.dropbox.com/s/yd0x14ljrhpnj1b/Screen%20Shot%202018-07-18%20at%201.08.05%20AM.png?dl=1" width="600"> </center>
+<center> <img src="../../../../img/irl/maxent_1.png" width="850"> </center>
 
-논문 저자 : Sham Kakade
-논문 링크 : https://papers.nips.cc/paper/2073-a-natural-policy-gradient.pdf
-Proceeding : Advances in Neural Information Processing Systems (NIPS) 2002
-정리 : 김동민, 이동민, 이웅원, 차금강
+Author : Brian D. Ziebart, Andrew Maas, J.Andrew Bagnell, Anind K. Dey
+Paper Link : http://www.aaai.org/Papers/AAAI/2008/AAAI08-227.pdf
+Proceeding : Proceedings of the Twenty-Third AAAI Conference on Artificial Intelligence 2008
 
 ---
 
-# 1. 들어가며...
+# 0. Abstract
 
 이 논문이 발표된 2002년 당시에도 많은 연구자들이 objective function의 gradient 값을 따라서 좋은 policy $\pi$를 찾고자 하였습니다. 하지만 기존의 우리가 알던 gradient descent method는 steepest descent direction이 아닐 수 있기 때문에(쉽게 말해 가장 가파른 방향을 따라서 내려가야 하는데 그러지 못할 수도 있다는 것입니다.) 이 논문에서 steepest descent direction를 나타내는 natural gradient method를 policy gradient에 적용하여 좋은 policy $\pi$를 찾습니다. 
 
