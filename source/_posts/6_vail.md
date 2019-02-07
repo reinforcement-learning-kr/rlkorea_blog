@@ -1,22 +1,21 @@
 ---
-title: High-Dimensional Continuous Control using Generalized Advantage Estimation
-date: 2018-06-23 19:18:45
-tags: ["프로젝트", "피지여행"]
+title: Variational Discriminator Bottleneck. Improving Imitation Learning, Inverse RL, and GANs by Constraining Information Flow
+date: 2019-02-25
+tags: ["프로젝트", "GAIL하자!"]
 categories: 프로젝트
-author: 양혁렬, 이동민
-subtitle: 피지여행 6번째 논문
+author: 이동민
+subtitle: Inverse RL 6번째 논문
 ---
 
-<center> <img src="https://www.dropbox.com/s/p8gfpyo6xf9wm5w/Screen%20Shot%202018-07-18%20at%201.25.53%20AM.png?dl=1" width="700"> </center>
+<center> <img src="../../../../img/irl/vail_1.png" width="850"> </center>
 
 논문 저자 : John Schulman, Philipp Moritz, Sergey Levine, Michael I. Jordan and Pieter Abbeel
-논문 링크 : https://arxiv.org/pdf/1506.02438.pdf
-Proceeding : International Conference of Learning Representations (ICLR) 2016
-정리 : 양혁렬, 이동민
+논문 링크 : https://arxiv.org/pdf/1810.00821.pdf
+Proceeding : International Conference of Learning Representations (ICLR) 2019
 
 ---
 
-# 1. 들어가며...
+# 0. Abstract
 
 현존하는 Policy Gradient Method들의 목적은 누적되는 reward들을 optimization하는 것입니다. 하지만 학습할 때에 많은 양의 sample이 필요로 하고, 들어오는 data가 nonstationarity임에도 불구하고 stable and steady improvement가 어렵습니다.
 

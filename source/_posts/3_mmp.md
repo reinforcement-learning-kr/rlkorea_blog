@@ -299,7 +299,7 @@ $$\Delta^w \mu_i = \mu^∗ − \mu_i \,\,\,\,\,\,\,\,\,\,\,\, (12-2)$$
 - 5: loss augmented cost map $(w^T F_i + l_i^T)$에 대해서 각각의 input map에 대한 optimal policy $\mu^*$와 state-action visitation frequencies $\mu^i$를 계산합니다. 처음에는 w가 0에서 시작하므로 loss augmented cost map $w^T F_i + l_i^T$은 $l_i^T$로 시작하게 됩니다.
 - 6: 수식 (12)에 있는 objective function $g$를 계산합니다.
 - 7: w를 $\alpha_t g$에 따라 minimize합니다.
-- 8: Option으로 추가적인 constraints를 둘 수도 있습니다. 자세한 내용은 뒤이어 나오는 section을 참고하시기 바랍니다.
+- 8: Option으로 추가적인 constraints를 둘 수도 있습니다. 자세한 내용은 section 4.4인 Incorporating Prior Knowledge를 참고하시기 바랍니다.
 - No RL step!
 
 <br><br>
@@ -351,183 +351,121 @@ At each time step $i$:
 This is now an **online convex programming problem**.
 
 <br>
-## 4.3 Modifications for Acyclic Positive Costs
+## 4.3 Modifications for Acyclic Positive Costs (Think of Worst Case)
 
-- Acyclic domains($A^*$ and its variants) require rewards to be **strictly negative** (equivalently, costs must be strictly positive), otherwise **infinite reward paths** may result.
+acyclic(특정 방향이 없는, 사이클이 없는, 비순환적인) domain의 infinite horizon problems에서, $A^*$와 $A^*$의 변종들은 일반적으로 좋은 paln을 찾기위한 가장 효율적인 방법입니다. 이러한 domain에서는 strictly negative한 reward를 생각해볼 필요가 있습니다(동일하게, cost는 strictly positive). 다시 말해 best case에 대해서만 생각해볼 것이 아니라 worst case에 대해서도 생각해볼 필요가 있다는 것입니다. 이렇게 하지 않으면 infinite reward path가 발생할지도 모르기 때문입니다. 이러한 negativity의 strictness는 heuristic의 존재를 더 확실히게 보장하는 것이라고 볼 수 있습니다.
 
-- Assuming $F_i \geq 0$, the strictness of this negativity can be implemented via
-    - **Component-wise negativity constraints** on $w$.
-    - Or a set of constraints enforcing the negativity of the reward for **each state-action visitation frequency individually**.
+$F_i \geq 0$이라고 가정하면, 이러한 negativity의 strictness는 두 가지 방법을 통해 쉽게 구현할 수 있습니다.
+1) w에 component-wise negativity constraints를 추가
+2) 각각의 state-action pair에 대한 보상에 negativity를 부여하는 constraints를 추가
 
-
-건희님
-$A^*$ 및 variants: 비 주기 도메인에서 infinite horizon 문제에 대해 일반적으로 좋은 계획을 찾는 알고리즘.
-
-> $A^*$ Algorithm:
-> 
->> 적절한 휴리스틱을 가지고 알고리즘을 사용하면 최적(optimal)이 된다는 것.
-
-- 이러한 도메인은 보상이 strictly negative (동일하게, cost가 strictly positive)를 요구한다.
-    - 이러한 negativity의 strictness는 heuristic의 존재성을 확실히 한다. 다음을 통해 쉽게 구현할 수 있다.
-        - $F_i \geq 0$이라고 가정하면, 
-            - 각 state-action pair에 대해서 보상의 negativity를 부여하는 constraint 집합
-  
-            -  $w$에 negativity constraint를 통해 쉽게 구현될 수 있다.
-        
-        #(comment) Reward =  $w^T F_i \mu$이고 $F_i$은 0 보다 크기때문에 $w, \mu$에 negativity를 제공하는 것 같다.
-
-> **Notation**:
-state-action pairs $(x_i , a_i) \in X_i$ X $A_i$ over which d-dimensional feature vectors are place in the form of a $d - |X||A|$ **feature matrix $F_i$**.
+이렇게 negativity를 추가할 수 있는 이유는 reward $w^T F_i \mu$(or $(w^T F_i + l_i^T) \mu$)에서 $F_i$이 0보다 크기 때문에, 우리는 $w, \mu$에 negativity를 추가할 수 있습니다. 1의 경우 단순히 w의 violated component를 0으로 설정하여 구현할 수 있고, 2의 경우 가장 violated constraint를 반복적으로 추정함으로써 효율적으로 구현할 수 있습니다.
 
 <br>
-## 4.4 Modifications for Acyclic Positive Costs
+## 4.4 Incorporating Prior Knowledge
 
-- In Algorithm 1, It can be used optionally.
+이 section은 앞서 Algorithm 1의 Line 8에서와 말한 것과 같이 Option으로 prior knowledge을 통해 추가적인 constraints를 둘 수 있다는 것을 보여줍니다.
+1) 0 vector 대신에 $w$에 prior belief에 대한 solution을 regularizing하는 것
+2) loss function을 통해 특정한 state-action pairs를 poor choices으로 표시하는 것. algorithm이 이러한 요소로 인하여 large magin을 가지도록 강제합니다.
+3) $w$에 constraint 형태로 domain knowledge를 포함시키는 것 (e.g 특정한 영역의 state를 다른 state보다 cost가 적어도 두 배가 되도록 요구.)
 
-- Prior knowledge
-    - One useful technique is to regularize the solution about a **prior belief** on $w$ instead of the 0 vector.
-    - Another is to have our loss function mark certain state-action pairs as being **poor choices**: this forces our algorithm to **have large margin** with respect to them.
-    - Finally, we may incorporate **domain knowledge** in the form of constaints on $w$.
-        - E.g. We may require that a certain area state have at least **double** the cost of another state.
-
-건희님
--   학습 성능 향상을 위한 cost-fucntion에 대해 사전 지식을 세우는 방법:
-    1. 0 vector 대신에 $w$에 prior belief에 대한 solution을 정규화.
-    2. 좋지 않은 선택이 될 수 있는 특정 state-action 쌍에 대해서 loss function에 표기.
-        - 이것은 우리의 알고리즘이 이런 요소에 대하여 **large margin**을 가지도록 강제.
-    3. $w$에 대한 constraint 형태의 domain 지식을 통합.
-        - e.g., 특정한 영역 state를 다른 state보다 두배가 되도록 요구.
-
-이러한 방법들은 training example의 사용외에도 **expert knowledge**를 learner에게 전달하는 강력한 방법.
+이러한 방법들은 training example의 사용 외에도 learner에게 expert의 knowledge를 전달하는 강력한 방법입니다.
 
 <br><br>
 
 # 5. Experimental Results
 
-실제 문제(Path planning)에서 논문 개념을 이용하여 유효성 검증할 것.
-- Section 3에서 보여주었던 **Batch learning algorithm**을 사용.  
-- Regularization을 위한 합리적인 값을 사용했고, $A^*$ 알고리즘을 사용.
-#(comment) 사전 지식을 통합하는 첫 번째 방법을 적용한 것으로 보임.
+<br>
+## 5.1 Demonstration of learning to plan based on satellite color imagery
 
-같은 맵의 영역에서 시연되는 다른 예제 경로는 학습 후에 hold out 영역에서 상당히 다른 결과를 이끔.
-![figure1](./mmp_img/figure1.png)
+실험에서는 실제 문제(Path planning)에서 논문 개념을 이용하여 유효성 검증할 것입니다.
+1) Section 4에서 보여주었던 batch learning algorithm을 사용
+2) Regularization을 위한 적당한 값을 사용하고, 위에서 다뤘던 우리의 algorithm을 사용
 
-####   Figure 1. Demonstration of learning to plan based on satellite color imagery.
+추가적으로 prior knowledge에서의 첫 번째 방법을 적용한 것으로 보입니다.
 
-Figure 1은 이 실험에서의 정성적인 결과를 보여줌. 
+같은 맵의 영역에서 시연되는 다른 예제 경로는 학습 후에 hold out 영역에서 상당히 다른 결과를 이끌었습니다.
 
--   실험 의도:
-    -   Top : Road에 유지하도록 제안.
-    -   Bottom : 은밀한 의도를 내포한다(여기서는 숲을 지나는 의도를 의미).
+<center> <img src="../../../../img/irl/mmp_8.png" width="1200"> </center>
 
--   실험 결과:
-    -   Left: Training 예제.
-    -   Middle: Training이후에 hold out 영역에서 학습된 cost map.
-    -   Right: hold out 영역에서 $A^*$를 이용하여 생성된 행동 결과.
+<center> <img src="../../../../img/irl/mmp_9.png" width="600"> </center>
 
+- 실험 의도
+  - Top : Road에 유지하도록 제안
+  - Bottom : 은밀한 의도를 제시(여기서는 숲을 지나는 의도를 의미)
 
+- 실험 결과
+  - Left : Training 예제
+  - Middle : Training 이후에 hold out 영역에서 학습된 cost map
+  - Right : Hold out 영역에서 $A^*$를 이용하여 생성된 행동 결과
 
-![figure2](./mmp_img/figure2.png)
-#### Figure 2. Data shown are MMP learned cost maps: (dark low cost),teacher supplied path: (red), loss-augmented path: (blue), final learned path: (green)
+<br>
+## 5.2 Data shown are MMP learned cost maps
 
+<center> <img src="../../../../img/irl/mmp_10.png" width="1100"> </center>
 
-Figure 2은 **holdout region**으로 부터의 결과.
+Figure 2은 holdout region으로부터의 결과입니다.
 
+그림에서 loss-augmented path (blue)은 일반적으로 마지막 학습된 경로보다 일반적으로 좋은 결과를 수행하지 못하는 것을 나타났습니다.
 
-사진에서 **loss-augmented path (blue)** 은 일반적으로 마지막 학습된 경로보다 일반적으로 좋은 결과를 수행하지 못하는 것을 나타냄. 
+왜냐하면 loss-augmentation은 높은 loss의 영역을 최종 학습 지도보다 더욱 desirable하게 만들기 때문입니다. 
 
--   왜냐하면 **loss-augmentation**은 높은 loss의 영역을 최종 학습 지도보다 더욱 바람직하게 만들기 때문.
--   직관적으로, 만약 학습자가 **loss-augmented cost map**에 대해서 잘 수행할 수 있다면, loss-augmentation없이 더욱 잘 수행되어야 한다는 것이다; 이것은 **margin**을 가지고 학습된 개념.
+직관적으로, 만약 학습자가 loss-augmented cost map에 대해서 잘 수행할 수 있다면, loss-augmentation없이도 더욱 잘 수행되어야 한다는 것입니다. 이것은 margin을 가지고 학습된 개념입니다.
 
+<br>
+## 5.3 Results using two alternative approaches
 
-![figure3](./mmp_img/figure3.png)
+<center> <img src="../../../../img/irl/mmp_11.png" width="800"> </center>
 
+- Left : the result of a next-action classifier applied superimposed on a visualization of the second dataset.
+- Right : a cost map learned by manual training of a regression.
 
-#### Figure 3. Results using two alternative approaches
+두 개의 경우에서 학습된 경로들은 poor approximations. (not shown on left, red on right).
 
--   Left: the result of a next-action **classifier applied** superimposed on a visualization of the second dataset.
--   Right: a cost map learned by **manual training of a regression**. 
+<br>
+## 5.4 Visualization about losses
 
-두 개의 경우에서 학습된 경로들은 **poor approximations**. (not shown on left, red on right).
+<center> <img src="../../../../img/irl/mmp_12.png" width="850"> </center>
 
+- Left : Visualization of inverted Loss function $(1− l(x))$ for a training example path.
+- Right : Comparison of holdout loss of MMP (by number of iterations) to a regression method where a teacher hand-labeled costs.
 
+비교를 위해, 저자는 MMP에 다른 두 개의 접근방법을 사용하여 유사한 학습을 시도하였습니다.
 
+1. (Lecun et al., 2006)$^5$에서 제안한 방법으로 state 특징들을 다음 action으로 취하는 mapping을 사용한 직접적으로 학습하는 알고리즘입니다. 이 경우, traing data에 대해 좋은 결과를 얻지 못했습니다.
 
-![figure4](./mmp_img/figure4.png)
-
-#### Figure 4. Visualization about losses.
-
--   *Left*: Visualization of inverted $Loss function (1− l(x))$ for a training example path.   
-
--   *Right*: **Comparison of holdout loss** of MMP (by number of iterations) to a regression method where a teacher hand-labeled costs. 
-
-
-
-비교를 위해, 저자는 MMP에 다른 두 개의 접근방법을 사용하여 유사한 학습을 시도.
-
-1.  (Lecun et al., 2006)$^5$에서 제안한 방법으로 state 특징들을 다음 action으로 취하는 mapping을 사용한 직접적으로 학습하는 알고리즘.
-
-    -   Traing data에 대해 좋은 결과를 얻지 못했다.
-
-2.  다소 더 성공적은 시도는 직접 label을 통해 cost를 학습시킨 알고리즘.
-
-    - 이 알고리즘은 MMP보다 학습자에게 더 많은 명시적 정보를 제공. 
-
-        - 다음을 기반하여 low, medium, high cost로 제공
-            1. Expert knowledge of the planner
-            2. Iterated training and observation
-            3. The trainer had prior knowledge of the cost maps found under MMP batch learning on this dataset.
-
-    -   추가 정보가 주어진 cost map은 정성적으로 올바른 것처럼 보이지만, 그림 3과 그림 4는 상당히 좋지 않은 성능을 보여줌.
+2. 다소 더 성공적은 시도는 직접 label을 통해 cost를 학습시킨 알고리즘입니다. 이 알고리즘은 MMP보다 학습자에게 더 많은 명시적 정보를 제공합니다.
+   - 다음을 기반하여 low, medium, high cost로 제공
+     1. Expert knowledge of the planner
+     2. Iterated training and observation
+     3. The trainer had prior knowledge of the cost maps found under MMP batch learning on this dataset.
+   - 추가 정보가 주어진 cost map은 정성적으로 올바른 것처럼 보이지만, 그림 3과 그림 4는 상당히 좋지 않은 성능을 보여줍니다..
 
 <br><br>
 
 # 6. Related and Future Work
 
-Maximum Margin Planning과 직접적으로 연관된 두 개의 작업이 있다.
+Maximum Margin Planning과 직접적으로 연관된 두 가지 work가 있습니다.
 
-1.  첫 번째는 Inverse Reinforcement learning에서의 작업이다.
+그 중 하나가 바로 Inverse RL입니다.
 
-- IRL의 목표는: 
-     
-    - MDP에서 agent의 행동을 관찰하는 것이다.
-  
-    - Agent의 행동으로 부터 강화함수(trajectory or reward function)를 추출하는 것이다.
+IRL의 목표는 MDP에서 agent의 행동을 관찰하는 하여 agent의 행동으로 부터 reward function를 추출하는 것입니다. 그러나 이것은 기본적으로 ill-posed 문제로 알고 있습니다. 그럼에도 불구하고, MMP와 같이 유사한 효과를 가진 IRL 아이디어들을 시도한 몇 가지 heuristic 시도가 있었습니다.
 
-그러나 이것은 기본적으로 ill-posed 문제로 알고 있다.
-그럼에도 불구하고, MMP와 같이 유사한 효과를 가진 IRL 아이디어들을 시도한 몇 가지 heuristic 시도가 있었다.
+유용한 heuristic 방법은 바로 이전 논문인 *Abbeel, P., & Ng, A. Y. (2004). Apprenticeship learning via inverse reinforcement learning* APP 논문입니다. 학습자의 정책과 시연되는 예제간의 expected feature counts을 통해 매칭을 시도하는 학습 방법입니다.
 
-- 유용한 heuristic 방법 = *Abbeel, P., & Ng, A. Y. (2004). Apprenticeship learning via inverse reinforcement learning*:
+MMP의 경우 IRL algorithm의 variant과는 다른 스타일의 algorithm입니다.
 
-    - 학습자의 정책과 시연되는 예제간의 **expected feature counts**을 통해 매칭을 시도하는 학습 방법 ($\sum_i F \mu_i$).
-   
-    - **This variant of IRL** differs from MMP in that
-    - MMP와 다른 variant와 차이점:
-        - MMP는 하나의 MDP 보다 많은 정책 시연들을 허용하도록 설계되어있다.
-            - 여러 특징 맵, 다른 시작 지점과 목표 지점, 완전히 새로운 맵과 목표 지점을 가지는 학습자의 목표를 이용하여 예제들을 시연했다.
-  
+MMP는 하나의 MDP 보다 많은 정책 시연들을 허용하도록 설계되어 있습니다. 여러 특징 맵, 다른 시작 지점과 목표 지점, 완전히 새로운 맵과 목표 지점을 가지는 학습자의 목표를 이용하여 예제들을 시연했습니다. 또한 MMP는 상당히 다른 IRL적 알고리즘 접근 방법을 유도합니다.
 
-    -  MMP는 상당히 다른 IRL적 알고리즘 접근 방법을 유도한다.
-        - IRL과 MMP간의 관계는 **"generative and discriminative learning"** 간의 구별을 연상시킨다. 
-            -   **IRL feature matching**: 
-            Agent가 MDP에서 (거의 최적같이) 행동하고 (거의) feature expectation에 매칭 가능할 때 학습하도록 설계되었다.
-            = Generative models과 같은 strong 가정.
-            
-            예를 들어, feature expecatation을 매칭하는 능력은 알고리즘의 행동이 feature가 선형인 모든 비용함수에 대해서 near-optimal일 것이라는 것을 의미한다.
-            
+IRL과 MMP간의 관계는 **generative and discriminative learning** 간의 구별을 연상시킵니다.
 
-            -   **MMP**: 
-            우리의 목표가 직접적으로 output 행동을 모방하는 것이라는 약한 가정을 하고 실제 MDP나 reward 함수에 대해 agnostic.
-            =  여기서 MDP는 output decision들을 구조화하고 경쟁을 하려고 하는 expert가 natual class을 제공한다.
-               
+일반적인 IRL의 경우, feature matching을 시도합니다. agent가 MDP에서 (거의 최적같이) 행동하고 (거의) feature expectation에 매칭 가능할 때 학습하도록 설계되었습니다(Generative models과 같은 strong 가정). 예를 들어, feature expecatation을 매칭하는 능력은 algorithm의 행동이 feature가 선형인 모든 cost function에 대해서 near-optimal일 것이라는 것을 의미합니다.
 
-<br/> <br/>
+반대로 MMP의 경우, 우리의 목표가 직접적으로 output 행동을 모방하는 것이라는 weaker 가정을 하고 실제 MDP나 reward 함수에 대해 agnostic합니다. 여기서 MDP는 output decision들을 구조화하고 경쟁을 하려고 하는 expert가 natual class을 제공합니다.
 
-> Generative model:
->> 개별 클래스의 분포를 모델링한다.
->
-> Discriminative model:
->> 차별 모델은 기본 확률 분포 또는 데이터 구조를 모델링하지 않고 기본 데이터를 해당 클래스에 직접 매핑(class 경계를 통해 학습). SVM은 이러한 기준을 만족 시키므로 decision tree와 마찬가지로 discriminative model.
+정리하자면,
+Generative model : 개별 클래스의 분포를 모델링한다.
+Discriminative model : Discriminative 모델은 기본 확률 분포 또는 데이터 구조를 모델링하지 않고 기본 데이터를 해당 클래스에 직접 매핑(class 경계를 통해 학습). SVM은 이러한 기준을 만족 시키므로 decision tree와 마찬가지로 discriminative model.
 
 <br><br>
 

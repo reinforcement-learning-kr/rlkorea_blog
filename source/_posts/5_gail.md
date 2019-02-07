@@ -1,22 +1,21 @@
 ---
-title: Trust Region Policy Optimization
-date: 2018-06-24 16:53:12
-tags: ["프로젝트", "피지여행"]
+title: Generative Adversarial Imitation Learning
+date: 2019-02-13
+tags: ["프로젝트", "GAIL하자!"]
 categories: 프로젝트
-author: 공민서, 김동민
-subtitle: 피지여행 5번째 논문
+author: 이승현
+subtitle: Inverse RL 5번째 논문
 ---
 
-<center> <img src="https://www.dropbox.com/s/o7cjcn0e17mpizr/Screen%20Shot%202018-07-18%20at%201.14.22%20AM.png?dl=1" width="700"> </center>
+<center> <img src="../../../../img/irl/gail_1.png" width="850"> </center>
 
-논문 저자 : John Schulman, Sergey Levine, Philipp Moritz, Michael Jordan, Pieter Abbeel
-논문 링크 : https://arxiv.org/pdf/1502.05477.pdf
-Proceeding : International Conference on Machine Learning (ICML) 2015
-정리 : 공민서, 김동민
+Author : Jonathan Ho, Stefano Ermon
+Paper Link : https://papers.nips.cc/paper/6391-generative-adversarial-imitation-learning.pdf
+Proceeding : Advances in Neural Information Processing Systems (NIPS) 2016
 
 ---
 
-# 1. 들어가며...
+# 0. Abstract
 
 Trust region policy optimization (TRPO)는 상당히 우수한 성능을 보여주는 policy gradient 기법으로 알려져 있습니다. 높은 차원의 action space를 가진 robot locomotion부터 action은 적지만 화면을 그대로 처리하여 플레이하기 때문에 control parameter가 매우 많은 Atari game까지 각 application에 세부적으로 hyperparameter들을 특화시키지 않아도 두루두루 좋은 성능을 나타내기 때문에 일반화성능이 매우 좋은 기법입니다. 이 TRPO에 대해서 알아보겠습니다.
 
