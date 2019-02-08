@@ -56,34 +56,34 @@ subtitle: Let's do Inverse RL Guide
 
 # 3. \[MMP\] Maximum Margin Planning
 
-[MMP 여행하기]()
+[MMP 여행하기](https://reinforcement-learning-kr.github.io/2019/02/07/3_mmp/)
 
 짧은 글 소개, 요약
 
-[MMP 여행하기]()
+[MMP 여행하기](https://reinforcement-learning-kr.github.io/2019/02/07/3_mmp/)
 
 <br><br>
 
 # 4. \[MaxEnt\] Maximum Entropy Inverse Reinforcement Learning
 
-[MaxEnt 여행하기]()
+[MaxEnt 여행하기](https://reinforcement-learning-kr.github.io/2019/02/10/4_maxent/)
 [MaxEnt Code]()
 
 짧은 글 소개, 요약
 
-[MaxEnt 여행하기]()
+[MaxEnt 여행하기](https://reinforcement-learning-kr.github.io/2019/02/10/4_maxent/)
 [MaxEnt Code]()
 
 <br><br>
 
 # 5. \[GAIL\] Generative Adversarial Imitation Learning
 
-[GAIL 여행하기]()
+[GAIL 여행하기](https://reinforcement-learning-kr.github.io/2019/02/13/5_gail/)
 [GAIL Code]()
 
 짧은 글 소개, 요약
 
-[GAIL 여행하기]()
+[GAIL 여행하기](https://reinforcement-learning-kr.github.io/2019/02/13/5_gail/)
 [GAIL Code]()
 
 <br><br>
@@ -93,7 +93,7 @@ subtitle: Let's do Inverse RL Guide
 [VAIL 여행하기]()
 [VAIL Code]()
 
-짧은 글 소개, 요약
+수정중..
 
 [VAIL 여행하기]()
 [VAIL Code]()
