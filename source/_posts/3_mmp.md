@@ -198,7 +198,7 @@ $$s.t. \,\, \forall i \,\,\,\, w^T F_i \mu_i \geq \max_{\mu \in \mathcal{G}_i} (
 
 <center> <img src="../../../../img/irl/mmp_3.png" width="450"> </center>
 
-- 나중에 GAIL 논문에서도 나오겠지만, 위의 수식으로 $\mu$인 visitation frequency를 정할 수 있습니다.
+- 나중에 GAIL 논문에서도 나오겠지만, 위의 수식에서 우항은 어떠한 상태에서의 모든 행동에 대한 visitation frequency를 summation한 것입니다. 그리고 좌항을 MDP의 dual form으로 유도해보면 자연스럽게 우항에 있는 수식으로 **정의** 할 수 있습니다. intuition을 생각해보면, 결국 visitation frequency가 적절한 확률 분포가 되어야한다는 것이며, 모든 행동에 대해서 summation을 취했기 때문에 모든 $x'$에 대해 1이 됩니다.
 
 ### 2.3.3 One compact quadratic program for MMP
 
