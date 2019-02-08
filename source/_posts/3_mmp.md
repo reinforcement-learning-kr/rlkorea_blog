@@ -194,7 +194,7 @@ $$\min_{w, \zeta_i} \frac{1}{2} \parallel w \parallel^2 + \frac{\gamma}{n} \sum_
 
 $$s.t. \,\, \forall i \,\,\,\, w^T F_i \mu_i \geq \max_{\mu \in \mathcal{G}_i} (w^T F_i \mu + l_i^T \mu) - \zeta_i \,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\, (4)$$
 
-그리고 수식 (4)에서, $\mu \in \mathcal{G}_i$를 Bellman-flow constraints로 표현할 수 있습니다. 다시 말해 $\mu \geq 0$는 다음을 만족합니다. ($\mu$의 성질)
+그리고 수식 (4)에서, $\mu \in \mathcal{G}_i$를 Bellman-flow constraints로 표현할 수 있습니다. 다시 말해 $\mu \geq 0$는 다음을 만족합니다.
 
 <center> <img src="../../../../img/irl/mmp_3.png" width="450"> </center>
 
@@ -241,11 +241,13 @@ $$\forall i,x,a \,\,\,\, v_i^x \geq (w^T F_i + l_i)^{x,a} + \sum_{x'} p_i (x'|x,
 
 변형된 objective function은 다음과 같습니다.
 
-$$c_q(w) = \frac{1}{n} \sum_{i=1}^n \beta_i \Big( \big\\{\max_{\mu \in \mathcal{G}_i} (w^T F_i + l_i^T)\mu \big\\} - w^T F_i \mu_i\Big) + \frac{1}{2} \parallel w \parallel^2 \,\,\,\,\,\,\,\,\,\,\,\, (10)$$
+$$c_q(w) = \frac{1}{n} \sum_{i=1}^n \beta_i \Big( \big\\{\max_{\mu \in \mathcal{G}_i} (w^T F_i + l_i^T)\mu \big\\} - w^T F_i \mu_i\Big) + \frac{\lambda}{2} \parallel w \parallel^2 \,\,\,\,\,\,\,\,\,\,\,\, (10)$$
 
 hinge-loss 관점에서 보면, 위의 수식에서 $\big\\{\max_{\mu \in \mathcal{G}_i} (w^T F_i + l_i^T)\mu\big\\} - w^T F_i \mu_i$은 slack variable인 $\zeta_i$과 동일합니다.
 
 또한 기존에 있던 $\gamma$는 slack variable $\zeta_i$가 없어졌기 때문에 사라집니다.
+
+여기서 $\lambda$는 regularization parameter로 사용합니다.
 
 위의 objective function은 convex하지만, **max term**이 있기 때문에 미분이 불가능합니다. 따라서 이 논문에서는 subgradient method라 불리는 gradient descent의 generalization을 이용함으로써 optimization을 합니다.
 
