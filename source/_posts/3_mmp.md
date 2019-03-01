@@ -74,7 +74,6 @@ Mobile robotics에서는 일반적으로 **perception** subsystem과 **planning*
 
 # 2. Preliminaries
 
-<br>
 ## 2.1 Notations
 
 ### 2.1.1 modeling the planning problem with discrete MDPs

@@ -298,7 +298,6 @@ $$s.t. \,\,\,\,\, |\alpha_i| \leq 1, \,\,\, i = 1, ... , d$$
 
 # 6. Experiments
 
-<br>
 ## 6.1 First experiment : 5 x 5 grid world
 
 <center> <img src="../../../../img/irl/linear_irl_6.png" width="500"> </center>
