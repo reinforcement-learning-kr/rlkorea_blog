@@ -87,13 +87,13 @@ Robotics의 관점에서 IRL을 바라본 이 논문은 APP에서 더 나아가 
 [MaxEnt 여행하기](https://reinforcement-learning-kr.github.io/2019/02/10/4_maxent/)
 [MaxEnt Code](https://github.com/reinforcement-learning-kr/lets-do-irl/tree/master/mountaincar/maxent)
 
-SVM 전성시대가 막이 내리고 IRL도 이 논문부터 본격적으로 확률적인 개념을 이용하여 learning하는 방법을 제시합니다. 이 논문에서는 먼저 그 당시에 크게 두 갈래로 나눠지는 방법론인 "MMP"와 "APP"에 대해 설명하고 각 방법론에 대한 단점들을 말해줍니다. 개인적으로 다시 한 번 remind를 해주는 부분이 있어서 논문읽기가 더 좋았던 것 같습니다. MaxEnt의 경우 MMP의 궤가 아닌 APP의 궤로써 APP에서의 ambiguity를 어떻게 하면 해결할 수 있을 지를 말하는 논문입니다. 그 방법으로, **the principle of maximum entropy**에 기반한 확률적인 접근을 이용합니다.
+SVM 전성시대가 막이 내리고 IRL도 이 논문부터 본격적으로 확률적인 개념을 이용하여 learning하는 방법을 제시합니다. 이 논문에서는 먼저 그 당시에 크게 두 갈래로 나눠지는 방법론인 "MMP"와 "APP"에 대해 설명하고 각 방법론에 대한 단점들을 말해줍니다. 개인적으로 다시 한 번 remind를 해주는 부분이 있어서 논문을 읽기가 더 좋았던 것 같습니다. MaxEnt의 경우 MMP의 궤가 아닌 APP의 궤로써 APP에서의 ambiguity를 어떻게 하면 해결할 수 있을 지를 말하는 논문입니다. 그 방법으로, **the principle of maximum entropy**에 기반한 확률적인 접근을 이용합니다.
 
 결국 무엇을 하고 싶은 것이냐면, state visitation frequency count의 개념을 이용하여 이전의 논문처럼 expert와 learner 사이의 frequency count를 matching하고 싶은 것인데, IRL은 전형적으로 ill-posed problem이기 때문에 각각의 policy는 많은 reward function에 대해 optimal 할 수 있고, 이에 따라 많은 policy들은 같은 feature count들을 유도하기 때문에 ambiguity가 발생하게 됩니다. 따라서 the principle of maximum entropy 이론을 통해 어떠한 distribution의 parameter가 되는 $\theta$를 maximization하는 쪽으로 잡아나가겟다는 것입니다.
 
-뒤이어 state visitation frequency를 더 효율적으로 구하기 위한 algorithm이 나옵니다만, dynamics를 알 때에 쓰이는 것이므로 저희는 구현할 때 q-learning을 통한 sampling을 하는 방법을 사용하였기 때문에 깊게 다루지 않았고, 따로 구현하지도 않았습니다.
+뒤이어 state visitation frequency를 더 효율적으로 구하기 위한 algorithm이 나옵니다만, dynamics를 알 때에 쓰이는 것이므로 저희는 구현할 때 q-learning을 통한 sampling을 하는 방법을 사용하였기 때문에 깊게 다루지 않았습니다.
 
-다음 논문인 GAIL 논문을 보시기전에 이 논문을 꼭 보고 GAIL 논문을 보시는 것을 추천해드립니다!
+다음 논문인 GAIL 논문을 보시기전에 이 논문을 꼭 이해하고 GAIL 논문을 보시는 것을 추천해드립니다!
 
 [MaxEnt 여행하기](https://reinforcement-learning-kr.github.io/2019/02/10/4_maxent/)
 [MaxEnt Code](https://github.com/reinforcement-learning-kr/lets-do-irl/tree/master/mountaincar/maxent)
