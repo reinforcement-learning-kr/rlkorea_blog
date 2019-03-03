@@ -109,11 +109,11 @@ SVM 전성시대가 막이 내리고 IRL도 이 논문부터 본격적으로 확
 [GAIL 여행하기](https://reinforcement-learning-kr.github.io/2019/02/13/5_gail/)
 [GAIL Code](https://github.com/reinforcement-learning-kr/lets-do-irl/tree/master/mujoco/gail)
 
-페이스북 인공지능 연구팀의 리더이자 딥러닝의 아버지라 불리는 얀 르쿤(Yann Lecun) 교수님은 Ian Goodfellow가 2014년에 내놓은 **Generative Adversarial Networks (GAN)** 을 가리켜 최근 10년간 머신러닝 분야에서 가장 혁신적인 아이디어라고 말했습니다. 이후 많은 곳에 GAN을 사용할 수 있겠다고 생각한 연구자들은 GAN을 활용한 연구들을 통해 뛰어난 성능을 보여주며 각종 인공지능 학회를 뜨겁게 달궜습니다. 이는 Imitation learning에도 마찬가지였으며, 이 시기에 나온 논문이 바로 GAIL입니다. 
+페이스북 인공지능 연구팀의 리더이자 딥러닝의 아버지라 불리는 얀 르쿤(Yann Lecun) 교수님은 Ian Goodfellow가 2014년에 내놓은 **Generative Adversarial Networks (GAN)** 을 가리켜 최근 10년간 머신러닝 분야에서 가장 혁신적인 아이디어라고 말했습니다. 이후 많은 곳에 GAN을 사용할 수 있겠다고 생각한 연구자들은 GAN을 활용한 연구들을 통해 뛰어난 성능을 보여주며 각종 인공지능 학회를 뜨겁게 달궜습니다. 이는 Imitation learning에도 마찬가지였으며, 이 시기에 나온 논문이 바로 GAIL입니다.
 
-APP, MMP 등의 아주 초기 IRL 논문에서부터 핵심적으로 사용되는 알고리즘은 SVM과 같이 expert와 learner의 performance margin을 최대화 하는 방향으로 reward function을 학습하는것입니다. 이는 어떻게 보면 두 policy를 더 잘 구분하고자 하는 것이며 GAN에서 말하는 discriminator와 generator의 성질과 매우 유사합니다. 저자는 이 점을 활용하여 새로운 cost regularizer를 제안함으로써 Immitation learning과 GAN을 연결짓습니다. 
+APP, MMP 등의 아주 초기 IRL 논문에서부터 핵심적으로 사용되는 알고리즘은 SVM과 같이 expert와 learner의 performance margin을 최대화 하는 방향으로 reward function을 학습하는것입니다. 이는 어떻게 보면 두 policy를 더 잘 구분하고자 하는 것이며 GAN에서 말하는 discriminator와 generator의 성질과 매우 유사합니다. 저자는 이 점을 활용하여 새로운 cost regularizer를 제안함으로써 Immitation learning과 GAN을 연결짓습니다.
 
-GAIL의 또한 가지 특징은 최근에 나온 논문인 만큼 policy approximator로서 Neural network를 사용한다는 점입니다. 이 때문에 딥러닝에 익숙하신 분이 지금까지 IRL 여행의 수많은 머신러닝 수식들로 힘드셨다면, GAIL은 기술적으로 무르익은 단계의 논문임에도 오히려 더 명쾌하다는 느낌을 받으실 수 도 있습니다.
+GAIL의 또한 가지 특징은 최근에 나온 논문인 만큼 policy approximator로서 neural network를 사용한다는 점입니다. 이 때문에 딥러닝에 익숙하신 분이 지금까지 IRL 여행의 수많은 머신러닝 수식들로 힘드셨다면, GAIL은 기술적으로 무르익은 단계의 논문임에도 오히려 더 명쾌하다는 느낌을 받으실 수 도 있습니다.
 
 자, 이제 IRL 여행에 막바지에 이르렀습니다. 최적화와 관련해서 어려운 개념들이 많이 나오겠지만 힘을내서 끝까지 마무리 지어 봅시다!
 
