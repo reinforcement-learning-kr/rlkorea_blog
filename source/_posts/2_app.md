@@ -9,310 +9,293 @@ subtitle: Inverse RL 2번째 논문
 
 <center> <img src="../../../../img/irl/app_1.png" width="850"> </center>
 
-논문 저자 : David Silver, Guy Lever, Nicloas Heess, Thomas Degris, Daan Wierstra, Martin Riedmiller
-논문 링크 : http://people.eecs.berkeley.edu/~russell/classes/cs294/s11/readings/Abbeel+Ng:2004.pdf
-Proceeding : International Conference on Machine Learning (ICML) 2014
+Author : Pieter Abbeel, Andrew Y. Ng
+Paper Link : http://people.eecs.berkeley.edu/~russell/classes/cs294/s11/readings/Abbeel+Ng:2004.pdf
+Proceeding : International Conference on Machine Learning (ICML) 2000
 
 ---
 
-# 1. 들어가며...
-
-- Stochastic Policy Gradient (DPG) Theorem을 제안합니다.
-    - 중요한 중요한 점은 DPG는 Expected gradient of the action-value function의 형태라는 것입니다.
-- Policy variance가 0에 수렴할 경우, DPG는 Stochastic Policy Gradient (SPG)와 동일해집니다. (Theorem 2)
-    - Theorem 2로 인해 기존 Policy Gradient (PG) 와 관련된 기법들을 DPG에 적용할 수 있게 됩니다.
-        - 예. Sutton PG, natural gradients, actor-critic, episodic/batch methods
-- 적절한 exploration 을 위해 model-free, off-policy actor-critic algorithm 을 제안합니다
-    - action-value function approximator 사용으로 인해 policy gradient가 bias되는 것을 방지하기 위해 compatibility condition을 제공합니다. (Theorem 3)
-- DPG 는 SPG 보다 성능이 좋습니다.
-    - 특히 high dimensional action spaces를 가지는 tasks에서의 성능 향상이 큽니다.
-        - SPG의 policy gradient는 state와 action spaces 모두에 대해서, DPG의 policy gradient는 state spaces에 대해서만 평균을 취합니다.
-        - 결과적으로, action spaces의 dimension이 커질수록 data efficiency가 높은 DPG의 학습이 더 잘 이뤄지게 됩니다.
-        - 무한정 학습을 시키면, SPG도 최적으로 수렴할 것으로 예상되기에 위 성능 비교는 일정 iteration 내로 한정합니다.
-    - 기존 기법들에 비해 computation 양이 많지 않습니다.
-        - Computation 은 action dimensionality 와 policy parameters 수에 비례합니다.
+# 0. Abstract
+reward가 주어지지 않은 Markov decision process 문제에서, 특히나 reward를 어떻게 줄지 하나하나 고려하는것이 힘들 때 전문가의 시연을 보고 학습하는것은 상당히 효과적인 접근입니다. 이러한 관점에서 이 논문은, 전문가가 선형 조합으로 표현한 reward function을 최대화 하려는 행동을 했다고 가정하고 이 reward function을 복구하고자 **"inverse reinforcement learning"** 을 사용하는 알고리즘을 제안합니다. 이와 함께 알고리즘이 작은 횟수로도 학습이 가능하며, 전문가 시연과 비슷한 성능을 얻을 수 있음을 실험을 통해 보이고자 합니다.
 
 <br><br>
 
-# 2. Background
+# 1. Introduction
+어떤 task를 배울때 전문가의 시연(demonstration)을 보고 배우는것을 **"Apprenticeship learning"** 이라고 합니다. (혹은 learning by watching/ imitation learning/ learning from demonstration이라고도 불립니다.) Apprenticeship learning은 여러 접근 방법이 있는데, 대표적으로 '전문가의 행동을 그대로 따라하는 것'과 '행동의 의도를 학습하는것'입니다. 
 
-<br>
-## 2.1 Performance objective function
+예를 들어 봅시다. 운전을 배울 때 전문가가 50번 국도의 300m 지점에서 핸들을 왼쪽으로 30도 돌리는 행동을 그대로 따라하기만 한다면, 동일 위치라도 갑자기 옆 차선의 운전자가 끼어드는것과 같은 임의의 상황에서 아무런 대응을 할 수 없습니다. 이렇게 연속적인 상황에서 정답인 행동을 보여주고 그대로 따라하도록 policy를 학습하는 방식을 **"Behavior cloning"** 이라고 하는데, 이는 경로가 길어질 수록 오차가 커지며 상태가 조금만 달라져도 잘 대응하지 못하는 단점이 있습니다. 즉, 모방(mimic) 문제에만 적용이 가능하며 supervized learning의 단점을 그대로 가지게 됩니다. 
 
-$$
-\begin{align}
-J(\pi_{\theta}) &= \int_{S}\rho^{\pi}(s)\int_{A}\pi_{\theta}(s,a)r(s,a)da ds = E_{s \sim \rho^{\pi}, a \sim \pi_{\theta}}[r(s,a)]
-\end{align}
-$$
+때문에 task에 대한 최적의 policy를 배우기 위해선 전문가의 행동을 그대로 따라하기보단 그 행동이 갖는 함축적인 의미(혹은 의도)를 학습하는것이 더 효과적이며, 이 논문 (이하 **"APP"**) 에서 다루는 알고리즘은 이를 위해 reward function을 feature들의 선형조합으로 표현한 다음 이를 **"Inverse reinforcement learning"** 으로 학습하는 방법을 제안합니다.
 
-<br>
-## 2.2 SPG Theorem
-- State distribution $ \rho^{\pi}(s) $ 은 policy parameters에 영향을 받지만, policy gradient 를 계산할 때는 state distribution 의 gradient 를 고려할 필요가 없습니다.
-$$\begin{eqnarray}\nabla_{\theta}J(\pi_{\theta}) &=& \int_{S}\rho^{\pi}(s)\int_{A}\nabla_{\theta}\pi_{\theta}(a|s)Q^{\pi}(s,a)dads \nonumber \\ &=& E_{s \sim \rho^{\pi}, a \sim \pi_{\theta}}[\nabla_{\theta}\log\pi_{\theta}(a|s)Q^{\pi}(s,a)]
-\end{eqnarray}$$
-
-<br>
-## 2.3 Stochastic Actor-Critic Algorithms
-- Actor와 Critic이 번갈아가면서 동작하며 stochastic policy를 최적화하는 기법입니다.
-- Actor: $ Q^{\pi}(s,a) $ 를 근사한 $ Q^w(s,a) $를 이용해 stochastic policy gradient를 ascent하는 방향으로 policy parameter $ \theta $를 업데이트함으로써 stochastic policy를 발전시킵니다.
-    - $ \nabla_{\theta}J(\pi_{\theta}) = E_{s \sim \rho^{\pi}, a \sim \pi_{\theta}}[\nabla_{\theta}\log\pi_{\theta}(a|s)Q^{w}(s,a)] $
-- Critic: SARSA나 Q-learning같은 Temporal-difference (TD) learning을 이용해 action-value function의 parameter, $ w $를 업데이트함으로써 $ Q^w(s,a) $가 $ Q^{\pi}(s,a) $과 유사해지도록 합니다.
-- 실제 값인 $ Q^{\pi}(s,a) $ 대신 이를 근사한 $ Q^w(s,a) $를 사용하게 되면, 일반적으로 bias가 발생합니다. 하지만, compatible condition에 부합하는 $ Q^w(s,a) $를 사용하게 되면, bias가 발생하지 않습니다.
-
-<br>
-## 2.4 Off-policy Actor-Critic
-- Distinct behavior policy $ \beta(a|s) ( \neq \pi_{\theta}(a|s) ) $ 로부터 샘플링된 trajectories 를 이용한 Actor-Critic
-- Performance objective function
-    - $\begin{eqnarray}
-        J_{\beta}(\pi_{\theta}) 
-        &=& \int_{S}\rho^{\beta}(s)V^{\pi}(s)ds \nonumber \\\\
-        &=& \int_{S}\int_{A}\rho^{\beta}(s)\pi_{\theta}(a|s)Q^{\pi}(s,a)dads
-        \end{eqnarray} $
-- off-policy policy gradient
-    - $ \begin{eqnarray}
-        \nabla_{\theta}J_{\beta}(\pi_{\theta}) &\approx& \int_{S}\int_{A}\rho^{\beta}(s)\nabla_{\theta}\pi_{\theta}(a|s)Q^{\pi}(s,a)dads \nonumber \end{eqnarray} $
-        $=E_{s \sim \rho^{\beta}, a \sim \beta}[\frac{\pi_{\theta}(a|s)}{\beta_{\theta}(a|s)}\nabla_{\theta}\log\pi_{\theta}(a|s)Q^{\pi}(s,a)]$
-    - off-policy policy gradient 식에서의 물결 표시는 [Degris, 2012b](https://arxiv.org/abs/1205.4839) 논문에 근거합니다.
-        - Exact off-policy policy gradient 와 이를 approximate 한 policy gradient 는 아래와 같습니다. (빨간색 상자에 있는 항목을 삭제함으로써 근사합니다.)
-            - <img src="https://www.dropbox.com/s/xzpv3okc139c1fs/Screenshot%202018-06-16%2017.48.51.png?dl=1" width=500px>
-        - [Degris, 2012b] Theorem 1 에 의해 policy parameter 가 approximated policy gradient ( $\nabla_{u}𝑄^{\pi,\gamma}(𝑠,𝑎)$ term 제거)에 따라 업데이트되어도 policy 는 improve 가 됨이 보장되기에 exact off-policy policy gradient 대신 approximated off-policy policy gradient 를 사용해도 괜찮습니다.
-            - <img src="https://www.dropbox.com/s/mk13931r4scjngo/Screenshot%202018-06-16%2017.49.24.png?dl=1" width=500px>
-    - off-policy policy gradient 식에서 $ \frac{\pi_{\theta}(a|s)}{\beta_{\theta}(a|s)} $는 importance sampling ratio 입니다.
-        - off-policy actor-critic에서는 $ \beta $에 의해 샘플링된 trajectory를 이용해서 stochastic policy $ \pi $를 예측하는 것이기 때문에 importance sampling이 필요합니다.
+- 추가적으로 APP는 버클리 BAIR 그룹의 Peter Abbeel 교수님께서 스탠포드시절 Andrew Ng 교수님과 쓰신 논문입니다. 당시 Abbeel 교수님은 강화학습 RC 헬기 연구를 하면서 manual reward의 한계 및 Reward shaping 의 필요성을 크게 느껴 APP 연구를 진행하셨습니다. 2004년 연구인 만큼 뉴럴넷보단 최적 설계 문제(Linear Progamming, Quadratic Programming; **LP, QP**)로 접근하였고, LP와 QP 로 reform시 스탠포드 최적화이론의 대가이신 Boyd 교수님의 접근법에 영향을 많이 받은것이 보입니다.
 
 
 <br><br>
 
-# 3. Gradient of Deterministic Policies
+# 2. Preliminaries
 
+ 알고리즘을 소개하기에 앞서 알고리즘에 사용 될 표기법 및 개념들을 몇 가지 짚고 넘어가겠습니다.  
+
+ (finite state) Markov Decision Process (**MDP**) 는 tuple $(S, A, T, \gamma, D, R)$  로 표기합니다. 여기서 $S$는 finite set of states, $A$는 set of actions, $T=\left\{ {P}_{sa}\right\}$는 set of state transition probabilities, $\gamma \in \left[ 0, 1 \right]$는 discount factor, $D$는 start state가 ${s}_{0}$인 initial-state distribution, 그리고 마지막으로 $R:S\mapsto A$는 크기가 1이하인 reward function 입니다. 이 논문은 전문가의 시연으로부터 reward function을 찾고자 하므로, reward가 없는 MDP인 $MDP \setminus R$ 를 다룹니다. 
+
+ 먼저 0에서 1사이의 요소를 갖는 vector of features인 $\phi : S\rightarrow {\left[0,1\right]}^{k}$을 가정합니다. 여기서 feature는 task를 수행할때 고려해야할 요소 정도로 볼 수 있는데, 예를 들어 자동차 주행 domain에서는 '몇 차선을 달리고 있는지', '앞 차와의 거리' 혹은 '다른 차와 충돌 여부' 등이 될 수 있습니다. 이와 같이 task에 대한 feature를 먼저 설계한 뒤, 전문가의 **"true" reward function** 을  ${R}^{*}(s)= {\omega}^{*}\cdot \phi (s)$와 같이 feature들의 선형조합이라고 가정하고, 구하고자 하는 reward의 크기를 1로 제한하고자  ${\left\|  {\omega}^{*} \right\|} _{1}\le  1$ 의 조건을 가정합니다. 결과적으로 (unkown) vector ${\omega}^{*}$는 task에 대한 각 고려 요소들의 상대적 weighting이라고 볼 수 있습니다. 
+
+Policy $\pi$는 action에 대해서 states를 확률분포와 mapping하는 역할을 합니다. 따라서 policy $\pi$의 value는 expectation으로 표현하며 다음과 같습니다.
+
+<center> <img src="../../../../img/irl/app_2.png" width="460"> </center>   
+
+앞서 Reward를 feature의 선형조합, 즉 weight vector와 feature vector의 곱으로 표현하고자 하였으므로, value는 (2)번 식과 같이 변형이 가능합니다. 이때 weight는 policy와 무관하므로 expectation 밖으로 빼내어 (3)번 식과 같이 나타내어 집니다. 여기서 weigth와 곱해진 expectation 항, 즉 expected discounted accumulated feature value vector를 아래와 같이 **"$\mu(\pi)$"** 혹은 **"feature expection"** 라고 정의합니다. 
+
+<center> <img src="../../../../img/irl/app_3.png" width="300"> </center>  
+
+이제 전문가가 보여준 시연(demonstration)에 대한 전문가의 policy를 ${\pi}_{E}$ 라고 가정하며, 이를 reward function ${ R }^{ * } ={ { \omega  }^{ * } }^{ T }\phi$ 에 대한 optimal policy라고 간주합니다. 하지만 optimal policy가 직접적으로 주어지지는 않았으므로 이에 대한 expert's feature expectation ${\mu}_{E}=\mu({\pi}_{E})$를 구할 수 없으며, 대신 demonstration인 $m$개의 trajectory ${ \left\{ { s }_{ 0 }^{ (i) },{ s }_{ 1 }^{ (i) },\dots  \right\}  }_{ i=1 }^{ m }$가 주어졌을 때, **"estimation of expert's feature expectation"** ${ \hat { \mu }  }_{ E }$ 를 다음과 같이 추정 가능합니다.
+
+<center> <img src="../../../../img/irl/app_4.png" width="300"> </center>  
+
+이후 **APP**에서 활용하는 inverse reinforce learning (**IRL**)에서는 $MDP \setminus R$를 풀고자 Reinforcement learning (**RL**) 을 사용하는데, 여기서는 RL 알고리즘의 종류 및 그 수렴성에 대한 구체적인 언급은 하지 않고 항상 optimal policy를 반환한다고 가정하겠습니다. 
+
+<br><br>
+
+# 3. Algorithm
+이 논문에서 다루고자 하는 문제는 $MDP \setminus R$과 feature mapping $\phi$, 그리고 전문가의 feature expectation ${\mu}_{E}$가 주어 졌을 때, **$unkown$ reward function** ${ R }^{ * } ={ { \omega  }^{ * } }^{ T }\phi$을 가진 전문가와 유사한 performance를 보이는 policy를 찾는 것입니다. 다시 말해 expert policy ${\pi}_{E}$와 learner policy $\tilde { \pi }$ 각각에 대한 value의 차이가 얼마나 작은지를 solution의 기준으로 하며 다음의 (6)번 식과 같이 쓸 수 있습니다.
+
+<center> <img src="../../../../img/irl/app_5.png" width="480"> </center> 
+
+앞서 2장에서 value는 weight와 feature expectation으로 표현가능하다고 정의하였으므로 (6)은 (7)과 같이 변형이 가능하며, $\left| { x }^{ T }y \right|  \le { \left\| x \right\|  }_{ 2 }{ \left\| y \right\|  }_{ 2 }$ 의 성질에 따라 (8)과 같은 부등식이 성립합니다. 
+그리고 performance가 유사함의 기준을 충분히 작은 값 $\epsilon$ 으로 지정한다면 최종적으로 (9)의 부등식이 도출됩니다.
+
+나아가 (8)과 (9)에서 앞서 언급한 조건 및 그 성질인 ${\left\|  \omega \right\|} _{2}\le  {\left\|  \omega \right\|} _{1}\le  1$ 을 고려한다면, 다루고자 하는 문제의 범위는 **"feature expectation $\mu(\tilde {\pi })$가 expert's feature expectation ${\mu}_{E}$과 가까워지게 하는 policy $\tilde {\pi }$ 를 찾는것"** 으로 좁혀집니다.  
+
+이 과정을 순차적인 알고리즘으로 나타내면 다음과 같습니다.
+
+<center> <img src="../../../../img/irl/app_6.png" width="480"> </center> 
+<center> [Apprenticeship learning via IRL 알고리즘] </center>
 <br>
-## 3.1 Regularity Conditions
-- 어떠한 이론이 성립하기 위한 전제 조건
-- Regularity conditions A.1
-    - $ p(s'|s,a), \nabla_{a}p(s'|s,a), \mu_{\theta}(s), \nabla_{\theta}\mu_{\theta}(s), r(s,a), \nabla_{a}r(s,a), p_{1}(s) $ are continuous in all parameters and variables $ s, a, s' $ and $ x $.
-- regularity conditions A.2
-    - There exists a $ b $ and $ L $ such that $ \sup_{s}p_{1}(s) < b $, $ \sup_{a,s,s'}p(s'|s,a) < b $, $ \sup_{a,s}r(s,a) < b $, $ \sup_{a,s,s'}\|\nabla_{a}p(s'|s,a)\| < L $, and $ \sup_{a,s}\|\nabla_{a}r(s,a)\| < L $.
 
-<br>
-## 3.2 Deterministic Policy Gradient Theorem
-- Deterministic policy
-    - $ \mu_{\theta} : S \to A $ with parameter vector $ \theta \in \mathbb{R}^n $
-- Probability distribution
-    - $ p(s \to s', t, \mu) $
-- Discounted state distribution
-    - $ \rho^{\mu}(s) $
-- Performance objective
+요약하자면 다음의 4 단계로 구성된 알고리즘이라고 볼 수 있습니다.
 
-$$
-J(\mu_{\theta}) = E[r^{\gamma}_{1} | \mu] 
-$$
+**a.** Expert feature expectation과 feature expectation set로 부터 계산한 expert 와 learner의 performance 차이를 **"t"** 로 정의하고, t를 최대화하는 weight를 찾는 과정. 다시말해 reward를 찾는 **IRL step**.
+       
+**b.** IRL step 에서 얻은 reward function에 대한 optimal policy를 찾는 **RL step**.
 
-$$
-= \int_{S}\rho^{\mu}(s)r(s,\mu_{\theta}(s))ds 
-= E_{s \sim \rho^{\mu}}[r(s,\mu_{\theta}(s))]
-$$
-
-- DPG Theorem
-    - MDP 가 A.1 만족한다면, 아래 식이 성립합니다.
-    $\nabla_{\theta}J(\mu_{\theta}) = \int_{S}\rho^{\mu}(s)\nabla_{\theta}\mu_{\theta}(s)\nabla_{a}Q^{\mu}(s,a)\vert_{a=\mu_{\theta}(s)}ds \nonumber$
-    $= E_{s \sim \rho^{\mu}}[\nabla_{\theta}\mu_{\theta}(s)\nabla_{a}Q^{\mu}(s,a)\vert_{a=\mu_{\theta}(s)}]   \nonumber $ 
+**c.** RL step에서 구한 policy로부터 Monte Carlo 시행을 통해 새로운 feature expectation을 구하고, 이를 feature expectation set에 추가
     
-	- DPG는 state space에 대해서만 평균을 취하면 되기에, state와 action space 모두에 대해 평균을 취해야 하는 SPG에 비해 data efficiency가 좋습니다. 즉, 더 적은 양의 데이터로도 학습이 잘 이뤄지게 됩니다.
+**d.** a와 b의 **IRL step $\Leftrightarrow$ RL step** 반복하다 t가 𝜖 이하일 때, 즉 feature expectation이 충분히 가까워 졌을 때  **학습 종료**.
 
-<br>    
-## 3.3 DPG 형태에 대한 informal intuition
-- Generalized policy iteration
-    - 정책 평가와 정책 발전을 한 번 씩 번갈아 가면서 실행하는 정책 iteration
-        - 위와 같이 해도 정책 평가에서 예측한 가치함수가 최적 가치함수에 수렴합니다.
-- 정책 평가
-    - action-value function $ Q^{\pi}(s,a) $ or $ Q^{\mu}(s,a) $을 estimate 하는 것 입니다.
-- 정책 발전
-    - 위 estimated action-value function에 따라 정책을 update하는 것 입니다.
-    - 주로 action-value function에 대한 greedy maximisation을 사용합니다.
-        - $ \mu^{k+1}(s) = \arg\max\limits_{a}Q^{\mu^{k}}(s,a) $
-        - greedy 정책 발전은 매 단계마다 global maximization을 해야하는데, 이로 인해 continuous action spaces에서 계산량이 급격히 늘어납니다.
-    - 그래서 policy gradient 방법이 나옵니다.
-        - policy 를 $ \theta $에 대해서 parameterize 합니다.
-        - 매 단계마다 global maximisation 수행하는 대신, 방문하는 state $ s $마다 policy parameter를 action-value function $ Q $의 $ \theta $에 대한 gradient $ \nabla_{\theta}Q^{\mu^{k}}(s,\mu_{\theta}(s)) $ 방향으로 proportional하게 update 합니다.
-        - 하지만 각 state는 다른 방향을 제시할 수 있기에, state distribution $ \rho^{\mu}(s) $에 대한 기대값을 취해 policy parameter를 update 할 수도 있습니다.
-            - $ \theta^{k+1} = \theta^{k} + \alpha E_{s \sim \rho^{\mu^{k}}} [\nabla_{\theta}Q^{\mu^{k}}(s,\mu_{\theta}(s))] $
-        - 이는 chain-rule에 따라 아래와 같이 분리될 수 있습니다.
-            - $ \theta^{k+1} = \theta^{k} + \alpha E_{s \sim \rho^{\mu^{k}}} [\nabla_{\theta}\mu_{\theta}(s)\nabla_{a}Q^{\mu^{k}}(s,a)\vert_{a=\mu_{\theta}(s)}] $ (7)
-            - chain rule: $ \frac{\partial Q}{\partial \theta} = \frac{\partial a}{\partial \theta} \frac{\partial Q}{\partial a} $
-        - 하지만 state distribution $ \rho^{\mu} $은 정책에 dependent 합니다.
-            - 정책이 바꾸게 되면, 바뀐 정책에 따라 방문하게 되는 state가 변하기 때문에 state distribution이 변하게 됩니다.
-        - 그렇기에 정책 update 시 state distribution에 대한 gradient를 고려하지 않는데 정책 발전이 이뤄진다는 것은 직관적으로 와닿지 않을 수 있습니다.
-        - deterministic policy gradient theorem은 state distribution에 대한 gradient 계산없이 위 식(7) 대로만 update해도 performance objective의 gradient를 정확하게 따름을 의미합니다.
+<center> <img src="../../../../img/irl/app_7.png" width="680"> </center> 
+<center> [Apprenticeship learning via IRL 알고리즘 개념도] </center>
+<br>
+   
+위 step a. 에서 t를 최대화 하는것은, learner에 비해서 expert의 performance를 더 잘 설명하는 reward function을 만들고자하는 것이며, 마치 틀린 시험문제에 대한 더 자세한 오답노트를 만드는것과 같습니다. 이렇게 expert와의 차이가 커야 learner가 RL step에서 이 reward function으로 policy를 다시 학습 했을때 더 발전을 하기 때문입니다. 
+
+t를 최대화 하는 과정은 위 논문의 알고리즘에서 step 2에 해당합니다. 이는 Linear IRL(Ng & Russell, 2000) 에서 사용한 Linear programming (**LP**) 최적화 문제와 유사해 보이지만, $\omega$ 에 대한 2-norm (L2)이 constraint인 차이점이 있습니다. APP 논문을 작성할 당시엔 L2 norm constraint를 포함한 LP를 풀 수 있는 Convex optimization solver가 없었기 때문에, 저자는 논문에서 Quadratic programming (**QP**) 의 일종인 Support vector machine (**SVM**)을 사용하는 최적화 방법을 제안합니다. 
+
+
+아래 그림과 같이 expert feature expectation는 +1로, 학습 중인 learner feature expectation은 -1로 labelling 할 경우, step 2를 SVM 문제로 정의해서 풀수 있게됩니다. 그림은 이해를 돕기위해 feature가 두개만 있을 경우입니다.
+
+<center> <img src="../../../../img/irl/app_8.png" width="680"> </center>
+<center> [Support vector machine 알고리즘으로 reform된 IRL step] </center>
+<br>
+
+즉, step 2에 대한 LP 형태인 아래 (10)~(12)의 식을, SVM의 형태인 (13)으로 변환할 수 있습니다.
+
+<center> <img src="../../../../img/irl/app_9.png" width="400"> </center>
+<center> <img src="../../../../img/irl/app_10.png" width="400"> </center>
+
+이와같이 SVM으로 reform된 최적화 문제는 SVM이 QP의 일종이므로 일반적인 QP solver로도 쉽게 optimal weight $\omega$를 구할 수 있게됩니다. 
+
+LP, QP, SVM에 대한 내용은 다음 링크들에 자세히 소개되어 있으니 참고하시기 바랍니다.
+
+1) 모두를 위한 컨벡스 최적화 (LP) : https://wikidocs.net/17850
+
+2) 모두를 위한 컨벡스 최적화 (QP) : https://wikidocs.net/17852
+
+3) KAIST 문일철 교수님 강의 (SVM) : https://youtu.be/hK7vNvyCXWc
+
+
+      
+물론 학습한 policy들 ${\pi}^{(i)}$에 의해 learner feature expectations ${\mu}^{(i)}$가 쌓이면  expert feature expectation과 learner feature expectation이 linearly separable 하지 않아 infeasible한 경우가 발생할 수 있으며, 이 때 엔지니어가 policy를 직접 선택해야하는 문제가 생깁니다. 이를 피하고자, 아래 그림과 같이 저자는 ${\pi}^{(i)}$ 와 mixture weight ${\lambda}_{i}$ 로 covex combinatioin set을 만들어 그 안에서 ${\mu}_{E}$ 와의 거리가 최소가 되는 새로운 feature expectation 선택하는 방법을 사용합니다. 
+
+<center> <img src="../../../../img/irl/app_11.png" width="680"> </center>
+<center> [convex combination의 사용] </center>
+<br>
+
+convex combination으로 새로운 $\mu$ 를 구하는 최적화 문제는 다음과 같이 쓸 수 있습니다. 
+<center> <img src="../../../../img/irl/app_12.png" width="480"> </center>
 
 <br>
-## 3.4 DPG는 SPG의 limiting case
-- stochastic policy parameterization
-    - $ \pi_{\mu_{\theta},\sigma} $ by a deterministic policy $ \mu_{\theta} : S \to A $ and a variance parameter $ \sigma $
-    - $ \sigma = 0 $ 이면, $ \pi_{\mu_{\theta},\sigma} \equiv \mu_{\theta} $
-- Theorem 2. Policy의 variance가 0에 수렴하면, 즉, $ \sigma \to 0 $, stochastic policy gradient와 deterministic policy gradient는 동일해집니다.
-    - 조건: stochastic policy $ \pi_{\mu_{\theta},\sigma} = \nu_{\sigma}(\mu_{\theta}(s),a) $
-        - $ \sigma $는 variance입니다.
-        - $ \nu_{\sigma}(\mu_{\theta}(s),a) $는 condition B.1을 만족합니다.
-        - MDP는 conditions A.1과 A.2를 만족합니다.
-    - 결과:
-        - $ \lim\limits_{\sigma\downarrow0}\nabla_{\theta}J(\pi_{\mu_{\theta},\sigma}) = \nabla_{\theta}J(\mu_{\theta})  $
-            - 좌변은 standard stochastic gradient이며, 우변은 deterministic gradient입니다.
-    - 의미:
-        - deterministic policy gradient는 stochastic policy gradient의 특수 case 입니다.
-        - 기존 유명한 policy gradients 기법들에 deterministic policy gradients 를 적용할 수 있습니다.
-            - 기존 기법들 예: compatible function approximation (Sutton, 1999), natural gradients (Kakade, 2001), actor-critic (Bhatnagar, 2007) or episodic/batch methods (Peters, 2005)
+
+## 3.1 A simpler algorithm
+지끔까지 설명한 알고리즘은 QP (혹은 SVM) solver가 필요했으며, 이러한 QP기반의 알고리즘을 **"max-margin"** 방법이라고 합니다. 여기서 알고리즘을 조금 변형 하여 새롭게 구한 ${\mu}^{(i)}$ 를 차례차례 투영해가면서 ${\mu}_{E}$ 에 점차 가까워지도록 ${\omega}^{(i+1)}$ 를 구해나간다면 QP solver가 필요없는 최적화 접근이 가능하며 이를 **"projection"** 방법이라고 하겠습니다. 
+
+      
+<center> <img src="../../../../img/irl/app_23.png" width="500"> </center>
+
+
 
 <br><br>
 
-# 4. Deterministic Actor-Critic Algorithms
-1. SARSA critic를 이용한 on-policy actor-critic
-    - 단점
-        - deterministic policy에 의해 행동하면 exploration이 잘 되지 않기에, sub-optimal에 빠지기 쉽습니다.
-    - 목적
-        - 교훈/정보제공
-        - 환경에서 충분한 noise를 제공하여 exploration을 시킬 수 있다면, deterministic policy를 사용한다고 하여도 좋은 학습 결과를 얻을 수도 있습니다.
-            - 예. 바람이 agent의 행동에 영향(noise)을 줌
-    - Remind: 살사(SARSA) update rule
-        - $ Q(s_{t},a_{t}) \leftarrow Q(s_{t},a_{t}) + \alpha(r_{t} + \gamma Q(s_{t+1},a_{t+1}) - Q(s_{t},a_{t})) $
-    - Algorithm
-        - Critic은 MSE를 $ \bf minimize $하는 방향, 즉, action-value function을 stochastic gradient $ \bf descent $ 방법으로 update합니다.
-            - $ MSE = [Q^{\mu}(s,a) - Q^{w}(s,a)]^2 $
-                - critic은 실제 $ Q^{\mu}(s,a) $ 대신 미분 가능한 $ Q^{w}(s,a) $로 대체하여 action-value function을 estimate하며, 이 둘 간 mean square error를 최소화하는 것이 목표입니다.
-            - $ \nabla_{w}MSE \approx -2 * [r + \gamma Q^{w}(s',a') - Q^{w}(s,a)]\nabla_{w}Q^{w}(s,a)  $
-                - $ \nabla_{w}MSE = -2 * [Q^{\mu}(s,a) - Q^{w}(s,a)]\nabla_{w}Q^{w}(s,a)  $
-                - $ Q^{\mu}(s,a) $ 를 $ r + \gamma Q^{w}(s',a') $로 대체
-                    - $ Q^{\mu}(s,a) = r + \gamma Q^{\mu}(s',a') $
-            - $ w_{t+1} = w_{t} + \alpha_{w}\delta_{t}\nabla_{w}Q^{w}(s_{t},a_{t}) $
-                - $w_{t+1} = w_{t} - \alpha_{w}\nabla_{w}MSE  \nonumber$
-                $ \approx w_{t} - \alpha_{w} * (-2 * [r + \gamma Q^{w}(s',a') - Q^{w}(s,a)] \nabla_{w}Q^{w}(s,a)$
-                - $ \delta_{t} = r_{t} + \gamma Q^{w}(s_{t+1},a_{t+1}) - Q^{w}(s_{t},a_{t}) $
-        - Actor는 식(9)에 따라 보상이 $ \bf maximize $되는 방향, 즉, deterministic policy를 stochastic gradient $ \bf ascent $ 방법으로 update합니다.
-            - $ \theta_{t+1} = \theta_{t} + \alpha_{\theta} \nabla_{\theta}\mu_{\theta}(s_{t})\nabla_{a}Q^{w}(s_{t},a_{t})\vert_{a=\mu_{\theta}(s)} $
-2. Q-learning 을 이용한 off-policy actor-critic
-    - stochastic behavior policy $ \beta(a|s) $에 의해 생성된 trajectories로부터 deterministic target policy $ \mu_{\theta}(s) $를 학습하는 off-policy actor-critic입니다
-    - performance objective
-        - $ J_{\beta}(\mu_{\theta}) = \int_{S}\rho^{\beta}(s)V^{\mu}(s)ds \nonumber \\\\$
-          $= \int_{S}\rho^{\beta}(s)Q^{\mu}(s,\mu_{\theta}(s))ds \nonumber \\\\$
-          $= E_{s \sim \rho^{\beta}}[Q^{\mu}(s,\mu_{\theta}(s))]$
-    - off-policy deterministic policy gradient
-        - $ \nabla_{\theta}J_{\beta}(\mu_{\theta}) = E_{s \sim \rho^{\beta}}[\nabla_{\theta}\mu_{\theta}(s)\nabla_{a}Q^{\mu}(s,a)\vert_{a=\mu_{\theta}(s)}] $
-            - 논문에는 아래와 같이 나와있는데, 물결 표시 부분은 오류로 판단됩니다.
-            - $ \begin{eqnarray}
-                \nabla_{\theta}J_{\beta}(\mu_{\theta}) &\approx& \int_{S}\rho^{\beta}(s)\nabla_{\theta}\mu_{\theta}(a|s)Q^{\mu}(s,a)ds \nonumber \\
-                &=& E_{s \sim \rho^{\beta}}[\nabla_{\theta}\mu_{\theta}(s)\nabla_{a}Q^{\mu}(s,a)\vert_{a=\mu_{\theta}(s)}]
-                \end{eqnarray} $
-            - 근거: Action이 deterministic하기에 stochastic 경우와는 다르게 performance objective에서 action에 대해 평균을 구할 필요가 없습니다. 그렇기에, 곱의 미분이 있을 필요가 없고, [Degris, 2012b]에서 처럼 곱의 미분을 통해 생기는 action-value function에 대한 gradient term을 생략할 필요가 사라집니다.
-    - Remind: 큐러닝(Q-learning) update rule
-        - $ Q(s_{t},a_{t}) \leftarrow Q(s_{t},a_{t}) + \alpha(r_{t} + \gamma \max\limits_{a}Q(s_{t+1},a) - Q(s_{t},a_{t})) $
-    - algorithm: OPDAC (Off-Policy Deterministic Actor-Critic)
-        - 살사를 이용한 on-policy deterministic actor-critic과 아래 부분을 제외하고는 같습니다.
-            - target policy는 $ \beta(a|s) $에 의해 생성된 trajectories를 통해 학습합니다.
-            - 업데이트 목표 부분에 실제 행동 값 $ a_{t+1} $이 아니라 정책으로부터 나온 행동 값 $ \mu_{\theta}(s_{t+1}) $을 사용합니다.
-                - $ \mu_{\theta}(s_{t+1}) $ 은 가장 높은 Q 값을 가지는 행동. 즉, Q-learning.
-        - $ \delta_{t} = r_{t} + \gamma Q^{w}(s_{t+1},\mu_{\theta}(s_{t+1})) - Q^{w}(s_{t},a_{t}) $
-        - $ w_{t+1} = w_{t} + \alpha_{w}\delta_{t}\nabla_{w}Q^{w}(s_{t},a_{t}) $
-        - $ \theta_{t+1} = \theta_{t} + \alpha_{\theta} \nabla_{\theta}\mu_{\theta}(s_{t})\nabla_{a}Q^{w}(s_{t},a_{t})\vert_{a=\mu_{\theta}(s)} $
-    - Stochastic off-policy actor-critic은 대개 actor와 critic 모두 importance sampling을 필요로 하지만, deterministic policy gradient에선 importance sampling이 필요없습니다.
-        - Actor 는 deterministic 이기에 sampling 자체가 필요없습니다.
-            - Stochastic policy인 경우, Actor에서 importance sampling이 필요한 이유는 상태 $ s $에서의 가치 함수 값 $ V^{\pi}(s) $을 estimate하기 위해 $ \pi $가 아니라 $ \beta $에 따라 sampling을 한 후, 평균을 내기 때문입니다.
-            - 하지만 deterministic policy인 경우, 상태 $ s $에서의 가치 함수 값 $ V^{\pi}(s) = Q^{\pi}(s,\mu_{\theta}) $ 즉, action이 상태 s에 대해 deterministic이기에 sampling을 통해 estimate할 필요가 없고, 따라서 importance sampling도 필요없어집니다.
-            - stochastic vs. deterministic performance objective
-                - stochastic : $ J_{\beta}(\mu_{\theta}) = \int_{S}\int_{A}\rho^{\beta}(s)\pi_{\theta}(a|s)Q^{\pi}(s,a)dads $
-                - deterministic : $ J_{\beta}(\mu_{\theta}) = \int_{S}\rho^{\beta}(s)Q^{\mu}(s,\mu_{\theta}(s))ds $
-        - Critic이 사용하는 Q-learning은 importance sampling이 필요없는 off policy 알고리즘입니다.
-            - Q-learning도 업데이트 목표를 특정 분포에서 샘플링을 통해 estimate 하는 것이 아니라 Q 함수를 최대화하는 action을 선택하는 것이기에 위 actor 에서의 deterministic 경우와 비슷하게 볼 수 있습니다.
-3. compatible function approximation 및 gradient temporal-difference learning 을 이용한 actor-critic
-    - 위 살사/Q-learning 기반 on/off-policy는 아래와 같은 문제가 존재합니다.
-        - function approximator에 의한 bias
-            - 일반적으로 $ Q^{\mu}(s,a) $ 를 $ Q^{w}(s,a) $로 대체하여 deterministic policy gradient를 구하면, 그 gradient는 ascent하는 방향이 아닐 수도 있습니다.
-        - off-policy learning에 의한 instabilities
-    - 그래서 stochastic처럼 $ \nabla_{a}Q^{\mu}(s,a) $를 $ \nabla_{a}Q^{w}(s,a) $로 대체해도 deterministic policy gradient에 영향을 미치지 않을 compatible function approximator $ Q^{w}(s,a) $를 찾아야 합니다.
-    - Theorem 3. 아래 두 조건을 만족하면, $ Q^{w}(s,a) $는 deterministic policy $ \mu_{\theta}(s) $와 compatible 합니다. 즉, $ \nabla_{\theta}J_{\beta}(\mu_{\theta}) = E_{s \sim \rho^{\beta}}[\nabla_{\theta}\mu_{\theta}(s)\nabla_{a}Q^{w}(s,a)\vert_{a=\mu_{\theta}(s)}] $
-        - $ \nabla_{a}Q^{w}(s,a)\vert_{a=\mu_{\theta}(s)} = \nabla_{\theta}\mu_{\theta}(s)^{\top}w $입니다.
-        - $ w $는 $ MSE(\theta, w) = E[\epsilon(s;\theta,w)^{\top}\epsilon(s;\theta,w)] $를 최소화합니다.
-            - $ \epsilon(s;\theta,w) = \nabla_{a}Q^{w}(s,a)\vert_{a=\mu_{\theta}(s)} - \nabla_{a}Q^{\mu}(s,a)\vert_{a=\mu_{\theta}(s)}  $
-    - Theorem 3은 on-policy 뿐만 아니라 off-policy에도 적용 가능합니다.
-    - $ Q^{w}(s,a) = (a-\mu_{\theta}(s))^{\top}\nabla_{\theta}\mu_{\theta}(s)^{\top} w + V^{v}(s) $
-        - 어떠한 deterministic policy에 대해서도 위 형태와 같은 compatible function approximator가 존재합니다.
-        - 앞의 term은 advantage를, 뒤의 term은 value로 볼 수 있습니다.
-    - $ Q^{w}(s,a) = \phi(s,a)^{\top} w + v^{\top}\phi(s) $
-        - 정의 : $ \phi(s,a) \overset{\underset{\mathrm{def}}{}}{=} \nabla_{\theta}\mu_{\theta}(s)(a-\mu_{\theta}(s)) $
-        - 일례 : $ V^{v}(s) = v^{\top}\phi(s) $
-        - Theorem 3 만족 여부
-            - 첫 번째 조건 만족합니다.
-            - 두 번째 조건은 대강 만족합니다.
-                - $ \nabla_{a}Q^{\mu}(s,a) $에 대한 unbiased sample을 획득하기는 매우 어렵기에, 일반적인 정책 평가 방법들로 $ w $를 학습합니다.
-                - 이 정책 평가 방법들을 이용하면 $ Q^{w}(s,a) \approx Q^{\mu}(s,a) $인 reasonable solution을 찾을 수 있기에 대강 $ \nabla_{a}Q^{w}(s,a) \approx \nabla_{a}Q^{\mu}(s,a) $이 될 것입니다.
-        - action-value function에 대한 linear function approximator는 큰 값을 가지는 actions에 대해선 diverge할 수 있어 global하게 action-values 예측하기에는 좋지 않지만, local critic에 사용할 때는 매우 유용합니다.
-            - 즉, 절대값이 아니라 작은 변화량을 다루는 gradient method 경우엔 $ A^{w}(s,\mu_{\theta}(s)+\delta) = \delta^{\top}\nabla_{\theta}\mu_{\theta}(s)^{\top}w $로, diverge하지 않고, 값을 얻을 수 있습니다.
-    - COPDAC-Q algorithm (Compatible Off-Policy Deterministic Actor-Critic Q-learning critic)
-        - Critic: 실제 action-value function에 대한 linear function approximator인 $ Q^{w}(s,a) = \phi(s,a)^{\top}w $를 estimate합니다.
-            - $ \phi(s,a) = a^{\top}\nabla_{\theta}\mu_{\theta} $
-            - Behavior policy $ \beta(a|s) $로부터 얻은 samples를 이용하여 Q-learning이나 gradient Q-learning과 같은 off-policy algorithm으로 학습 가능합니다.
-        - Actor: estimated action-value function에 대한 gradient를 $ \nabla_{\theta}\mu_{\theta}(s)^{\top}w $로 치환 후, 정책을 업데이트합니다.
-        - $ \delta_{t} = r_{t} + \gamma Q^{w}(s_{t+1},\mu_{\theta}(s_{t+1})) - Q^{w}(s_{t},a_{t}) $
-        - $ w_{t+1} = w_{t} + \alpha_{w}\delta_{t}\phi(s_{t},a_{t}) $
-        - $ \theta_{t+1} = \theta_{t} + \alpha_{\theta} \nabla_{\theta}\mu_{\theta}(s_{t})(\nabla_{\theta}\mu_{\theta}(s_{t})^{\top} w_{t}) $
-    - off-policy Q-learning은 linear function approximation을 이용하면 diverge 할 수도 있습니다.
-        - $ \mu_{\theta}(s_{t+1}) $이 diverge할 수도 있기 때문으로 판단됩니다.
-        - 그렇기에 simple Q-learning 대신 다른 기법이 필요합니다.
-    - 그렇기에 critic 에 gradient Q-learning 사용한 COPDAC-GQ (Gradient Q-learning critic) algorithm을 제안합니다.
-        - gradient temporal-difference learning에 기반한 기법들은 true gradient descent algorithm이며, converge가 보장됩니다. (Sutton, 2009)
-            - 기본 아이디어는 stochastic gradient descent로 mean-squared projected Bellman error (MSPBE)를 최소화하는 것입니다.
-            - critic이 actor보다 빠른 time-scale로 update되도록 step size들을 잘 조절하면, critic은 MSPBE를 최소화하는 parameters로 converge하게 됩니다.
-            - critic에 gradient temporal-difference learning의 일종인 gradient Q-learning을 사용한 논문입니다. (Maei, 2010)
-    - COPDAC-GQ algorithm
-        - $ \delta_{t} = r_{t} + \gamma Q^{w}(s_{t+1},\mu_{\theta}(s_{t+1})) - Q^{w}(s_{t},a_{t}) $
-        - $ \theta_{t+1} = \theta_{t} + \alpha_{\theta} \nabla_{\theta}\mu_{\theta}(s_{t})(\nabla_{\theta}\mu_{\theta}(s_{t})^{\top} w_{t}) $
-        - $ w_{t+1} = w_{t} + \alpha_{w}\delta_{t}\phi(s_{t},a_{t}) - \alpha_{w}\gamma\phi(s_{t+1}, \mu_{\theta}(s_{t+1}))(\phi(s_{t},a_{t})^{\top} u_{t}) $
-        - $ v_{t+1} = v_{t} + \alpha_{v}\delta_{t}\phi(s_{t}) - \alpha_{v}\gamma\phi(s_{t+1})(\phi(s_{t},a_{t})^{\top} u_{t}) $
-        - $ u_{t+1} = u_{t} + \alpha_{u}(\delta_{t}-\phi(s_{t}, a_{t})^{\top} u_{t})\phi(s_{t}, a_{t}) $
-    - stochastic actor-critic과 같이 매 time-step 마다 update 시 필요한 계산의 복잡도는 $ O(mn) $입니다.
-        - m은 action dimensions, n은 number of policy parameters
-    - Natural policy gradient를 이용해 deterministic policies를 찾을 수 있습니다.
-        - $ M(\theta)^{-1}\nabla_{\theta}J(\mu_{\theta}) $은 any metric $ M(\theta) $에 대한 performance objective (식(14))의 steepest ascent direction 입니다. (Toussaint, 2012)
-        - Natural gradient는 Fisher information metric $ M_{\pi}(\theta) $에 대한 steepest ascent direction 입니다.
-            -  $ M_{\pi}(\theta) = E_{s \sim \rho^{\pi}, a \sim \pi_{\theta}}[\nabla_{\theta}\log\pi_{\theta}(a|s)\nabla_{\theta}\log\pi_{\theta}(a|s)^{\top}] $
-            - Fisher information metric은 policy reparameterization에 대해 불변입니다. (Bagnell, 2003)
-        - deterministic policies에 대한 metric으로 $ M_{\mu}(\theta) = E_{s \sim \rho^{\mu}}[\nabla_{\theta}\mu_{\theta}(s)\nabla_{\theta}\mu_{\theta}(s)^{\top}] $을 사용합니다.
-        	- 이는 variance가 0인 policy에 대한 Fisher information metric으로 볼 수 있습니다.
-        	- $ \frac{\nabla_{\theta}\pi_{\theta}(a\vert s)}{\pi_{\theta}(a\vert s)}$에서 policy variance가 0이면, 특정 s에 대한 $ \pi_{\theta}(a|s)$만 1이 되고, 나머지는 0입니다.
-        - deterministic policy gradient theorem과 compatible function approximation을 결합하면 $ \nabla_{\theta}J(\mu_{\theta}) = E_{s \sim \rho^{\mu}}[\nabla_{\theta}\mu_{\theta}(s)\nabla_{\theta}\mu_{\theta}(s)^{\top}w] $이 됩니다.
-            - $ \nabla_{\theta}J(\mu_{\theta}) = E_{s \sim \rho^{\mu}}[\nabla_{\theta}\mu_{\theta}(s)\nabla_{a}Q^{\mu}(s,a)\vert_{a=\mu_{\theta}(s)}] $
-            - $ \nabla_{a}Q^{\mu}(s,a)\vert_{a=\mu_{\theta}(s)} \approx \nabla_{a}Q^{w}(s,a)\vert_{a=\mu_{\theta}(s)} = \nabla_{\theta}\mu_{\theta}(s)^{\top}w $
-        - 그렇기에 steepest ascent direction은 $ M_{\mu}(\theta)^{-1}\nabla_{\theta}J_{\beta}(\mu_{\theta}) = w $이 됩니다.
-            - $ E_{s \sim \rho^{\mu}}[\nabla_{\theta}\mu_{\theta}(s)\nabla_{\theta}\mu_{\theta}(s)^{\top}]^{-1}E_{s \sim \rho^{\mu}}[\nabla_{\theta}\mu_{\theta}(s)\nabla_{\theta}\mu_{\theta}(s)^{\top}w] = w $
-        - 이 알고리즘은 COPDAC-Q 혹은 COPDAC-GQ에서 $ \theta_{t+1} = \theta_{t} + \alpha_{\theta} \nabla_{\theta}\mu_{\theta}(s_{t})(\nabla_{\theta}\mu_{\theta}(s_{t})^{\top} w_{t}) $ 식을 $ \theta_{t+1} = \theta_{t} + \alpha_{\theta}w_{t} $로 바꿔주기만 하면 됩니다.
+# 4. Experiments
+이 논문은 앞서 설명한 알고리즘을 Gridworld와 Car driving simulation의 두가지의 환경에서 테스트 합니다. 각 실험에서 보여주고자 하는 바가 다르니 각각 자세히 살펴보도록 하겠습니다.
+
+<br>
+
+## 4.1 First experiment : grid world
+첫번째 환경은 강화학습을 접해본 사람이라면 익숙한 **Gridworld**입니다. 128 x 128의 픽셀을 64개의 16 x 16 인 **macro cell**로 겹치지 않게 나누었는데, 그냥 일반적인 **8 x 8 Gridworld**라고 보면 됩니다.
+
+### 4.1.1. Gridworld - 환경 설정 
+
+<center> <img src="../../../../img/irl/app_13.png" width="300"> </center> 
+<center> [8 x 8 Gridworld] </center>
+<br>
+
+총 64개의 macro cell이 중 **어느 macro cell에 위치해 있는지**가 **상태**가 되며, agent는 각 macrocell에서 **위,아래,좌,우 의 4가지 행동**을 선택 할 수 있으나 30%의 확률로 선택과 다른 랜덤한 행동을 하게 됩니다. 그리고 ***Apprenticeship learning*** 알고리즘의 성능을 가장 잘 확인하기위한 목적으로 Gridworld가 **sparse한 reward**를 랜덤하게 갖는 환경을 가정합니다. 
+
+이 때 64개의 macrocell 에 대해서 **현재 agent의 state *s*가 *i*번째 macrocell에 있는지의 유무**를 하나의 **feature** ${ \phi  }_{ i }(s)\quad i=1,...,64$ 로 보면 state별로 총 64개의 feature가 생깁니다.
+
+또한 64개의 각 macrocell에 대해서 0.9의 확률로 zero reward ${ w }_{ i }^{ * }=0$ 를, 0.1의 확률로 0에서 1사이에서 uniform 하게 샘플링한 non-zero reward ${ w }_{ i }^{ * }  \in  \left[ 0, 1 \right]$ 를  줍니다. 그리고 나서, 알고리즘의 **'true'** reward에 대한 가정에 따라 ${ w }^{ * }$의 1-norm은 1이되도록 non-zero reward를 normalize 합니다.
+
+즉, 정리하자면 다음과 같습니다.
+
+
+$\left\{ { { w }_{ i }^{ * } }|{ { w }_{ i }^{ * }=0 } \right\} ,\qquad \qquad \qquad \qquad \qquad \qquad \qquad \quad \ p=0.9\\ \left\{ { { w }_{ i }^{ * } }|{ unifomly\quad sampled\quad from\quad [0,1] } \right\} ,\qquad \quad p=0.1\\ \\ \\ normalize\quad { w }_{ i }^{ * }\quad s.t,\quad { \left\| { w }^{ * } \right\|  }_{ 1 }=1\\ \\ { R }^{ * }={ ({ w }^{ * }) }^{ T }\phi$
+
+
+이와 같이 true Reward를 설정한 다음엔, experts의 optimal policy에 따른 trajectory를 수집합니다. 논문에서는 실험을 위해 약 100,000 개의 sampled trajectory를 준비하였고, Monte-Carlo estimation을 사용해 expert의 expectation performance를 계산했습니다.
+
+### 5.1.2. Gridworld - 알고리즘 성능 비교
+이제 설정된 Gridword환경과 계산된 expert performance로 ***Apprenticeship learning*** 알고리즘 의 성능을 검증할 두가지 실험을 하는데, 실험에 앞서 Apprenticeship 알고리즘의 목적이 **'reward를 recover하지 않고 expert와 유사한 performance를 내는 것'** 이므로 비교대상인 알고리즘들에 true reward는 알려주지 않는것을 전제로 합니다.
+
+1) **실험 1.  QP vs Non-QP**
+
+Gridworld의 첫번째 실험은 앞서 3절에서 이야기한 ***Apprenticeship learning*** 알고리즘의 두가지 버전인 **QP 방식의 Max-margin 방법**과 **non-QP 방식의 projection 방법**에 대한 비교입니다.
+
+<center> <img src="../../../../img/irl/app_14.png" width="400"> </center> 
+<center> [QP기반의 max margin 과 Non-QP인 projection의 성능 비교] </center>
+<br>
+
+두 가지 버전 모두 30회의 iteration을 각 40번씩 반복 진행했고, 각 iteration에서 **expert feature expectation과의 Euclidean distance 평균**을 구한 그래프는 위와 같습니다. 두 가지 알고리즘 모두 꽤 유사한 수렴 속도를 보여주고 있으나 **non-QP방식의 projection 알고리즘이 근소하게 더 뛰어납니다.** 
+
+- projection 방법이 max margin 방법보다 근소하게나마 빠르게 수렴하는것은 QP의 hard margin에 의한 문제를 겪지 않고  바로 expert feature expectation으로 접근하기 때문이라고 생각됩니다.
+
+2) **실험 2.  QP vs Non-QP**
+  
+Gridworld의 두번째 실험은 ***Apprenticeship learning*** 알고리즘과 다른 3가지 알고리즘들의 **sampling efficiency를 비교**한다. 이 때 *Apprenticeship learning* 도 두가지 버전으로 나누는데, 
+
+1. ***Apprenticeship 1***: non-zero weight feature를 알고리즘에 알려준 경우
+2. ***Apprenticeship 2***: 모든 feature를 다 사용한 경우
+
+입니다. 즉, 좀 더 True reward의 구조에 가까운 reward function을 사용하게 했을때의 성능을 비교하고자 했다고 볼 수있습니다.
+
+비교대상이 되는 다른 3가지 알고리즘은 다음과 같습니다.
+
+
+1. ***Parameterized policy stochastic:*** \
+ 각 macrocell 에서 experts가 한 action별 empirical frequency에 따라 stochastic policy를 만들어 사용하는 알고리즘
+4. ***parameterized policy majority vote:*** \
+   각 macrocell에서 observed된 가장 빈번한 action을 deterministic 하게 선택하는 알고리즘
+5. ***Mimic the expert:*** \
+   expert가 지나간 state에서는 expert와 같은 action을 하고, expert가 지나가지 않은 state에서는 랜덤하게 action을 선택하는 알고리즘
+
+<center> <img src="../../../../img/irl/app_15.png" width="400"> </center> 
+<center> [Apprenticeship 알고리즘과 타 알고리즘의 sampling efficiency 비교] </center>
+<br>
+
+
+비교 결과는 위 그래프와 같습니다. 위에서 부터 **간략화된 feature를 사용한** ***IRL***(초록), **모든 feature를 사용한** ***IRL***(사이안), ***parameterized policy stochastic*** (분홍), ***parameterized policy majority vote*** (빨강), ***mimic the expert*** (파랑) 입니다.
+
+확실히 Apprenticeship learning 알고리즘이 다른 알고리즘들에 비해서 **적은 sample 만으로도 expert에 가까운 성능을 보여줌을 확인**할 수 있습니다. 더욱이 x축 스케일이 log인걸 감안하면 sampling efficiency의 차이는 매우 매우 큽니다.
+
+좀 더 분석을 해보면, *mimic the expert* 알고리즘은 비효율 적이지만 expert performance에 도달한데 반해 *두가지 parameterized 방식* 은 도달하지 못했습니다. 이는 **알고리즘이 만들어낼 수 있는 policy의 다양성** 때문인데, 실제로 가장 빈번했던 action 한가지만 deterministic하게 사용한 방식이 가장 낮은 성능을 보여주었고, stochastic한 방식은 조금 더 낫지만 여전히 expert가 보여준 action에 한정되어 있다는 한계로 제한된 성능을 보여주었습니다. 이에 반해 ***mimic the expert*** 는 **랜덤 선택**을 넣음으로서 나머지 두 알고리즘에 비해 policy의 다양성이 더 증가 되어 expert performance에 도달 할 수 있었습니다.
+
+-IRL방식(여기서는 *Apprenticeship learning*) 역시 두가지 방식에서 **초기의 근소한 수렴속도 차이**를 보여주는데, 이는 non-zero weight feature를 알고 있음으로서, 알고리즘의 **Reinforcement learning 단계에서 좀더 true reward에 가까운 reward 로 policy estimation이 시작부터 가능했기 때문**으로 보입니다.
+
+<br>
+
+## 5.2 Second experiment : Car driving simulation
+두번째 실험에서는 **expert의 다른 style에 대해서 알고리즘이 각각의 style을 동일하게 잘 모방 할 수 있는지**를 car driving simulation을 통해 확인하고자 합니다.
+
+### 5.2.1. Car driving - 환경 설정 
+<center> <img src="../../../../img/irl/app_16.png" width="400"> </center> 
+<center> [Car driving simulation 화면] </center>
+<br>
+
+Gridworld와 마찬가지로 환경에 대한 설명부터 하겠습니다. 주변의 빨간색 자동차들보다 빠른 25 m/s의 고정된 속도로 움직이는 파란색 자동차를 좌우로 움직일 수 있습니다. **선택할 수 있는 action은 총 5가지**로, **왼쪽/중앙/오른쪽 레인**으로 자동차를 이동시키는 action 3가지와 **왼쪽/오른쪽의 초록색 비포장로**로 자동차를 이동시키는 2가지입니다.
+
+알고리즘은 expert가 각 driving style에 따라 2분동안 보여주는 시연 정보를 사용하는데, 시뮬레이션은 10Hz의 속도로 샘플링을 하므로 **총 1200 sample을 가진 trajectory**를 수집했습니다. Gridworld때와 마찬가지로 expert와 알고리즘의 performance를 계산하기위해서 feature를 정하는데, 실험에서는 **현재 자동차가 비포장로 및 레인의 5가지 위치 중 어디에 있는지**의 5개의 feature ${ \phi  }_{ i }$와, **현재 레인에서 가까운 차와의 거리를 -7 부터 +2까지로 1씩 discrete하게 나눈것**의 10개의 feature ${ \phi  }_{ i }$를 합쳐 총 15개의 feature를 설정하였습니다.
+
+### 5.2.2. Car driving - 알고리즘 성능 검증
+***Apprenticeship learning*** 알고리즘이 모방하게 하고자 하는 expert의 **driving style**은 다음의 5가지입니다.
+
+1. ***Nice:*** \
+   충돌을 피하는것을 최우선적으로 함. 또한 레인의 선호도 차이가 있음.\
+   (오른쪽 > 중앙 > 왼쪽 > 비포장도로).
+2. ***Nasty:*** \
+   가능한 많은 충돌을 일으킴.
+3. ***Right lane nice:*** \
+   오른쪽 레인으로 달리되 충돌을 피하기 위해 오른쪽 비포장 도로를 사용함.
+4. ***Right lane nasty:*** \
+   오른쪽 비포장 도로를 달리되 충돌하기위해 오른쪽 레인으로 들어옴.
+5. ***Middle lane:*** \
+   충돌에 상관없이 중앙으로만 달림.
+
+- 이 5가지 각 style 시연들을 딥러닝에서 흔히 하는대로 CNN에 2분짜리 비디오 화면을 넣는게 아니라는걸 주의바랍니다. 단지 위에서 말한 feature에 따라 계산한 performance 값을 주는 것을 의미합니다.
+
+<br>
+
+각각 30번의 iteration을 한 뒤의 학습 결과는 다음과 같습니다.
+
+### Nice
+<img src="../../../../img/irl/app_17.gif" width="450">
+
+### Nasty
+<img src="../../../../img/irl/app_18.gif" width="450">
+
+ 
+### Right lane nice
+<img src="../../../../img/irl/app_19.gif" width="450">
+
+
+### Right lane nasty
+<img src="../../../../img/irl/app_20.gif" width="450">
+<br>
+
+### Middle lane
+<img src="../../../../img/irl/app_21.gif" width="450">
+<br>
+
+ 
+보다시피 결과가 상당히 좋습니다. 
+
+특히 주목할 점은 **행동 그 자체를 따라하는것이 아니라 매 순간의 driving style을 잘 모방**하고 있다는 것입니다. 좀 더 수치적으로 성능을 분석해 보겠습니다.
+
+expert는 단지 시연을 한 것 뿐이지 일일히 보상을 주는 등의 true reward function을 따로 정하지 않았기 때문에 agent가 얼만큼의 보상을 받았는지로는 알고리즘의 성능을 판단할 수 없습니다.  대신 **driving style을 얼마나 잘 모방했는지의 성능을 분석하는것은 feature expectation의 비교**로 가능합니다. 5가지 style에 따라 순서대로 expert와 알고리즘의 결과를 정리한 아래의 표를 보겠습니다.
+
+<center> <img src="../../../../img/irl/app_22.png" width="700"> </center> 
+<center> [Car driving simulation 화면] </center>
+<br>
+
+앞서 설명한 대로 실제 설정한 feature는 총 15가지 지만 설명의 간결함을 위해 여기서는 **6가지 feature (Collision, Offroad Lest, LeftLane, MiddleLane, RightLane, Offroad Right)** 만을 비교했습니다.
+
+표에서 각 행은 1~5번의 style에 각각 해당하고, sytle 마다 **expert의 feature expectation** $\hat { \mu  } \Epsilon$과 **agent의 feature expection** $\mu \left( \tilde { \pi  }  \right)$그리고 그에따른 **feature weight** $\tilde { w }$ 가 정리되어있습니다. 
+
+expert와 agent의 feature expectation 모두 각각의 driving style의 특성에 잘 맞는 **(interesting) feature가 더 큰 값**을 가진다는걸 확인가능하며, expert와 agent의 **feature expectation의 분포 또한 유사**한것을 확인 할 수 있습니다.
+
+더 나아가서, 알고리즘에 의해 최적화된 feature weight $\tilde { w }$를 보면 어떻게 동영상과 같은 agent의 policy가 나타나는지가 어느정도 직관적으로 이해가 됩니다. 예를들어 첫번째 Nice driving style의 경우 충돌과 비포장 feature에 대해선 음의 보상을 주고 있으며 오른쪽 레인에 대해선 다른 레인에 비해 더 큰 양의 보상이 생성되었습니다. 이는 위 driving style에서 설명한
+
+1. ***Nice:*** \
+   충돌을 피하는것을 최우선적으로 함. 또한 레인의 선호도 차이가 있음.\
+   (오른쪽 > 중앙 > 왼쪽 > 비포장도로).
+
+
+에 적혀진 Nice driving style의 의도를 충분히 반영하고 있다는것을 알 수 있습니다.
 
 <br><br>
 
-# 5. Experiments
+# 5. Conclusions and Future work
+이 논문은, 전문가가 선형 조합으로 표현한 reward function을 최대화 하려는 행동을 했다고 가정하고 이 reward function을 복구하고자 **"inverse reinforcement learning"** 을 사용하는 알고리즘을 제안하였습니다. 결과적으로 실험을 통해 제시한 알고리즘이 작은 횟수로도 학습이 가능하며, 전문가 시연과 비슷하거나 더 나은 성능을 얻을 수도 있음을 확인하였습니다. 
 
-<br>
-## 5.1. Continuous Bandit
-- Stochastic Actor-Critic (SAC)과 COPDAC 간 성능 비교 수행합니다.
-    - Action dimension이 커질수록 성능 차이가 심합니다.
-    - 빠르게 수렴하는 것을 통해 DPG의 data efficiency가 SPG에 비해 좋다는 것을 확인할 수 있지만, 반면, time-step이 증가할수록 SAC와 COPDAC 간 성능 차이가 줄어드는 것을 통해 성능 차이가 심하다는 것은 일정 time step 내에서만 해당하는 것이라고 유추해볼 수 있습니다.
-    - <img src="https://www.dropbox.com/s/hrkyq0s2f24z66r/Screenshot%202018-06-16%2017.47.38.png?dl=1">
-
-<br>
-## 5.2. Continuous Reinforcement Learning
-- COPDAC-Q, SAC, off-policy stochastic actor-critic(OffPAC-TD) 간 성능 비교 수행합니다.
-    - COPDAC-Q의 성능이 약간 더 좋습니다.
-    - COPDAC-Q의 학습이 더 빨리 이뤄집니다.
-    - <img src="https://www.dropbox.com/s/qdca4augapmzsxi/Screenshot%202018-06-16%2017.47.07.png?dl=1">
-
-<br>
-## 5.3. Octopus Arm
-- 목표: 6 segments octopus arm (20 action dimensions & 50 state dimensions)을 control하여 target을 맞추는 것입니다.
-    - COPDAC-Q 사용 시, action space dimension이 큰 octopus arm을 잘 control하여 target을 맞춤입니다.
-    - <img src="https://www.dropbox.com/s/xrxb0a52wntekld/Screenshot%202018-06-16%2017.46.28.png?dl=1" width=600px>
-    - 기존 기법들은 action spaces 혹은 action과 state spaces 둘 다 작은 경우들에 대해서만 실험했다고 하며, 비교하고 있지 않습니다.
-        - 기존 기법들이 6 segments octopus arm에서 동작을 잘 안 했을 것 같긴한데, 그래도 실험해서 보여줬으면 하지만 실험을 하지 않았습니다.
-    - 8 segment arm 동영상이 저자 홈페이지에 있다고 하는데, 안 보입니다.
-- [참고] Octopus Arm 이란?
-    - [OctopusArm Youtube Link](https://www.youtube.com/watch?v=AxeeHif0euY)
-    - <img src="https://www.dropbox.com/s/950ycj06sudakjx/Screenshot%202018-06-16%2017.45.52.png?dl=1">
+하지만 demonstration을 설명할 feature 수가 많아지면 reward function이 fearture들의 선형조합으로 나타낼 수 있다는 초기 가정을 보장할수 없게됩니다. feature들에 대해서 비선형으로 reward를 나타내거나 자동으로 feature를 설계하거나 선택하는것은 매우 중요하며, 이 에대한 연구가 많이 필요합니다.
 
 <br><br>
 
@@ -329,7 +312,5 @@ $$
 <br>
 
 # 다음으로
-
-## [APP Code]()
-
+## [APP Code](https://github.com/reinforcement-learning-kr/lets-do-irl/tree/master/mountaincar/app)
 ## [MMP 여행하기](https://reinforcement-learning-kr.github.io/2019/02/07/3_mmp/)
