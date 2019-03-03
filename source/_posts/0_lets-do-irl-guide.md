@@ -109,7 +109,7 @@ SVM 전성시대가 막이 내리고 IRL도 이 논문부터 본격적으로 확
 [GAIL 여행하기](https://reinforcement-learning-kr.github.io/2019/02/13/5_gail/)
 [GAIL Code](https://github.com/reinforcement-learning-kr/lets-do-irl/tree/master/mujoco/gail)
 
-페이스북 인공지능 연구팀의 리더이자 딥러닝의 압지라 불리는 얀 르쿤(Yann Lecun) 교수님은 Ian Goodfellow가 2014년에 내놓은 **Generative Adversarial Networks (GAN)** 을 가리켜 최근 10년간 머신러닝 분야에서 가장 혁신적인 아이디어라고 말했습니다. 이후 많은 곳에 GAN을 사용할 수 있겠다고 생각한 연구자들은 GAN을 활용한 연구들을 통해 뛰어난 성능을 보여주며 각종 인공지능 학회를 뜨겁게 달궜습니다. 이는 Imitation learning에도 마찬가지였으며, 이 시기에 나온 논문이 바로 GAIL입니다. 
+페이스북 인공지능 연구팀의 리더이자 딥러닝의 아버지라 불리는 얀 르쿤(Yann Lecun) 교수님은 Ian Goodfellow가 2014년에 내놓은 **Generative Adversarial Networks (GAN)** 을 가리켜 최근 10년간 머신러닝 분야에서 가장 혁신적인 아이디어라고 말했습니다. 이후 많은 곳에 GAN을 사용할 수 있겠다고 생각한 연구자들은 GAN을 활용한 연구들을 통해 뛰어난 성능을 보여주며 각종 인공지능 학회를 뜨겁게 달궜습니다. 이는 Imitation learning에도 마찬가지였으며, 이 시기에 나온 논문이 바로 GAIL입니다. 
 
 APP, MMP 등의 아주 초기 IRL 논문에서부터 핵심적으로 사용되는 알고리즘은 SVM과 같이 expert와 learner의 performance margin을 최대화 하는 방향으로 reward function을 학습하는것입니다. 이는 어떻게 보면 두 policy를 더 잘 구분하고자 하는 것이며 GAN에서 말하는 discriminator와 generator의 성질과 매우 유사합니다. 저자는 이 점을 활용하여 새로운 cost regularizer를 제안함으로써 Immitation learning과 GAN을 연결짓습니다. 
 
