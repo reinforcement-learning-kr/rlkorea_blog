@@ -302,6 +302,6 @@ Path에 대한 distribution은 Equation (4)의 partition function이 수렴할 �
 
 # 다음으로
 
-## [MaxEnt Code]()
+## [MaxEnt Code](https://github.com/reinforcement-learning-kr/lets-do-irl/tree/master/mountaincar/maxent)
 
 ## [GAIL 여행하기](https://reinforcement-learning-kr.github.io/2019/02/13/5_gail/)

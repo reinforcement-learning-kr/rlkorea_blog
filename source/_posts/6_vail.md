@@ -9,6 +9,12 @@ subtitle: Inverse RL 6번째 논문
 
 <center> <img src="../../../../img/irl/vail_1.png" width="850"> </center>
 
+Author : Xue Bin Peng, Angjoo Kanazawa, Sam Toyer, Pieter Abbeel, Sergey Levine
+Paper Link : https://arxiv.org/pdf/1810.00821.pdf
+Proceeding : International Conference of Learning Representations (ICLR) 2019
+
+---
+
 수정중..
 
 <br><br>
@@ -23,10 +29,10 @@ subtitle: Inverse RL 6번째 논문
 
 ## [GAIL 여행하기](https://reinforcement-learning-kr.github.io/2019/02/13/5_gail/)
 
-## [GAIL Code]()
+## [GAIL Code](https://github.com/reinforcement-learning-kr/lets-do-irl/tree/master/mujoco/gail)
 
 <br>
 
 # 다음으로
 
-## [VAIL Code]()
+## [VAIL Code](https://github.com/reinforcement-learning-kr/lets-do-irl/tree/master/mujoco/vail)
