@@ -11,7 +11,7 @@ subtitle: Inverse RL 2번째 논문
 
 Author : Pieter Abbeel, Andrew Y. Ng
 Paper Link : http://people.eecs.berkeley.edu/~russell/classes/cs294/s11/readings/Abbeel+Ng:2004.pdf
-Proceeding : International Conference on Machine Learning (ICML) 2000
+Proceeding : International Conference on Machine Learning (ICML) 2004
 
 ---
 
